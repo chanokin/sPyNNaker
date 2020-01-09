@@ -131,10 +131,17 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
         
     @overrides(AbstractConnector.get_delay_maximum)
     def get_delay_maximum(self, synapse_info):
+        scaling = min(min(self._pre_shape[0] / self._post_shape[0],
+                          self._post_shape[0] / self._pre_shape[0])
+                      min(self._pre_shape[1] / self._post_shape[1],
+                          self._post_shape[1] / self._pre_shape[1]))
+
+        n_in_region = self._neurons_in_region()
+        total = n_in_region * self._pre_shape[2] * self._post_shape[2] * scaling**2
+        
         n_connections = utility_calls.get_probable_maximum_selected(
-            synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            self._p_connect)
+                            total, total, self._p_connect)
+
         return self._get_delay_maximum(synapse_info.delays, n_connections)
 
     @overrides(AbstractConnector.get_n_connections_from_pre_vertex_maximum)
