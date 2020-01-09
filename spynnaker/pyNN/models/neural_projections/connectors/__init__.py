@@ -26,6 +26,7 @@ from .fixed_number_pre_connector import FixedNumberPreConnector
 from .fixed_probability_connector import FixedProbabilityConnector
 from .from_list_connector import FromListConnector
 from .index_based_probability_connector import IndexBasedProbabilityConnector
+from .index_based_fixed_probability_connector import IndexBasedFixedProbabilityConnector
 from .multapse_connector import MultapseConnector
 from .one_to_one_connector import OneToOneConnector
 from .small_world_connector import SmallWorldConnector
@@ -36,5 +37,6 @@ __all__ = ["AbstractConnector", "AbstractGenerateConnectorOnMachine",
            "DistanceDependentProbabilityConnector", "FixedNumberPostConnector",
            "FixedNumberPreConnector", "FixedProbabilityConnector",
            "FromListConnector", "IndexBasedProbabilityConnector",
+           "IndexBasedFixedProbabilityConnector",
            "MultapseConnector", "OneToOneConnector", "SmallWorldConnector",
            "KernelConnector"]
