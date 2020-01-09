@@ -100,26 +100,33 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
             within_rows = np.abs(row_post - row_pre) <= self._max_distance
             within_cols = np.abs(col_post - col_pre) <= self._max_distance
             return (within_rows and within_cols)
-            
-    def _compute_max_pre_per_post(self):
-        if self._circle_or_square == CIRCLE:
-            #from http://mathworld.wolfram.com/GausssCircleProblem.html
-            max_error = 2 * numpy.sqrt(2) * numpy.pi * self._max_distance
-            n_pre = np.pi * self._max_dist2
-        else:
-            n_pre = (2 * self._max_distance) ** 2
-            
-        return n_pre * self._pre_shape[2]
+    
+    def _neurons_in_region(self, scale=1.0):
+        dist = scale * self._max_distance
         
-    def _compute_max_post_per_pre(self):
         if self._circle_or_square == CIRCLE:
             #from http://mathworld.wolfram.com/GausssCircleProblem.html
-            max_error = 2 * numpy.sqrt(2) * numpy.pi * self._max_distance
-            n_pre = np.pi * self._max_dist2
+            max_error = 2 * numpy.sqrt(2) * numpy.pi * dist
+            n = numpy.pi * (dist ** 2)
         else:
-            n_pre = (2 * self._max_distance) ** 2
-            
-        return n_pre * self._post_shape[2]
+            n = (2 * dist) ** 2
+    
+        return n
+    
+    def _compute_max_pre_per_post(self):
+        scaling = self._pre_shape[0] / self._post_shape[0]
+        scaling = 1.0 if scaling >= 1.0 else scaling
+        n_pre = self._neurons_in_region(scaling)
+        
+        return int(np.ceil(n_pre * self._pre_shape[2]))
+
+    
+    def _compute_max_post_per_pre(self):
+        scaling = self._post_shape[0] / self._pre_shape[0]
+        scaling = 1.0 if scaling >= 1.0 else scaling
+        n_post = self._neurons_in_region(scaling)
+        
+        return int(np.ceil(n_post * self._post_shape[2]))
         
         
     @overrides(AbstractConnector.get_delay_maximum)
@@ -137,7 +144,8 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
         # pylint: disable=too-many-arguments
         n_connections = utility_calls.get_probable_maximum_selected(
             synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            post_vertex_slice.n_atoms, self._p_connect, chance=1.0/10000.0)
+            post_vertex_slice.n_atoms, 
+            self._p_connect, chance=1.0/10000.0)
 
         if min_delay is None or max_delay is None:
             return int(math.ceil(n_connections))
