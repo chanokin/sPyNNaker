@@ -43,11 +43,11 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
             circle_or_square=CIRCLE, allow_self_connections=True, safe=True,
             callback=None, verbose=False, rng=None):
         """
-        :param pre_shape: shape (rows, columns, cells per region) for the \
+        :param pre_shape: shape (rows, columns, cells per coordinate) for the \
         pre-synaptic population.
         :type pre_shape: iterable
         
-        :param post_shape: shape (rows, columns, cells per region) for the \
+        :param post_shape: shape (rows, columns, cells per coordinate) for the \
         post-synaptic population.
         :type post_shape: float
         
@@ -127,57 +127,71 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
         n_post = self._neurons_in_region(scaling)
         
         return int(np.ceil(n_post * self._post_shape[2]))
+    
+    def _post_smaller(self):
+        return (scaling < 1.0) 
+        
+    def scaling(self)
+        return self._post_shape[0] / self._pre_shape[0]
+    
+    def n_in_post_reg(self):
+        if self._post_smaller():
+            return self._post_shape[2]
+        else:
+            return self._neurons_in_region() * self._post_shape[2]
+    
+    def n_in_pre_reg(self):
+        if self._post_smaller():
+            return self._neurons_in_region() * self._pre_shape[2]
+        else:
+            return self._pre_shape[2]
+
+    def pre_to_post(self, row, col):
+        step = int(self.scaling())
         
         
     @overrides(AbstractConnector.get_delay_maximum)
     def get_delay_maximum(self, synapse_info):
-        scaling = min(min(self._pre_shape[0] / self._post_shape[0],
-                          self._post_shape[0] / self._pre_shape[0])
-                      min(self._pre_shape[1] / self._post_shape[1],
-                          self._post_shape[1] / self._pre_shape[1]))
-
-        n_in_region = self._neurons_in_region()
-        total = n_in_region * self._pre_shape[2] * self._post_shape[2] * scaling**2
-        
+        total = self.n_in_post_reg() * self.n_in_pre_reg()
         n_connections = utility_calls.get_probable_maximum_selected(
                             total, total, self._p_connect)
 
         return self._get_delay_maximum(synapse_info.delays, n_connections)
 
+    
     @overrides(AbstractConnector.get_n_connections_from_pre_vertex_maximum)
     def get_n_connections_from_pre_vertex_maximum(
             self, post_vertex_slice, synapse_info, min_delay=None,
             max_delay=None):
         # pylint: disable=too-many-arguments
+        total = self.n_in_post_reg() * self.n_in_pre_reg()
+
         n_connections = utility_calls.get_probable_maximum_selected(
-            synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            post_vertex_slice.n_atoms, 
+            total, post_vertex_slice.n_atoms, 
             self._p_connect, chance=1.0/10000.0)
 
         if min_delay is None or max_delay is None:
             return int(math.ceil(n_connections))
 
         return self._get_n_connections_from_pre_vertex_with_delay_maximum(
-            synapse_info.delays,
-            synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            n_connections, min_delay, max_delay)
+            synapse_info.delays, total, n_connections, min_delay, max_delay)
 
     @overrides(AbstractConnector.get_n_connections_to_post_vertex_maximum)
     def get_n_connections_to_post_vertex_maximum(self, synapse_info):
         # pylint: disable=too-many-arguments
+        total = self.n_in_post_reg() * self.n_in_pre_reg()
+        
         n_connections = utility_calls.get_probable_maximum_selected(
-            synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            synapse_info.n_pre_neurons, self._p_connect,
+            total, self.n_in_pre_reg(), self._p_connect,
             chance=1.0/10000.0)
         return n_connections
 
     @overrides(AbstractConnector.get_weight_maximum)
     def get_weight_maximum(self, synapse_info):
         # pylint: disable=too-many-arguments
+        total = self.n_in_post_reg() * self.n_in_pre_reg()
         n_connections = utility_calls.get_probable_maximum_selected(
-            synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            synapse_info.n_pre_neurons * synapse_info.n_post_neurons,
-            self._p_connect)
+            total, total, self._p_connect)
         return self._get_weight_maximum(synapse_info.weights, n_connections)
 
     @overrides(AbstractConnector.create_synaptic_block)
@@ -186,7 +200,16 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
             post_slice_index, pre_vertex_slice, post_vertex_slice,
             synapse_type, synapse_info):
         # pylint: disable=too-many-arguments
-        n_items = pre_vertex_slice.n_atoms * post_vertex_slice.n_atoms
+        
+        pre_ids = np.arange(pre_vertex_slice.lo_atom,
+                            pre_vertex_slice.lo_atom + pre_vertex_slice.n_atoms)
+        
+        post_ids = np.arange(post_vertex_slice.lo_atom,
+                             post_vertex_slice.lo_atom + post_vertex_slice.n_atoms)
+        
+        if self._post_smaller()
+        
+        
         items = self._rng.next(n_items)
 
         # If self connections are not allowed, remove possibility the self
@@ -200,9 +223,9 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
 
         block = numpy.zeros(n_connections, dtype=self.NUMPY_SYNAPSES_DTYPE)
         block["source"] = (
-            (ids // post_vertex_slice.n_atoms) + pre_vertex_slice.lo_atom)
+            (ids // post_vertex_slice.n_atoms) + )
         block["target"] = (
-            (ids % post_vertex_slice.n_atoms) + post_vertex_slice.lo_atom)
+            (ids % post_vertex_slice.n_atoms) + )
         block["weight"] = self._generate_weights(
             n_connections, None, pre_vertex_slice, post_vertex_slice,
             synapse_info)
@@ -213,7 +236,7 @@ class FixedProbabilityRegionConnector(AbstractGenerateConnectorOnMachine):
         return block
 
     def __repr__(self):
-        return "FixedProbabilityConnector({})".format(self._p_connect)
+        return "FixedProbabilityRegionConnector(p{}, r{})".format(self._p_connect, self._max_distance)
 
     def _get_view_lo_hi(self, indexes):
         view_lo = indexes[0]

@@ -24,9 +24,10 @@ from .distance_dependent_probability_connector import (
 from .fixed_number_post_connector import FixedNumberPostConnector
 from .fixed_number_pre_connector import FixedNumberPreConnector
 from .fixed_probability_connector import FixedProbabilityConnector
+# from .fixed_probability_region_connector import FixedProbabilityRegionConnector
+
 from .from_list_connector import FromListConnector
 from .index_based_probability_connector import IndexBasedProbabilityConnector
-from .index_based_fixed_probability_connector import IndexBasedFixedProbabilityConnector
 from .multapse_connector import MultapseConnector
 from .one_to_one_connector import OneToOneConnector
 from .small_world_connector import SmallWorldConnector
