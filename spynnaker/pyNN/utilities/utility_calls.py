@@ -20,12 +20,38 @@ import os
 import logging
 import math
 import numpy
+from pyNN.random import RandomDistribution
 from scipy.stats import binom
 from spinn_utilities.safe_eval import SafeEval
-from spinn_front_end_common.utilities import globals_variables
 from spinn_front_end_common.utilities.exceptions import ConfigurationException
+from spynnaker.pyNN.utilities.random_stats import (
+    RandomStatsExponentialImpl, RandomStatsGammaImpl, RandomStatsLogNormalImpl,
+    RandomStatsNormalClippedImpl, RandomStatsNormalImpl,
+    RandomStatsPoissonImpl, RandomStatsRandIntImpl, RandomStatsUniformImpl,
+    RandomStatsVonmisesImpl, RandomStatsBinomialImpl)
+
 
 MAX_RATE = 2 ** 32 - 1  # To allow a unit32_t to be used to store the rate
+
+BASE_RANDOM_FOR_MARS_64 = 0x80000000
+CAP_RANDOM_FOR_MARS_64 = 0x7FFFFFFF
+# in order are x, y, z, c
+N_RANDOM_NUMBERS = 4
+ARBITRARY_Y = 13031301
+MARS_C_MAX = 698769068
+
+STATS_BY_NAME = {
+    'binomial': RandomStatsBinomialImpl(),
+    'gamma': RandomStatsGammaImpl(),
+    'exponential': RandomStatsExponentialImpl(),
+    'lognormal': RandomStatsLogNormalImpl(),
+    'normal': RandomStatsNormalImpl(),
+    'normal_clipped': RandomStatsNormalClippedImpl(),
+    'normal_clipped_to_boundary': RandomStatsNormalClippedImpl(),
+    'poisson': RandomStatsPoissonImpl(),
+    'uniform': RandomStatsUniformImpl(),
+    'randint': RandomStatsRandIntImpl(),
+    'vonmises': RandomStatsVonmisesImpl()}
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +59,7 @@ logger = logging.getLogger(__name__)
 def check_directory_exists_and_create_if_not(filename):
     """ Create a parent directory for a file if it doesn't exist
 
-    :param filename: The file whose parent directory is to be created
+    :param str filename: The file whose parent directory is to be created
     """
     directory = os.path.dirname(filename)
     if directory != "" and not os.path.exists(directory):
@@ -41,15 +67,18 @@ def check_directory_exists_and_create_if_not(filename):
 
 
 def convert_param_to_numpy(param, no_atoms):
-    """ Convert parameters into numpy arrays
+    """ Convert parameters into numpy arrays.
 
     :param param: the param to convert
-    :param no_atoms: the number of atoms available for conversion of param
-    :return numpy.array: the converted param in whatever format it was given
+    :type param: ~pyNN.random.NumpyRNG or int or float or list(int) or
+        list(float) or ~numpy.ndarray
+    :param int no_atoms: the number of atoms available for conversion of param
+    :return: the converted param as an array of floats
+    :rtype: ~numpy.ndarray(float)
     """
 
     # Deal with random distributions by generating values
-    if globals_variables.get_simulator().is_a_pynn_random(param):
+    if isinstance(param, RandomDistribution):
 
         # numpy reduces a single valued array to a single value, so enforce
         # that it is an array
@@ -76,8 +105,10 @@ def convert_to(value, data_type):
     """ Convert a value to a given data type
 
     :param value: The value to convert
-    :param data_type: The data type to convert to
+    :param ~data_specification.enums.DataType data_type:
+        The data type to convert to
     :return: The converted data as a numpy data type
+    :rtype: ~numpy.ndarray(int32)
     """
     return numpy.round(data_type.encode_as_int(value)).astype(
         data_type.struct_encoding)
@@ -88,12 +119,15 @@ def read_in_data_from_file(
     """ Read in a file of data values where the values are in a format of:
         <time>\t<atom ID>\t<data value>
 
-    :param file_path: absolute path to a file containing the data
-    :param min_atom: min neuron ID to which neurons to read in
-    :param max_atom: max neuron ID to which neurons to read in
+    :param str file_path: absolute path to a file containing the data
+    :param int min_atom: min neuron ID to which neurons to read in
+    :param int max_atom: max neuron ID to which neurons to read in
     :param min_time: min time slot to read neurons values of.
+    :type min_time: float or int
     :param max_time: max time slot to read neurons values of.
+    :type max_time: float or int
     :return: a numpy array of (time stamp, atom ID, data value)
+    :rtype: ~numpy.ndarray(tuple(float, int, float))
     """
     times = list()
     atom_ids = list()
@@ -124,42 +158,40 @@ def read_in_data_from_file(
 
 def read_spikes_from_file(file_path, min_atom=0, max_atom=float('inf'),
                           min_time=0, max_time=float('inf'), split_value="\t"):
-    """ Read spikes from a file formatted as:\
+    """ Read spikes from a file formatted as:
         <time>\t<neuron ID>
 
-    :param file_path: absolute path to a file containing spike values
-    :type file_path: str
+    :param str file_path: absolute path to a file containing spike values
     :param min_atom: min neuron ID to which neurons to read in
-    :type min_atom: int
+    :type min_atom: int or float
     :param max_atom: max neuron ID to which neurons to read in
-    :type max_atom: int
+    :type max_atom: int or float
     :param min_time: min time slot to read neurons values of.
-    :type min_time: int
+    :type min_time: float or int
     :param max_time: max time slot to read neurons values of.
-    :type max_time: int
-    :param split_value: the pattern to split by
-    :type split_value: str
-    :return:\
+    :type max_time: float or int
+    :param str split_value: the pattern to split by
+    :return:
         a numpy array with max_atom elements each of which is a list of\
         spike times.
-    :rtype: numpy.array(int, int)
+    :rtype: numpy.ndarray(int, int)
     """
     # pylint: disable=too-many-arguments
 
     # For backward compatibility as previous version tested for None rather
     # than having default values
     if min_atom is None:
-        min_atom = 0
+        min_atom = 0.0
     if max_atom is None:
         max_atom = float('inf')
     if min_time is None:
-        min_time = 0
+        min_time = 0.0
     if max_time is None:
         max_time = float('inf')
 
     data = []
-    with open(file_path, 'r') as fsource:
-        read_data = fsource.readlines()
+    with open(file_path, 'r') as f_source:
+        read_data = f_source.readlines()
 
     evaluator = SafeEval()
     for line in read_data:
@@ -189,17 +221,15 @@ def get_probability_within_range(dist, lower, upper):
     """ Get the probability that a value will fall within the given range for\
         a given RandomDistribution
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
-    return (stats.cdf(dist, upper) - stats.cdf(dist, lower))
+    stats = STATS_BY_NAME[dist.name]
+    return stats.cdf(dist, upper) - stats.cdf(dist, lower)
 
 
 def get_maximum_probable_value(dist, n_items, chance=(1.0 / 100.0)):
     """ Get the likely maximum value of a RandomDistribution given a\
         number of draws
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
+    stats = STATS_BY_NAME[dist.name]
     prob = 1.0 - (chance / float(n_items))
     return stats.ppf(dist, prob)
 
@@ -208,8 +238,7 @@ def get_minimum_probable_value(dist, n_items, chance=(1.0 / 100.0)):
     """ Get the likely minimum value of a RandomDistribution given a\
         number of draws
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
+    stats = STATS_BY_NAME[dist.name]
     prob = chance / float(n_items)
     return stats.ppf(dist, prob)
 
@@ -217,24 +246,21 @@ def get_minimum_probable_value(dist, n_items, chance=(1.0 / 100.0)):
 def get_mean(dist):
     """ Get the mean of a RandomDistribution
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
+    stats = STATS_BY_NAME[dist.name]
     return stats.mean(dist)
 
 
 def get_standard_deviation(dist):
     """ Get the standard deviation of a RandomDistribution
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
+    stats = STATS_BY_NAME[dist.name]
     return stats.std(dist)
 
 
 def get_variance(dist):
     """ Get the variance of a RandomDistribution
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
+    stats = STATS_BY_NAME[dist.name]
     return stats.var(dist)
 
 
@@ -243,8 +269,7 @@ def high(dist):
 
     Could return None
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
+    stats = STATS_BY_NAME[dist.name]
     return stats.high(dist)
 
 
@@ -253,42 +278,47 @@ def low(dist):
 
     Could return None
     """
-    simulator = globals_variables.get_simulator()
-    stats = simulator.get_distribution_to_stats()[dist.name]
+    stats = STATS_BY_NAME[dist.name]
     return stats.low(dist)
 
 
-def validate_mars_kiss_64_seed(seed):
-    """ Update the seed to make it compatible with the rng algorithm
+def _validate_mars_kiss_64_seed(seed):
+    """ Update the seed to make it compatible with the RNG algorithm
     """
     if seed[1] == 0:
         # y (<- seed[1]) can't be zero so set to arbitrary non-zero if so
-        seed[1] = 13031301
+        seed[1] = ARBITRARY_Y
 
     # avoid z=c=0 and make < 698769069
-    seed[3] = seed[3] % 698769068 + 1
+    seed[3] = seed[3] % MARS_C_MAX + 1
     return seed
 
 
-def check_sampling_interval(sampling_interval):
-    step = globals_variables.get_simulator().machine_time_step / 1000
-    if sampling_interval is None:
-        return step
-    rate = int(sampling_interval / step)
-    if sampling_interval != rate * step:
-        msg = "sampling_interval {} is not an an integer " \
-              "multiple of the simulation timestep {}" \
-              "".format(sampling_interval, step)
-        raise ConfigurationException(msg)
-    if rate > MAX_RATE:
-        msg = "sampling_interval {} higher than max allowed which is {}" \
-              "".format(sampling_interval, step * MAX_RATE)
-        raise ConfigurationException(msg)
-    return sampling_interval
+def create_mars_kiss_seeds(rng, seed):
+    """ generates and checks that the seed values generated by the given
+    random number generator or seed to a random number generator are
+    suitable for use as a mars 64 kiss seed.
+
+    :param None or numpy.random.RandomState rng: the random number generator.
+    :param int seed: the seed to create a random number generator if not\
+        handed.
+    :return: a list of 4 ints which are used by the mars64 kiss random number \
+        generator for seeds.
+    """
+    if rng is None:
+        rng = numpy.random.RandomState(seed)
+    kiss_seed = _validate_mars_kiss_64_seed([
+        rng.randint(-BASE_RANDOM_FOR_MARS_64, CAP_RANDOM_FOR_MARS_64) +
+        BASE_RANDOM_FOR_MARS_64 for _ in range(N_RANDOM_NUMBERS)])
+    return kiss_seed
 
 
 def get_n_bits(n_values):
     """ Determine how many bits are required for the given number of values
+
+    :param int n_values: the number of values (starting at 0)
+    :return: the number of bits required to express that many values
+    :rtype: int
     """
     if n_values == 0:
         return 0
