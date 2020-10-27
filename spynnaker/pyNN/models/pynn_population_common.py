@@ -665,12 +665,12 @@ class PyNNPopulationCommon(object):
     @staticmethod
     def __roundsize(size, label):
         # External device population can have a size of None so accept for now
-        if size is None or isinstance(size, int):
+        if size is None or numpy.issubdtype(size, numpy.integer):
             return size
         # Allow a float which has a near int value
         temp = int(round(size))
         if abs(temp - size) < 0.001:
-            logger.warning("Size of the population rounded "
+            logger.warning("Size of the population {} rounded "
                            "from {} to {}. Please use int values for size",
                            label, size, temp)
             return temp

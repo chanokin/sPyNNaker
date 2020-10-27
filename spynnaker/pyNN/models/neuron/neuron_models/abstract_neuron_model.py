@@ -47,6 +47,9 @@ class AbstractNeuronModel(
             global_data_types = []
         self.__global_struct = Struct(global_data_types)
 
+        self.requires_spike_mapping = False
+        self.needs_dma_weights = True
+
     @property
     def global_struct(self):
         """ Get the global parameters structure
@@ -95,3 +98,4 @@ class AbstractNeuronModel(
                    BYTES_PER_WORD)
         return super(AbstractNeuronModel, self).read_data(
             data, offset, vertex_slice, parameters, state_variables)
+

@@ -126,6 +126,12 @@ static uint32_t n_neurons;
 //! timer count for tdma of certain models
 static uint global_timer_count;
 
+static bool requires_spike_mapping = false;
+static bool needs_dma_weights = true;
+static uint32_t *pre_shape = NULL;
+static uint32_t *post_shape = NULL;
+
+
 //! \brief Callback to store provenance data (format: neuron_provenance).
 //! \param[out] provenance_region: Where to write the provenance data
 static void c_main_store_provenance_data(address_t provenance_region) {
