@@ -48,6 +48,7 @@ class IFCurrExpConv(AbstractPyNNNeuronModelStandard):
         # pylint: disable=too-many-arguments, too-many-locals
         neuron_model = NeuronModelLeakyIntegrateAndFireConv(
             v, v_rest, tau_m, cm, i_offset, v_reset, tau_refrac)
+
         synapse_type = SynapseTypeExponential(
             tau_syn_E, tau_syn_I, isyn_exc, isyn_inh)
         input_type = InputTypeCurrent()
