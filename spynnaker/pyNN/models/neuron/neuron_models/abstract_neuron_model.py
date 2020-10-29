@@ -29,7 +29,7 @@ class AbstractNeuronModel(
     """ Represents a neuron model.
     """
 
-    __slots__ = ["__global_struct"]
+    __slots__ = ["__global_struct", "requires_spike_mapping", "needs_dma_weights"]
 
     def __init__(self, data_types, global_data_types=None):
         """
@@ -46,9 +46,9 @@ class AbstractNeuronModel(
         if global_data_types is None:
             global_data_types = []
         self.__global_struct = Struct(global_data_types)
-
         self.requires_spike_mapping = False
         self.needs_dma_weights = True
+
 
     @property
     def global_struct(self):

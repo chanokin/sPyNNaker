@@ -19,8 +19,6 @@ from data_specification.enums import DataType
 from .abstract_neuron_model import AbstractNeuronModel
 from spynnaker.pyNN.models.neuron.implementations import (
     AbstractStandardNeuronComponent)
-from .neuron_model_leaky_integrate_and_fire import (
-    NeuronModelLeakyIntegrateAndFire as LIF_base)
 
 V = "v"
 V_REST = "v_rest"
@@ -42,9 +40,18 @@ UNITS = {
 }
 
 
-class NeuronModelLeakyIntegrateAndFireConv(LIF_base):
+class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
     """ Classic leaky integrate and fire neuron model.
     """
+    __slots__ = [
+        "__v_init",
+        "__v_rest",
+        "__tau_m",
+        "__cm",
+        "__i_offset",
+        "__v_reset",
+        "__tau_refrac"]
+
     def __init__(
             self, v_init, v_rest, tau_m, cm, i_offset, v_reset, tau_refrac):
         r"""
@@ -57,7 +64,164 @@ class NeuronModelLeakyIntegrateAndFireConv(LIF_base):
         :param float tau_refrac: :math:`\tau_{refrac}`
         """
         super(NeuronModelLeakyIntegrateAndFireConv, self).__init__(
-            v_init, v_rest, tau_m, cm, i_offset, v_reset, tau_refrac)  # tau_refrac
+            [DataType.S1615,   # v
+             DataType.S1615,   # v_rest
+             DataType.S1615,   # r_membrane (= tau_m / cm)
+             DataType.S1615,   # exp_tc (= e^(-ts / tau_m))
+             DataType.S1615,   # i_offset
+             DataType.INT32,   # count_refrac
+             DataType.S1615,   # v_reset
+             DataType.INT32])  # tau_refrac
+
+        if v_init is None:
+            v_init = v_rest
+        self.__v_init = v_init
+        self.__v_rest = v_rest
+        self.__tau_m = tau_m
+        self.__cm = cm
+        self.__i_offset = i_offset
+        self.__v_reset = v_reset
+        self.__tau_refrac = tau_refrac
+
         self.requires_spike_mapping = True
         self.needs_dma_weights = False
 
+
+    @overrides(AbstractStandardNeuronComponent.get_n_cpu_cycles)
+    def get_n_cpu_cycles(self, n_neurons):
+        # A bit of a guess
+        return 100 * n_neurons
+
+    @overrides(AbstractStandardNeuronComponent.add_parameters)
+    def add_parameters(self, parameters):
+        parameters[V_REST] = self.__v_rest
+        parameters[TAU_M] = self.__tau_m
+        parameters[CM] = self.__cm
+        parameters[I_OFFSET] = self.__i_offset
+        parameters[V_RESET] = self.__v_reset
+        parameters[TAU_REFRAC] = self.__tau_refrac
+
+    @overrides(AbstractStandardNeuronComponent.add_state_variables)
+    def add_state_variables(self, state_variables):
+        state_variables[V] = self.__v_init
+        state_variables[COUNT_REFRAC] = 0
+
+    @overrides(AbstractStandardNeuronComponent.get_units)
+    def get_units(self, variable):
+        return UNITS[variable]
+
+    @overrides(AbstractStandardNeuronComponent.has_variable)
+    def has_variable(self, variable):
+        return variable in UNITS
+
+    @overrides(AbstractStandardNeuronComponent.get_values)
+    def get_values(self, parameters, state_variables, vertex_slice, ts):
+        """
+        :param int ts: machine time step
+        """
+        # pylint: disable=arguments-differ
+
+        # Add the rest of the data
+        return [state_variables[V], parameters[V_REST],
+                parameters[TAU_M] / parameters[CM],
+                parameters[TAU_M].apply_operation(
+                    operation=lambda x: numpy.exp(float(-ts) / (1000.0 * x))),
+                parameters[I_OFFSET], state_variables[COUNT_REFRAC],
+                parameters[V_RESET],
+                parameters[TAU_REFRAC].apply_operation(
+                    operation=lambda x: int(numpy.ceil(x / (ts / 1000.0))))]
+
+    @overrides(AbstractStandardNeuronComponent.update_values)
+    def update_values(self, values, parameters, state_variables):
+
+        # Read the data
+        (v, _v_rest, _r_membrane, _exp_tc, _i_offset, count_refrac,
+         _v_reset, _tau_refrac) = values
+
+        # Copy the changed data only
+        state_variables[V] = v
+        state_variables[COUNT_REFRAC] = count_refrac
+
+    @property
+    def v_init(self):
+        """ Settable model parameter: :math:`V_{init}`
+
+        :rtype: float
+        """
+        return self.__v_init
+
+    @v_init.setter
+    def v_init(self, v_init):
+        self.__v_init = v_init
+
+    @property
+    def v_rest(self):
+        """ Settable model parameter: :math:`V_{rest}`
+
+        :rtype: float
+        """
+        return self.__v_rest
+
+    @v_rest.setter
+    def v_rest(self, v_rest):
+        self.__v_rest = v_rest
+
+    @property
+    def tau_m(self):
+        r""" Settable model parameter: :math:`\tau_{m}`
+
+        :rtype: float
+        """
+        return self.__tau_m
+
+    @tau_m.setter
+    def tau_m(self, tau_m):
+        self.__tau_m = tau_m
+
+    @property
+    def cm(self):
+        """ Settable model parameter: :math:`C_m`
+
+        :rtype: float
+        """
+        return self.__cm
+
+    @cm.setter
+    def cm(self, cm):
+        self.__cm = cm
+
+    @property
+    def i_offset(self):
+        """ Settable model parameter: :math:`I_{offset}`
+
+        :rtype: float
+        """
+        return self.__i_offset
+
+    @i_offset.setter
+    def i_offset(self, i_offset):
+        self.__i_offset = i_offset
+
+    @property
+    def v_reset(self):
+        """ Settable model parameter: :math:`V_{reset}`
+
+        :rtype: float
+        """
+        return self.__v_reset
+
+    @v_reset.setter
+    def v_reset(self, v_reset):
+        self.__v_reset = v_reset
+
+    @property
+    def tau_refrac(self):
+        r""" Settable model parameter: :math:`\tau_{refrac}`
+
+        :rtype: float
+        """
+        return self.__tau_refrac
+
+    @tau_refrac.setter
+    def tau_refrac(self, tau_refrac):
+        self.__tau_refrac = tau_refrac

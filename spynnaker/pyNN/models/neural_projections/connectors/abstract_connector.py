@@ -83,6 +83,10 @@ class AbstractConnector(with_metaclass(AbstractBase, object)):
         self.__min_delay = 0
         self.__param_seeds = dict()
 
+        self.requires_spike_mapping = False
+        self.needs_dma_weights = True
+
+
     def set_space(self, space):
         """ Set the space object (allowed after instantiation).
 
