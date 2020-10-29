@@ -62,7 +62,10 @@ class PyNNPopulationCommon(object):
         "_vertex_contains_units",
         "_vertex_population_initializable",
         "_vertex_population_settable",
-        "_vertex_read_parameters_before_set"]
+        "_vertex_read_parameters_before_set",
+        "requires_spike_mapping",
+        "needs_dma_weights"
+    ]
 
     def __init__(
             self, spinnaker_control, size, label, constraints, model,
@@ -181,6 +184,12 @@ class PyNNPopulationCommon(object):
         if initial_values is not None:
             for variable, value in iteritems(initial_values):
                 self._initialize(variable, value)
+
+        self.needs_dma_weights = model.needs_dma_weights
+        self.requires_spike_mapping = model.requires_spike_mapping
+
+        print('pynn_pop_comm')
+
 
     @staticmethod
     def _process_additional_params(

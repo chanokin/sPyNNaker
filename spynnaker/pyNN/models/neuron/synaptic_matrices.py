@@ -74,6 +74,9 @@ class SynapticMatrices(object):
         # The address within the synaptic matrix region after the last
         # generated matrix will be written
         "__on_chip_generated_block_addr",
+        # The address in which we'll store local weights information (usually
+        # for a convolution kernel)
+        "__local_weights_block_addr",
         # Determine if any of the matrices can be generated on the machine
         "__gen_on_machine"
     ]
@@ -113,6 +116,7 @@ class SynapticMatrices(object):
         # Store locations of synaptic data and generated data
         self.__host_generated_block_addr = 0
         self.__on_chip_generated_block_addr = 0
+        self.__local_weights_block_addr = 0
 
         # Determine whether to generate on machine
         self.__gen_on_machine = False
@@ -246,6 +250,9 @@ class SynapticMatrices(object):
         # Store a list of synapse info to be generated on the machine
         generate_on_machine = list()
 
+        # Create a list of synapse info with DTCM-stored connectivity
+        dtcm_weights = list()
+
         # For each machine edge in the vertex, create a synaptic list
         for app_edge, m_edges in iteritems(in_edges_by_app_edge):
 
@@ -262,8 +269,11 @@ class SynapticMatrices(object):
                     all_syn_block_sz, app_key_info, d_app_key_info,
                     routing_info, weight_scales, m_edges)
 
+                # If the post pop and connector define locally-stored weights
+                if not app_matrix.uses_local_weights_only():
+                    dtcm_weights.append(app_matrix)
                 # If we can generate the connector on the machine, do so
-                if app_matrix.can_generate_on_machine(single_addr):
+                elif app_matrix.can_generate_on_machine(single_addr):
                     generate_on_machine.append(app_matrix)
                 else:
                     block_addr, single_addr = app_matrix.write_matrix(

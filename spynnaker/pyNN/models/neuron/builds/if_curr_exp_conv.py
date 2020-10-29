@@ -58,3 +58,4 @@ class IFCurrExpConv(AbstractPyNNNeuronModelStandard):
             model_name="IF_curr_exp_conv", binary="IF_curr_exp_conv.aplx",
             neuron_model=neuron_model, input_type=input_type,
             synapse_type=synapse_type, threshold_type=threshold_type)
+

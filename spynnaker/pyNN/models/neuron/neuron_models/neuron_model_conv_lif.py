@@ -52,6 +52,7 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
         "__v_reset",
         "__tau_refrac"]
 
+
     def __init__(
             self, v_init, v_rest, tau_m, cm, i_offset, v_reset, tau_refrac):
         r"""
@@ -83,8 +84,8 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
         self.__v_reset = v_reset
         self.__tau_refrac = tau_refrac
 
-        self.requires_spike_mapping = True
         self.needs_dma_weights = False
+        self.requires_spike_mapping = True
 
 
     @overrides(AbstractStandardNeuronComponent.get_n_cpu_cycles)

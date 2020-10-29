@@ -153,6 +153,9 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
         self._shape_pre = shape_pre
         self._shape_post = shape_post
 
+        self.requires_spike_mapping = True
+        self.needs_dma_weights = False
+
         # Create storage for later
         self._post_as_pre = {}
 
@@ -344,7 +347,7 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
         return self._get_weight_maximum(synapse_info.weights, n_conns)
 
     def __repr__(self):
-        return "KernelConnector(shape_kernel[{},{}])".format(
+        return "ConvolutionConnector(shape_kernel[{},{}])".format(
             self._kernel_w, self._kernel_h)
 
     @overrides(AbstractConnector.create_synaptic_block)
@@ -457,4 +460,4 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
         return N_KERNEL_PARAMS * BYTES_PER_WORD
 
     def get_conv_size_in_bytes(self):
-        return
+        return self._kernel_h * self._kernel_w * BYTES_PER_WORD

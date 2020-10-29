@@ -58,7 +58,10 @@ class AbstractConnector(with_metaclass(AbstractBase, object)):
         "__space",
         "__verbose",
         "_weights",
-        "__param_seeds"]
+        "__param_seeds",
+        "requires_spike_mapping",
+        "needs_dma_weights",
+    ]
 
     def __init__(self, safe=True, callback=None, verbose=False, rng=None):
         """

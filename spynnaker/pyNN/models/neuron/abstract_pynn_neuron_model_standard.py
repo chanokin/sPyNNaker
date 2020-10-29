@@ -51,6 +51,10 @@ class AbstractPyNNNeuronModelStandard(AbstractPyNNNeuronModel):
             model_name, binary, neuron_model, input_type, synapse_type,
             threshold_type, additional_input_type))
 
+        self.needs_dma_weights = neuron_model.needs_dma_weights
+        self.requires_spike_mapping = neuron_model.requires_spike_mapping
+
+
     @overrides(AbstractPyNNNeuronModel.create_vertex,
                additional_arguments={"n_steps_per_timestep"})
     def create_vertex(

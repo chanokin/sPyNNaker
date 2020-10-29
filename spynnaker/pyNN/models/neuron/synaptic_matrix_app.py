@@ -26,6 +26,8 @@ from spinn_front_end_common.utilities.helpful_functions import (
 
 from .synaptic_matrix import SynapticMatrix
 from .generator_data import GeneratorData, SYN_REGION_UNUSED
+from spynnaker.pyNN.models.neuron.neuron_models import (
+    NeuronModelLeakyIntegrateAndFireConv as ConvLIF)
 
 
 class SynapticMatrixApp(object):
@@ -762,3 +764,6 @@ class SynapticMatrixApp(object):
             return self.__delay_index
         matrix = self.__get_matrix(machine_edge)
         return matrix.delay_index
+
+    def uses_local_weights_only(self):
+        self.__synapse_info.uses_local_weights_only()

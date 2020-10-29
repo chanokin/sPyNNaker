@@ -27,7 +27,8 @@ class AbstractPyNNModel(object):
     """ A Model that can be passed in to a Population object in PyNN
     """
 
-    __slots__ = []
+    __slots__ = [
+    ]
     _max_atoms_per_core = defaultdict(lambda: sys.maxsize)
 
     @classmethod
@@ -119,3 +120,25 @@ class AbstractPyNNModel(object):
         :return: An application vertex for the population
         :rtype: ~pacman.model.graphs.application.ApplicationVertex
         """
+
+    @property
+    def needs_dma_weights(self):
+        if not hasattr(self, '_needs_dma_weights'):
+            self._needs_dma_weights = True
+
+        return self._needs_dma_weights
+
+    @needs_dma_weights.setter
+    def needs_dma_weights(self, v):
+        self._needs_dma_weights = v
+
+    @property
+    def requires_spike_mapping(self):
+        if not hasattr(self, '_requires_spike_mapping'):
+            self._requires_spike_mapping = False
+
+        return self._requires_spike_mapping
+
+    @requires_spike_mapping.setter
+    def requires_spike_mapping(self, v):
+        self._requires_spike_mapping = v
