@@ -188,9 +188,6 @@ class PyNNPopulationCommon(object):
         self.needs_dma_weights = model.needs_dma_weights
         self.requires_spike_mapping = model.requires_spike_mapping
 
-        print('pynn_pop_comm')
-
-
     @staticmethod
     def _process_additional_params(
             additional_parameters, population_parameters):
@@ -675,7 +672,8 @@ class PyNNPopulationCommon(object):
     def __roundsize(size, label):
         # External device population can have a size of None so accept for now
         if size is None or numpy.issubdtype(size, numpy.integer):
-            return size
+            return int(size)
+
         # Allow a float which has a near int value
         temp = int(round(size))
         if abs(temp - size) < 0.001:

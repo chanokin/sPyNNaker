@@ -88,8 +88,7 @@ class AbstractPopulationVertex(
         "__n_data_specs",
         "__initial_state_variables",
         "__has_reset_last",
-        "__updated_state_variables",
-    ]
+        "__updated_state_variables"]
 
     #: recording region IDs
     _SPIKE_RECORDING_REGION = 0
@@ -183,8 +182,6 @@ class AbstractPopulationVertex(
         # Set up for profiling
         self.__n_profile_samples = helpful_functions.read_config_int(
             config, "Reports", "n_profile_samples")
-
-
 
     @property
     @overrides(TDMAAwareApplicationVertex.n_atoms)

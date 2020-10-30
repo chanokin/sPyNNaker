@@ -17,7 +17,7 @@ from enum import Enum
 from spinn_front_end_common.utilities.constants import (
     BYTES_PER_WORD, BYTES_PER_KB)
 
-POSSION_SIGMA_SUMMATION_LIMIT = 3.0
+POISSON_SIGMA_SUMMATION_LIMIT = 3.0
 
 BLOCK_INDEX_HEADER_WORDS = 3
 BLOCK_INDEX_ROW_WORDS = 2
@@ -81,6 +81,7 @@ class POPULATION_BASED_REGIONS(Enum):
     BIT_FIELD_FILTER = 12
     BIT_FIELD_BUILDER = 13
     BIT_FIELD_KEY_MAP = 14
+    LOCAL_ONLY_DATA = 15
 
 
 #: The partition ID used for spike data

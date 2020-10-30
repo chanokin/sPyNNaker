@@ -30,7 +30,7 @@ from spynnaker.pyNN.models.neural_projections import ProjectionMachineEdge
 from spynnaker.pyNN.models.abstract_models import AbstractMaxSpikes
 from spynnaker.pyNN.models.neuron.synapse_io import SynapseIORowBased
 from spynnaker.pyNN.utilities.constants import (
-    POPULATION_BASED_REGIONS, POSSION_SIGMA_SUMMATION_LIMIT)
+    POPULATION_BASED_REGIONS, POISSON_SIGMA_SUMMATION_LIMIT)
 from spynnaker.pyNN.utilities.utility_calls import (get_n_bits)
 from spynnaker.pyNN.utilities.running_stats import RunningStats
 
@@ -90,7 +90,9 @@ class SynapticManager(object):
         "_synapse_dynamics_region",
         "_struct_dynamics_region",
         "_connector_builder_region",
-        "_direct_matrix_region"]
+        "_direct_matrix_region",
+        "_local_only_data_region"
+    ]
 
     # TODO make this right
     FUDGE = 0
@@ -132,6 +134,8 @@ class SynapticManager(object):
             POPULATION_BASED_REGIONS.CONNECTOR_BUILDER.value
         self._direct_matrix_region = \
             POPULATION_BASED_REGIONS.DIRECT_MATRIX.value
+        self._local_only_data_region = \
+            POPULATION_BASED_REGIONS.LOCAL_ONLY_DATA.value
 
         # Create the synapse IO
         self.__synapse_io = SynapseIORowBased()
@@ -179,7 +183,7 @@ class SynapticManager(object):
             post_vertex_slice, self.__n_synapse_types,
             self.__all_single_syn_sz, self.__synapse_io,
             self._synaptic_matrix_region, self._direct_matrix_region,
-            self._pop_table_region)
+            self._pop_table_region, self._local_only_data_region)
         self.__synaptic_matrices[post_vertex_slice] = matrices
         return matrices
 
@@ -424,7 +428,7 @@ class SynapticManager(object):
         # Upper end of range for Poisson summation required below
         # upper_bound needs to be an integer
         upper_bound = int(round(average_spikes_per_timestep +
-                                POSSION_SIGMA_SUMMATION_LIMIT *
+                                POISSON_SIGMA_SUMMATION_LIMIT *
                                 math.sqrt(average_spikes_per_timestep)))
 
         # Closed-form exact solution for summation that gives the variance

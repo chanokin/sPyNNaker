@@ -29,7 +29,7 @@ _population_parameters = {
 
 
 class AbstractPyNNNeuronModel(AbstractPyNNModel):
-    __slots__ = ["__model", "needs_dma_weights", "requires_spike_mapping"]
+    __slots__ = ["__model"]
 
     default_population_parameters = _population_parameters
 
@@ -37,7 +37,6 @@ class AbstractPyNNNeuronModel(AbstractPyNNModel):
         """
         :param AbstractNeuronImpl model: The model implementation
         """
-        super(AbstractPyNNNeuronModel, self).__init__()
         self.__model = model
 
     @property

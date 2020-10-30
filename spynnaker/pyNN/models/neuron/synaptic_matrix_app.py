@@ -26,8 +26,6 @@ from spinn_front_end_common.utilities.helpful_functions import (
 
 from .synaptic_matrix import SynapticMatrix
 from .generator_data import GeneratorData, SYN_REGION_UNUSED
-from spynnaker.pyNN.models.neuron.neuron_models import (
-    NeuronModelLeakyIntegrateAndFireConv as ConvLIF)
 
 
 class SynapticMatrixApp(object):
@@ -54,6 +52,8 @@ class SynapticMatrixApp(object):
         "__synaptic_matrix_region",
         # The ID of the "direct" or "single" matrix region
         "__direct_matrix_region",
+
+        "__local_only_matrix_region",
         # Any machine-level matrices for this application matrix
         "__matrices",
         # The maximum row length of delayed and undelayed matrices
@@ -98,7 +98,7 @@ class SynapticMatrixApp(object):
     def __init__(
             self, synapse_io, poptable, synapse_info, app_edge,
             n_synapse_types, all_single_syn_sz, post_vertex_slice,
-            synaptic_matrix_region, direct_matrix_region):
+            synaptic_matrix_region, direct_matrix_region, local_only_region):
         """
 
         :param SynapseIO synapse_io: The reader and writer of synapses
@@ -127,6 +127,7 @@ class SynapticMatrixApp(object):
         self.__post_vertex_slice = post_vertex_slice
         self.__synaptic_matrix_region = synaptic_matrix_region
         self.__direct_matrix_region = direct_matrix_region
+        self.__local_only_matrix_region = local_only_region
 
         # Map of machine_edge to .SynapticMatrix
         self.__matrices = dict()

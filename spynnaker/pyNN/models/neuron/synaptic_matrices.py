@@ -64,6 +64,8 @@ class SynapticMatrices(object):
         "__direct_matrix_region",
         # The ID of the master population table region
         "__poptable_region",
+        # Convolution weights, strides, etc., matrix region
+        "__local_only_region",
         # The master population table data structure
         "__poptable",
         # The sub-matrices for each incoming edge
@@ -77,6 +79,9 @@ class SynapticMatrices(object):
         # The address in which we'll store local weights information (usually
         # for a convolution kernel)
         "__local_weights_block_addr",
+        # Determine if any of the matrices can be stored locally (usually
+        # for a convolution kernel)
+        "__local_weights",
         # Determine if any of the matrices can be generated on the machine
         "__gen_on_machine"
     ]
@@ -84,7 +89,7 @@ class SynapticMatrices(object):
     def __init__(
             self, post_vertex_slice, n_synapse_types, all_single_syn_sz,
             synapse_io, synaptic_matrix_region, direct_matrix_region,
-            poptable_region):
+            poptable_region, local_only_data_region):
         """
         :param ~pacman.model.graphs.common.Slice post_vertex_slice:
             The slice of the post vertex that these matrices are for
@@ -106,6 +111,7 @@ class SynapticMatrices(object):
         self.__synaptic_matrix_region = synaptic_matrix_region
         self.__direct_matrix_region = direct_matrix_region
         self.__poptable_region = poptable_region
+        self.__local_only_region = local_only_data_region
 
         # Set up the master population table
         self.__poptable = MasterPopTableAsBinarySearch()
@@ -116,7 +122,9 @@ class SynapticMatrices(object):
         # Store locations of synaptic data and generated data
         self.__host_generated_block_addr = 0
         self.__on_chip_generated_block_addr = 0
+
         self.__local_weights_block_addr = 0
+        self.__local_weights = False
 
         # Determine whether to generate on machine
         self.__gen_on_machine = False
@@ -152,7 +160,7 @@ class SynapticMatrices(object):
             self.__synapse_io, self.__poptable, synapse_info, app_edge,
             self.__n_synapse_types, self.__all_single_syn_sz,
             self.__post_vertex_slice, self.__synaptic_matrix_region,
-            self.__direct_matrix_region)
+            self.__direct_matrix_region, self.__local_only_region)
         self.__matrices[key] = matrix
         return matrix
 
@@ -251,7 +259,7 @@ class SynapticMatrices(object):
         generate_on_machine = list()
 
         # Create a list of synapse info with DTCM-stored connectivity
-        dtcm_weights = list()
+        local_only_syns = list()
 
         # For each machine edge in the vertex, create a synaptic list
         for app_edge, m_edges in iteritems(in_edges_by_app_edge):
@@ -271,7 +279,7 @@ class SynapticMatrices(object):
 
                 # If the post pop and connector define locally-stored weights
                 if not app_matrix.uses_local_weights_only():
-                    dtcm_weights.append(app_matrix)
+                    local_only_syns.append(app_matrix)
                 # If we can generate the connector on the machine, do so
                 elif app_matrix.can_generate_on_machine(single_addr):
                     generate_on_machine.append(app_matrix)
@@ -306,6 +314,17 @@ class SynapticMatrices(object):
         spec.write_value(single_data_words * BYTES_PER_WORD)
         if single_data_words:
             spec.write_array(single_data)
+
+        # how do we get the address (block_addr) after direct_mtx_region
+        local_data = []
+        block_addr = 0
+        for syn_mtx in local_only_syns:
+            local_data.append(syn_mtx)
+            block_addr, data = syn_mtx.get_local_only_data(block_addr)
+
+
+
+
 
         return generator_data
 
