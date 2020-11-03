@@ -768,3 +768,6 @@ class SynapticMatrixApp(object):
 
     def uses_local_weights_only(self):
         self.__synapse_info.uses_local_weights_only()
+
+    def get_local_only_data(self, block_addr):
+        return block_addr, []
