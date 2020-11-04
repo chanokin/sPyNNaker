@@ -20,8 +20,7 @@ from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from pyNN.random import RandomDistribution
 from .abstract_connector import AbstractConnector
 from spynnaker.pyNN.exceptions import SpynnakerException
-from .abstract_generate_connector_on_machine import (
-    AbstractGenerateConnectorOnMachine, ConnectorIDs, PARAM_TYPE_KERNEL)
+from .abstract_connector import (AbstractConnector)
 
 HEIGHT, WIDTH = 0, 1
 N_KERNEL_PARAMS = 8
@@ -41,7 +40,7 @@ def shape2word(sw, sh):
             (numpy.uint32(sw) & 0xFFFF))
 
 
-class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
+class ConvolutionConnector(AbstractConnector):
     """
     Where the pre- and post-synaptic populations are considered as a 2D\
     array. Connect every post(row, col) neuron to many pre(row, col, kernel)\
@@ -52,11 +51,11 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
         Should these include `allow_self_connections` and `with_replacement`?
     """
 
-    def __init__(
-            self, shape_pre, shape_post, shape_kernel, padding, weight_kernel,
-            delay_kernel, shape_common, pre_sample_steps_in_post,
-            pre_start_coords_in_post, post_sample_steps_in_pre,
-            post_start_coords_in_pre, safe, verbose, callback=None):
+    def __init__(self, shape_pre, shape_kernel, strides, padding,
+                 weight_kernel,
+                 delay_kernel, shape_common, pre_sample_steps_in_post,
+                 pre_start_coords_in_post,
+                 safe, verbose, callback=None):
         """
         :param shape_pre:
             2D shape of the pre population (rows/height, cols/width, usually
@@ -99,19 +98,26 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
         super(ConvolutionConnector, self).__init__(
             safe=safe, callback=callback, verbose=verbose)
 
+        self.pre_shape = self.to_2d_shape(shape_pre)
+        self.kernel_shape = self.to_2d_shape(shape_kernel)
+        self.strides = self.to_2d_shape(strides)
+        self.padding = self.to_2d_shape(self.decode_padding(padding))
+        self.post_shape = self.get_post_shape()
+
         # Get the kernel size
-        self._kernel_w = shape_kernel[WIDTH]
-        self._kernel_h = shape_kernel[HEIGHT]
+
+        self._kernel_w = self.kernel_shape[WIDTH]
+        self._kernel_h = self.kernel_shape[HEIGHT]
 
         # The half-value used here indicates the half-way array position
-        self._hlf_k_w = shape_kernel[WIDTH] // 2
-        self._hlf_k_h = shape_kernel[HEIGHT] // 2
+        self._hlf_k_w = self._kernel_w // 2
+        self._hlf_k_h = self._kernel_h // 2
 
         # Cache values for the pre and post sizes
-        self._pre_w = shape_pre[WIDTH]
-        self._pre_h = shape_pre[HEIGHT]
-        self._post_w = shape_post[WIDTH]
-        self._post_h = shape_post[HEIGHT]
+        self._pre_w = self.pre_shape[WIDTH]
+        self._pre_h = self.pre_shape[HEIGHT]
+        self._post_w = self.post_shape[WIDTH]
+        self._post_h = self.post_shape[HEIGHT]
 
         # Get the starting coords and step sizes (or defaults if not given)
         if pre_start_coords_in_post is None:
@@ -121,12 +127,8 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
             self._pre_start_w = pre_start_coords_in_post[WIDTH]
             self._pre_start_h = pre_start_coords_in_post[HEIGHT]
 
-        if post_start_coords_in_pre is None:
-            self._post_start_w = 0
-            self._post_start_h = 0
-        else:
-            self._post_start_w = post_start_coords_in_pre[WIDTH]
-            self._post_start_h = post_start_coords_in_pre[HEIGHT]
+        self._post_start_w = self.starts[WIDTH]
+        self._post_start_h = self.starts[HEIGHT]
 
         if pre_sample_steps_in_post is None:
             self._pre_step_w = 1
@@ -135,12 +137,8 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
             self._pre_step_w = pre_sample_steps_in_post[WIDTH]
             self._pre_step_h = pre_sample_steps_in_post[HEIGHT]
 
-        if post_sample_steps_in_pre is None:
-            self._post_step_w = 1
-            self._post_step_h = 1
-        else:
-            self._post_step_w = post_sample_steps_in_pre[WIDTH]
-            self._post_step_h = post_sample_steps_in_pre[HEIGHT]
+        self._post_step_w = self.strides[WIDTH]
+        self._post_step_h = self.strides[HEIGHT]
 
         # Make sure the supplied values are in the correct format
         self._krn_weights = self.__get_kernel_vals(weight_kernel)
@@ -150,14 +148,41 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
             shape_pre if shape_common is None else shape_common
         self._common_w = self._shape_common[WIDTH]
         self._common_h = self._shape_common[HEIGHT]
-        self._shape_pre = shape_pre
-        self._shape_post = shape_post
+        self._shape_pre = self.pre_shape
+        self._shape_post = self.post_shape
 
         self.requires_spike_mapping = True
         self.needs_dma_weights = False
 
         # Create storage for later
         self._post_as_pre = {}
+
+    @staticmethod
+    def to_2d_shape(shape):
+        if len(shape) == 1:
+            return numpy.asarray([shape[0], shape[0]], dtype='int')
+        elif len(shape) == 2:
+            return numpy.asarray(shape, dtype='int')
+
+        raise SpynnakerException('The current implementation does not support'
+                                 'more dimensions than 2')
+
+    def decode_padding(self, padding):
+        if isinstance(padding, str):
+            if padding == 'same':
+                return self.kernel_shape // 2
+            elif padding == 'valid':
+                return numpy.asarray([0, 0])
+        else:
+            return numpy.asarray(padding)
+
+    def shapes_are_compatible(self, pre, post):
+        pre_good = pre.size == numpy.prod(self.pre_shape)
+        post_good = post.size == numpy.prod(self.post_shape)
+        return pre_good and post_good
+
+    def get_post_shape(self):
+        return self.__pre_as_post(self.pre_shape[HEIGHT], self.pre_shape[WIDTH])
 
     def __to_post_coords(self, post_vertex_slice):
         """ Get a list of possible post-slice coordinates.
@@ -176,8 +201,8 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
         :param ~numpy.ndarray post_c: columns
         :rtype: tuple(~numpy.ndarray, ~numpy.ndarray)
         """
-        return (self._post_start_h + post_r * self._post_step_h,
-                self._post_start_w + post_c * self._post_step_w)
+        a = numpy.asarray([post_r, post_c])
+        return self.padding + a * self.strides
 
     def __post_as_pre(self, post_vertex_slice):
         """ Write post coords as pre coords.
@@ -200,9 +225,9 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
         :param int pre_c: column
         :rtype: tuple(int,int)
         """
-        r = ((pre_r - self._pre_start_h - 1) // self._pre_step_h) + 1
-        c = ((pre_c - self._pre_start_w - 1) // self._pre_step_w) + 1
-        return (r, c)
+        s = (numpy.asarray([pre_r, pre_c]) -
+             self.kernel_shape - 1 + 2*self.padding)
+        return numpy.floor(s // self.strides) + 1
 
     def __get_kernel_vals(self, vals):
         """ Convert kernel values given into the correct format.
