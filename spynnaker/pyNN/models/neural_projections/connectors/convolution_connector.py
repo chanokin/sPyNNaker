@@ -53,7 +53,7 @@ class ConvolutionConnector(AbstractGenerateConnectorOnMachine):
     """
 
     def __init__(
-            self, shape_pre, shape_post, shape_kernel, weight_kernel,
+            self, shape_pre, shape_post, shape_kernel, padding, weight_kernel,
             delay_kernel, shape_common, pre_sample_steps_in_post,
             pre_start_coords_in_post, post_sample_steps_in_pre,
             post_start_coords_in_pre, safe, verbose, callback=None):

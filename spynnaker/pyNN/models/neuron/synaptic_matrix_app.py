@@ -770,4 +770,12 @@ class SynapticMatrixApp(object):
         self.__synapse_info.uses_local_weights_only()
 
     def get_local_only_data(self, block_addr):
+        si = self.__synapse_info
+        pre = si.pre_population
+        post = si.post_population
+        conn = si.connector
+
+        if not conn.shapes_are_compatible(pre, post):
+            raise Exception("Pre/Post shapes are not compatible")
+        print(self)
         return block_addr, []
