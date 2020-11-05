@@ -18,6 +18,7 @@ from spinn_utilities.overrides import overrides
 from data_specification.enums.data_type import DataType
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from pyNN.random import RandomDistribution
+from pyNN.space import BaseStructure
 from .abstract_connector import AbstractConnector
 from spynnaker.pyNN.exceptions import SpynnakerException
 from .abstract_connector import (AbstractConnector)
@@ -127,8 +128,8 @@ class ConvolutionConnector(AbstractConnector):
             self._pre_start_w = pre_start_coords_in_post[WIDTH]
             self._pre_start_h = pre_start_coords_in_post[HEIGHT]
 
-        self._post_start_w = self.starts[WIDTH]
-        self._post_start_h = self.starts[HEIGHT]
+        self._post_start_w = self.padding[WIDTH]
+        self._post_start_h = self.padding[HEIGHT]
 
         if pre_sample_steps_in_post is None:
             self._pre_step_w = 1
@@ -177,9 +178,30 @@ class ConvolutionConnector(AbstractConnector):
             return numpy.asarray(padding)
 
     def shapes_are_compatible(self, pre, post):
-        pre_good = pre.size == numpy.prod(self.pre_shape)
-        post_good = post.size == numpy.prod(self.post_shape)
-        return pre_good and post_good
+        pre_has_structure = True  # PyNN structures are pretty shit
+
+        # pre_has_structure = (not pre.structure is None and
+        #                      isinstance(pre.structure, BaseStructure))
+        # if not pre_has_structure:
+        #     raise SpynnakerException(
+        #         "In Convolution Connector: "
+        #         "Pre-synaptic population {} has no structure "
+        #         "attached to it. Make sure to add one.".format(pre))
+
+        post_has_structure = True  # PyNN structures are pretty shit
+        # post_has_structure = (not post.structure is None and
+        #                       isinstance(post.structure, BaseStructure))
+        # if not post_has_structure:
+        #     raise SpynnakerException(
+        #         "In Convolution Connector: "
+        #         "Post-synaptic population {} has no structure "
+        #         "attached to it. Make sure to add one.".format(post))
+
+        pre_size_good = pre.size == numpy.prod(self.pre_shape)
+        post_size_good = post.size == numpy.prod(self.post_shape)
+
+        return (pre_size_good and post_size_good and
+                pre_has_structure and post_has_structure)
 
     def get_post_shape(self):
         return self.__pre_as_post(self.pre_shape[HEIGHT], self.pre_shape[WIDTH])
@@ -414,14 +436,11 @@ class ConvolutionConnector(AbstractConnector):
             shape2word(self._post_step_w, self._post_step_h),
             shape2word(self._kernel_w, self._kernel_h)]
 
-    @overrides(AbstractGenerateConnectorOnMachine.gen_delays_id)
     def gen_delays_id(self, delays):
         if self._krn_delays is not None:
             return PARAM_TYPE_KERNEL
         return super(ConvolutionConnector, self).gen_delays_id(delays)
 
-    @overrides(
-        AbstractGenerateConnectorOnMachine.gen_delay_params_size_in_bytes)
     def gen_delay_params_size_in_bytes(self, delays):
         if self._krn_delays is not None:
             return (N_KERNEL_PARAMS + 1 + self._krn_delays.size) * \
@@ -429,7 +448,6 @@ class ConvolutionConnector(AbstractConnector):
         return super(ConvolutionConnector, self).gen_delay_params_size_in_bytes(
             delays)
 
-    @overrides(AbstractGenerateConnectorOnMachine.gen_delay_params)
     def gen_delay_params(self, delays, pre_vertex_slice, post_vertex_slice):
         if self._krn_delays is not None:
             properties = self._kernel_properties
@@ -440,14 +458,11 @@ class ConvolutionConnector(AbstractConnector):
         return super(ConvolutionConnector, self).gen_delay_params(
             delays, pre_vertex_slice, post_vertex_slice)
 
-    @overrides(AbstractGenerateConnectorOnMachine.gen_weights_id)
     def gen_weights_id(self, weights):
         if self._krn_weights is not None:
             return PARAM_TYPE_KERNEL
         return super(ConvolutionConnector, self).gen_weights_id(weights)
 
-    @overrides(
-        AbstractGenerateConnectorOnMachine.gen_weight_params_size_in_bytes)
     def gen_weight_params_size_in_bytes(self, weights):
         if self._krn_weights is not None:
             return (N_KERNEL_PARAMS + 1 + self._krn_weights.size) * \
@@ -455,7 +470,6 @@ class ConvolutionConnector(AbstractConnector):
         return super(ConvolutionConnector, self).gen_weight_params_size_in_bytes(
             weights)
 
-    @overrides(AbstractGenerateConnectorOnMachine.gen_weights_params)
     def gen_weights_params(self, weights, pre_vertex_slice, post_vertex_slice):
         if self._krn_weights is not None:
             properties = self._kernel_properties
@@ -468,19 +482,15 @@ class ConvolutionConnector(AbstractConnector):
             weights, pre_vertex_slice, post_vertex_slice)
 
     @property
-    @overrides(AbstractGenerateConnectorOnMachine.gen_connector_id)
     def gen_connector_id(self):
         return ConnectorIDs.KERNEL_CONNECTOR.value
 
-    @overrides(AbstractGenerateConnectorOnMachine.gen_connector_params)
     def gen_connector_params(
             self, pre_slices, post_slices, pre_vertex_slice, post_vertex_slice,
             synapse_type, synapse_info):
         return numpy.array(self._kernel_properties, dtype="uint32")
 
     @property
-    @overrides(
-        AbstractGenerateConnectorOnMachine.gen_connector_params_size_in_bytes)
     def gen_connector_params_size_in_bytes(self):
         return N_KERNEL_PARAMS * BYTES_PER_WORD
 
