@@ -777,5 +777,7 @@ class SynapticMatrixApp(object):
 
         if not conn.shapes_are_compatible(pre, post):
             raise Exception("Pre/Post shapes are not compatible")
-        print(self)
-        return block_addr, []
+
+        data = conn.get_local_only_data(si)
+        print(self, data)
+        return block_addr, data

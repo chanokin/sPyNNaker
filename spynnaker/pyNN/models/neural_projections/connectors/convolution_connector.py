@@ -52,8 +52,7 @@ class ConvolutionConnector(AbstractConnector):
         Should these include `allow_self_connections` and `with_replacement`?
     """
 
-    def __init__(self, shape_pre, shape_kernel, strides, padding,
-                 weight_kernel,
+    def __init__(self, shape_pre, weights_kernel, strides, padding,
                  delay_kernel, shape_common, pre_sample_steps_in_post,
                  pre_start_coords_in_post,
                  safe, verbose, callback=None):
@@ -100,7 +99,8 @@ class ConvolutionConnector(AbstractConnector):
             safe=safe, callback=callback, verbose=verbose)
 
         self.pre_shape = self.to_2d_shape(shape_pre)
-        self.kernel_shape = self.to_2d_shape(shape_kernel)
+        self.kernel_shape = self.to_2d_shape(weights_kernel.shape)
+        self.kernel = weights_kernel
         self.strides = self.to_2d_shape(strides)
         self.padding = self.to_2d_shape(self.decode_padding(padding))
         self.post_shape = self.get_post_shape()
@@ -142,7 +142,7 @@ class ConvolutionConnector(AbstractConnector):
         self._post_step_h = self.strides[HEIGHT]
 
         # Make sure the supplied values are in the correct format
-        self._krn_weights = self.__get_kernel_vals(weight_kernel)
+        self._krn_weights = self.__get_kernel_vals(weights_kernel)
         self._krn_delays = self.__get_kernel_vals(delay_kernel)
 
         self._shape_common = \
@@ -160,8 +160,10 @@ class ConvolutionConnector(AbstractConnector):
 
     @staticmethod
     def to_2d_shape(shape):
-        if len(shape) == 1:
-            return numpy.asarray([shape[0], shape[0]], dtype='int')
+        if numpy.isscalar(shape):
+            return numpy.asarray([shape, shape], dtype='int')
+        elif len(shape) == 1:
+            return numpy.asarray([shape[0], 1], dtype='int')
         elif len(shape) == 2:
             return numpy.asarray(shape, dtype='int')
 
@@ -420,6 +422,20 @@ class ConvolutionConnector(AbstractConnector):
         block["delay"] = all_pre_in_range_delays
         block["synapse_type"] = syn_type.astype('uint8')
         return block
+
+    def get_local_only_data(self, synapse_info):
+        # s411 = DataType()
+        dtp = DataType.S1615
+        klist = dtp.encode_as_numpy_int_array(self.kernel.flatten()).tolist()
+        shapes = [
+            shape2word(self.pre_shape[WIDTH], self.pre_shape[HEIGHT]),
+            shape2word(self.post_shape[WIDTH], self.post_shape[HEIGHT]),
+            shape2word(self.padding[WIDTH], self.padding[HEIGHT]),
+            shape2word(self.strides[WIDTH], self.strides[HEIGHT]),
+            shape2word(self.kernel_shape[WIDTH], self.kernel_shape[HEIGHT])]
+        ndata = len(klist) + len(shapes)
+        data = [ndata] + shapes + klist
+        return data
 
     @property
     def _kernel_properties(self):
