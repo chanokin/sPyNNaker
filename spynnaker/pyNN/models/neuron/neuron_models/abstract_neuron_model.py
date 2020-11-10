@@ -33,7 +33,8 @@ class AbstractNeuronModel(
         "__global_struct", "requires_spike_mapping", "needs_dma_weights"
     ]
 
-    def __init__(self, data_types, global_data_types=None):
+    def __init__(self, data_types, global_data_types=None,
+                 requires_spike_mapping=False, needs_dma_weights=True):
         """
         :param list(~data_specification.enums.DataType) data_types:
             A list of data types in the neuron structure, in the order that
@@ -49,8 +50,8 @@ class AbstractNeuronModel(
             global_data_types = []
         self.__global_struct = Struct(global_data_types)
 
-        self.requires_spike_mapping = False
-        self.needs_dma_weights = True
+        self.requires_spike_mapping = requires_spike_mapping
+        self.needs_dma_weights = needs_dma_weights
 
     @property
     def global_struct(self):
@@ -62,15 +63,17 @@ class AbstractNeuronModel(
 
     @overrides(AbstractStandardNeuronComponent.get_dtcm_usage_in_bytes)
     def get_dtcm_usage_in_bytes(self, n_neurons):
-        usage = super(AbstractNeuronModel, self).get_dtcm_usage_in_bytes(
-            n_neurons)
+        n = (1 if self.requires_spike_mapping and self.needs_dma_weights
+             else n_neurons)
+        usage = super(AbstractNeuronModel, self).get_dtcm_usage_in_bytes(n)
         return usage + (self.__global_struct.get_size_in_whole_words() *
                         BYTES_PER_WORD)
 
     @overrides(AbstractStandardNeuronComponent.get_sdram_usage_in_bytes)
     def get_sdram_usage_in_bytes(self, n_neurons):
-        usage = super(AbstractNeuronModel, self).get_sdram_usage_in_bytes(
-            n_neurons)
+        n = (1 if self.requires_spike_mapping and self.needs_dma_weights
+             else n_neurons)
+        usage = super(AbstractNeuronModel, self).get_sdram_usage_in_bytes(n)
         return usage + (self.__global_struct.get_size_in_whole_words() *
                         BYTES_PER_WORD)
 

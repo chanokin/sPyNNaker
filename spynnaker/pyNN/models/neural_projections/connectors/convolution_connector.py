@@ -106,7 +106,6 @@ class ConvolutionConnector(AbstractConnector):
         self.post_shape = self.get_post_shape()
 
         # Get the kernel size
-
         self._kernel_w = self.kernel_shape[WIDTH]
         self._kernel_h = self.kernel_shape[HEIGHT]
 
@@ -403,27 +402,10 @@ class ConvolutionConnector(AbstractConnector):
     def create_synaptic_block(
             self, pre_slices, post_slices, pre_vertex_slice, post_vertex_slice,
             synapse_type, synapse_info):
-        (n_connections, all_post, all_pre_in_range, all_pre_in_range_delays,
-         all_pre_in_range_weights) = self.__compute_statistics(
-            synapse_info.weights, synapse_info.delays, pre_vertex_slice,
-            post_vertex_slice)
+        return {}
 
-        syn_dtypes = AbstractConnector.NUMPY_SYNAPSES_DTYPE
-
-        if n_connections <= 0:
-            return numpy.zeros(0, dtype=syn_dtypes)
-
-        # 0 for exc, 1 for inh
-        syn_type = numpy.array(all_pre_in_range_weights < 0)
-        block = numpy.zeros(n_connections, dtype=syn_dtypes)
-        block["source"] = all_pre_in_range
-        block["target"] = all_post
-        block["weight"] = all_pre_in_range_weights
-        block["delay"] = all_pre_in_range_delays
-        block["synapse_type"] = syn_type.astype('uint8')
-        return block
-
-    def pack_kernel(self, kernel):
+    @staticmethod
+    def pack_kernel(kernel):
         n = len(kernel)
         n = n // 2 + int(n % 2 > 0)
         pack = numpy.zeros(n, dtype='uint32')
@@ -441,7 +423,8 @@ class ConvolutionConnector(AbstractConnector):
         # I think we don't need a big range for weights (16-bit only)
         dtp = DataType.S87
         klist = self.pack_kernel(
-            dtp.encode_as_numpy_int_array(self.kernel.flatten())).tolist()
+            dtp.encode_as_numpy_int_array(self.kernel.flatten())
+        ).tolist()
 
         shapes = [
             shape2word(self.pre_shape[WIDTH], self.pre_shape[HEIGHT]),
@@ -459,73 +442,38 @@ class ConvolutionConnector(AbstractConnector):
         """
         :rtype: list(int)
         """
-        return [
-            shape2word(self._common_w, self._common_h),
-            shape2word(self._pre_w, self._pre_h),
-            shape2word(self._post_w, self._post_h),
-            shape2word(self._pre_start_w, self._pre_start_h),
-            shape2word(self._post_start_w, self._post_start_h),
-            shape2word(self._pre_step_w, self._pre_step_h),
-            shape2word(self._post_step_w, self._post_step_h),
-            shape2word(self._kernel_w, self._kernel_h)]
+        return []
 
     def gen_delays_id(self, delays):
-        if self._krn_delays is not None:
-            return PARAM_TYPE_KERNEL
-        return super(ConvolutionConnector, self).gen_delays_id(delays)
+        return 0
 
     def gen_delay_params_size_in_bytes(self, delays):
-        if self._krn_delays is not None:
-            return (N_KERNEL_PARAMS + 1 + self._krn_delays.size) * \
-                BYTES_PER_WORD
-        return super(ConvolutionConnector, self).gen_delay_params_size_in_bytes(
-            delays)
+        return 0
 
     def gen_delay_params(self, delays, pre_vertex_slice, post_vertex_slice):
-        if self._krn_delays is not None:
-            properties = self._kernel_properties
-            properties.append(post_vertex_slice.lo_atom)
-            data = numpy.array(properties, dtype="uint32")
-            values = DataType.S1615.encode_as_numpy_int_array(self._krn_delays)
-            return numpy.concatenate((data, values.flatten()))
-        return super(ConvolutionConnector, self).gen_delay_params(
-            delays, pre_vertex_slice, post_vertex_slice)
+        return []
 
     def gen_weights_id(self, weights):
-        if self._krn_weights is not None:
-            return PARAM_TYPE_KERNEL
-        return super(ConvolutionConnector, self).gen_weights_id(weights)
+        return 0
 
     def gen_weight_params_size_in_bytes(self, weights):
-        if self._krn_weights is not None:
-            return (N_KERNEL_PARAMS + 1 + self._krn_weights.size) * \
-                BYTES_PER_WORD
-        return super(ConvolutionConnector, self).gen_weight_params_size_in_bytes(
-            weights)
+        return 0
 
     def gen_weights_params(self, weights, pre_vertex_slice, post_vertex_slice):
-        if self._krn_weights is not None:
-            properties = self._kernel_properties
-            properties.append(post_vertex_slice.lo_atom)
-            data = numpy.array(properties, dtype="uint32")
-            values = DataType.S1615.encode_as_numpy_int_array(
-                self._krn_weights)
-            return numpy.concatenate((data, values.flatten()))
-        return super(ConvolutionConnector, self).gen_weights_params(
-            weights, pre_vertex_slice, post_vertex_slice)
+        return []
 
     @property
     def gen_connector_id(self):
-        return ConnectorIDs.KERNEL_CONNECTOR.value
+        return 0
 
     def gen_connector_params(
             self, pre_slices, post_slices, pre_vertex_slice, post_vertex_slice,
             synapse_type, synapse_info):
-        return numpy.array(self._kernel_properties, dtype="uint32")
+        return []
 
     @property
     def gen_connector_params_size_in_bytes(self):
-        return N_KERNEL_PARAMS * BYTES_PER_WORD
+        return 0
 
     def get_conv_size_in_bytes(self):
         return self._kernel_h * self._kernel_w * BYTES_PER_WORD
