@@ -780,4 +780,5 @@ class SynapticMatrixApp(object):
 
         data = conn.get_local_only_data(si)
         print(self, data)
+        block_addr += len(data)
         return block_addr, data

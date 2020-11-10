@@ -423,16 +423,33 @@ class ConvolutionConnector(AbstractConnector):
         block["synapse_type"] = syn_type.astype('uint8')
         return block
 
+    def pack_kernel(self, kernel):
+        n = len(kernel)
+        n = n // 2 + int(n % 2 > 0)
+        pack = numpy.zeros(n, dtype='uint32')
+        for i, v in enumerate(kernel):
+            s = (1 - (i % 2)) * 16
+            p = i // 2
+            v32 = numpy.uint32(0) | v.astype('uint16')
+            pack[p] = pack[p] | (v32 << s)
+
+        return pack
+
     def get_local_only_data(self, synapse_info):
         # s411 = DataType()
-        dtp = DataType.S1615
-        klist = dtp.encode_as_numpy_int_array(self.kernel.flatten()).tolist()
+        # dtp = DataType.S1615
+        # I think we don't need a big range for weights (16-bit only)
+        dtp = DataType.S87
+        klist = self.pack_kernel(
+            dtp.encode_as_numpy_int_array(self.kernel.flatten())).tolist()
+
         shapes = [
             shape2word(self.pre_shape[WIDTH], self.pre_shape[HEIGHT]),
             shape2word(self.post_shape[WIDTH], self.post_shape[HEIGHT]),
             shape2word(self.padding[WIDTH], self.padding[HEIGHT]),
             shape2word(self.strides[WIDTH], self.strides[HEIGHT]),
             shape2word(self.kernel_shape[WIDTH], self.kernel_shape[HEIGHT])]
+
         ndata = len(klist) + len(shapes)
         data = [ndata] + shapes + klist
         return data

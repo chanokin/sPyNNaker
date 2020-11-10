@@ -310,6 +310,7 @@ class SynapticMatrices(object):
             region=self.__direct_matrix_region,
             size=(single_data_words + 1) * BYTES_PER_WORD,
             label='DirectMatrix')
+
         spec.switch_write_focus(self.__direct_matrix_region)
         spec.write_value(single_data_words * BYTES_PER_WORD)
         if single_data_words:
@@ -317,14 +318,20 @@ class SynapticMatrices(object):
 
         # how do we get the address (block_addr) after direct_mtx_region
         local_data = []
-        block_addr = 0
+        local_words = 0
         for syn_mtx in local_only_syns:
-            local_data.append(syn_mtx)
-            block_addr, data = syn_mtx.get_local_only_data(block_addr)
+            local_words, data = syn_mtx.get_local_only_data(local_words)
+            local_data.append(data)
 
+        spec.reserve_memory_region(
+            region=self.__local_only_region,
+            size=(local_words + 1) * BYTES_PER_WORD,
+            label='LocalOnlyData')
 
-
-
+        spec.switch_write_focus(self.__local_only_region)
+        spec.write_value(local_words * BYTES_PER_WORD)
+        if len(local_data):
+            spec.write_array(local_data)
 
         return generator_data
 
