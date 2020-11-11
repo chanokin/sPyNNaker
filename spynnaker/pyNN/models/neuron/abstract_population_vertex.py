@@ -21,6 +21,7 @@ from pacman.model.constraints.key_allocator_constraints import (
 from pacman.executor.injection_decorator import inject_items
 from pacman.model.resources import (
     ConstantSDRAM, CPUCyclesPerTickResource, DTCMResource, ResourceContainer)
+from pacman.model.graphs.common import Slice
 from spinn_front_end_common.abstract_models import (
     AbstractChangableAfterRun, AbstractProvidesOutgoingPartitionConstraints,
     AbstractGeneratesDataSpecification, AbstractRewritesDataSpecification,
@@ -266,9 +267,10 @@ class AbstractPopulationVertex(
         """
         :param ~pacman.model.graphs.common.Slice vertex_slice:
         """
+        n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)
         return (
             _NEURON_BASE_DTCM_USAGE_IN_BYTES +
-            self.__neuron_impl.get_dtcm_usage_in_bytes(vertex_slice.n_atoms) +
+            self.__neuron_impl.get_dtcm_usage_in_bytes(n_atoms) +
             self.__neuron_recorder.get_dtcm_usage_in_bytes(vertex_slice) +
             self.__synapse_manager.get_dtcm_usage_in_bytes())
 
@@ -279,10 +281,11 @@ class AbstractPopulationVertex(
             the slice of atoms.
         :return: The SDRAM required for the neuron region
         """
+        n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)
         return (
             self._BYTES_TILL_START_OF_GLOBAL_PARAMETERS +
             self.tdma_sdram_size_in_bytes +
-            self.__neuron_impl.get_sdram_usage_in_bytes(vertex_slice.n_atoms))
+            self.__neuron_impl.get_sdram_usage_in_bytes(n_atoms))
 
     def _get_sdram_usage_for_atoms(self, vertex_slice, graph):
         sdram_requirement = (
@@ -373,6 +376,10 @@ class AbstractPopulationVertex(
             target[key] = copy_list
         return target
 
+    def get_per_neuron_type_n_atoms(self, vertex_slice):
+        return (1 if self.__pynn_model.local_only_compatible
+                else vertex_slice.n_atoms)
+
     def _write_neuron_parameters(self, spec, key, vertex_slice):
 
         # If resetting, reset any state variables that need to be reset
@@ -393,7 +400,7 @@ class AbstractPopulationVertex(
         self.__updated_state_variables.clear()
 
         # pylint: disable=too-many-arguments
-        n_atoms = vertex_slice.n_atoms
+        n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)
         spec.comment("\nWriting Neuron Parameters for {} Neurons:\n".format(
             n_atoms))
 
@@ -425,8 +432,9 @@ class AbstractPopulationVertex(
         spec.write_value(data=self.__incoming_spike_buffer_size)
 
         # Write the neuron parameters
+        vs = Slice(0, 0) if self.__pynn_model.local_only_compatible else vertex_slice
         neuron_data = self.__neuron_impl.get_data(
-            self._parameters, self._state_variables, vertex_slice)
+            self._parameters, self._state_variables, vs)
         spec.write_array(neuron_data)
 
     @inject_items({"routing_info": "MemoryRoutingInfos"})

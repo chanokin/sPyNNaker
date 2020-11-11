@@ -61,18 +61,20 @@ class AbstractNeuronModel(
         """
         return self.__global_struct
 
+    @property
+    def local_only_compatible(self):
+        return self.requires_spike_mapping and not self.needs_dma_weights
+
     @overrides(AbstractStandardNeuronComponent.get_dtcm_usage_in_bytes)
     def get_dtcm_usage_in_bytes(self, n_neurons):
-        n = (1 if self.requires_spike_mapping and self.needs_dma_weights
-             else n_neurons)
+        n = (1 if self.local_only_compatible else n_neurons)
         usage = super(AbstractNeuronModel, self).get_dtcm_usage_in_bytes(n)
         return usage + (self.__global_struct.get_size_in_whole_words() *
                         BYTES_PER_WORD)
 
     @overrides(AbstractStandardNeuronComponent.get_sdram_usage_in_bytes)
     def get_sdram_usage_in_bytes(self, n_neurons):
-        n = (1 if self.requires_spike_mapping and self.needs_dma_weights
-             else n_neurons)
+        n = (1 if self.local_only_compatible else n_neurons)
         usage = super(AbstractNeuronModel, self).get_sdram_usage_in_bytes(n)
         return usage + (self.__global_struct.get_size_in_whole_words() *
                         BYTES_PER_WORD)

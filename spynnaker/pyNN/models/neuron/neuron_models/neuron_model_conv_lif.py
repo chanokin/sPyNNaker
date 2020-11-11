@@ -123,14 +123,18 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
         # pylint: disable=arguments-differ
 
         # Add the rest of the data
-        return [state_variables[V][0], parameters[V_REST][0],
-                parameters[TAU_M][0] / parameters[CM][0],
-                parameters[TAU_M].apply_operation(
+        d = [
+            state_variables[V][0],
+            parameters[V_REST][0],
+            parameters[TAU_M][0] / parameters[CM][0],
+            parameters[TAU_M].apply_operation(
                     operation=lambda x: numpy.exp(float(-ts) / (1000.0 * x)))[0],
-                parameters[I_OFFSET][0], state_variables[COUNT_REFRAC][0],
-                parameters[V_RESET][0],
-                parameters[TAU_REFRAC].apply_operation(
+            parameters[I_OFFSET][0],
+            state_variables[COUNT_REFRAC][0],
+            parameters[V_RESET][0],
+            parameters[TAU_REFRAC].apply_operation(
                     operation=lambda x: int(numpy.ceil(x / (ts / 1000.0))))[0]]
+        return d
 
     @overrides(AbstractStandardNeuronComponent.update_values)
     def update_values(self, values, parameters, state_variables):
