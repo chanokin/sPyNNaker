@@ -43,6 +43,7 @@
 #include "structural_plasticity/synaptogenesis_dynamics.h"
 #include "profile_tags.h"
 #include "direct_synapses.h"
+#include "local_only/local_only.h"
 
 #include <data_specification.h>
 #include <simulation.h>
@@ -126,10 +127,8 @@ static uint32_t n_neurons;
 //! timer count for tdma of certain models
 static uint global_timer_count;
 
-static bool requires_spike_mapping = false;
-static bool needs_dma_weights = true;
-static uint32_t *pre_shape = NULL;
-static uint32_t *post_shape = NULL;
+static bool local_only = false;
+
 
 
 //! \brief Callback to store provenance data (format: neuron_provenance).
@@ -244,6 +243,12 @@ static bool initialise(void) {
 
     rewiring_period = synaptogenesis_rewiring_period();
     rewiring = rewiring_period != -1;
+
+    if (!local_only_neurons_initialise(data_specification_get_region(
+            LOCAL_ONLY_REGION, ds_regions))){
+        return false;
+    }
+    local_only = local_only_is_compatible();
 
     if (!spike_processing_initialise(
             row_max_n_words, MC, USER, incoming_spike_buffer_size,

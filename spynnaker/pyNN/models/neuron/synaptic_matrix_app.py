@@ -769,7 +769,7 @@ class SynapticMatrixApp(object):
     def uses_local_weights_only(self):
         self.__synapse_info.uses_local_weights_only()
 
-    def get_local_only_data(self, block_addr):
+    def get_local_only_data(self, block_size):
         si = self.__synapse_info
         pre = si.pre_population
         post = si.post_population
@@ -780,5 +780,5 @@ class SynapticMatrixApp(object):
 
         data = conn.get_local_only_data(si)
         print(self, data)
-        block_addr += len(data)
-        return block_addr, data
+        block_size += len(data)
+        return block_size, data

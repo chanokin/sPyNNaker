@@ -36,6 +36,7 @@ typedef enum neuron_regions_e {
     PROFILER_REGION,            //!< profiling; 9
     CONNECTOR_BUILDER_REGION,   //!< connection building; 10
     DIRECT_MATRIX_REGION,       //!< direct synaptic matrix; 11
+    LOCAL_ONLY_REGION,
     BIT_FIELD_FILTER_REGION,    //!< bitfield filter; 12
     BIT_FIELD_BUILDER,          //!< bitfield builder parameters; 13
     BIT_FIELD_KEY_MAP           //!< bitfield key map; 14
