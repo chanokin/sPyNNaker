@@ -17,12 +17,15 @@ import logging
 import math
 import numpy
 import ctypes
+from enum import Enum
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from spynnaker.pyNN.models.neural_projections import ProjectionApplicationEdge
 from spynnaker.pyNN.exceptions import (
     SynapseRowTooBigException, SynapticConfigurationException)
 from spynnaker.pyNN.utilities.constants import (
-    POPULATION_BASED_REGIONS, POP_TABLE_MAX_ROW_LENGTH)
+    POPULATION_BASED_REGIONS, POP_TABLE_MAX_ROW_LENGTH,
+    POP_TABLE_ADDRESS_TYPES, NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES
+)
 from spynnaker.pyNN.utilities.bit_field_utilities import BIT_IN_A_WORD
 
 logger = logging.getLogger(__name__)
@@ -116,6 +119,7 @@ _MAX_N_NEURONS = (1 << _n_bits(_ExtraInfoCType.n_neurons)) - 1
 _MAX_CORE_MASK = (1 << _n_bits(_ExtraInfoCType.core_mask)) - 1
 
 
+
 class _AddressAndRowLengthCType(ctypes.LittleEndianStructure):
     """ An Address and Row Length structure; matches the C struct
     """
@@ -123,9 +127,9 @@ class _AddressAndRowLengthCType(ctypes.LittleEndianStructure):
         # the length of the row
         ("row_length", ctypes.c_uint32, 8),
         # the address
-        ("address", ctypes.c_uint32, 23),
+        ("address", ctypes.c_uint32, 22),
         # whether this is a direct/single address
-        ("is_single", ctypes.c_uint32, 1)
+        ("is_single", ctypes.c_uint32, NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES)
     ]
 
 

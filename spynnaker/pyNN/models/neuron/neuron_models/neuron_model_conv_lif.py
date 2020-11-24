@@ -124,7 +124,7 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
 
         # Add the rest of the data
         d = [
-            state_variables[V][0],
+            state_variables[V],
             parameters[V_REST][0],
             parameters[TAU_M][0] / parameters[CM][0],
             parameters[TAU_M].apply_operation(

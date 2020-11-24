@@ -219,7 +219,7 @@ class SynapseInformation(object):
             holder.finish()
         del self.__pre_run_connection_holders[:]
 
-    def uses_local_weights_only(self):
+    def uses_local_only_weights(self):
         # post-synaptic neuron will know how to handle SDRAM stored connectivity
         post_local = not self.post_population.needs_dma_weights
 

@@ -127,7 +127,7 @@ static uint32_t n_neurons;
 //! timer count for tdma of certain models
 static uint global_timer_count;
 
-static bool local_only = false;
+bool local_only = false;
 
 
 
@@ -185,6 +185,12 @@ static bool initialise(void) {
     simulation_set_provenance_function(
             c_main_store_provenance_data,
             data_specification_get_region(PROVENANCE_DATA_REGION, ds_regions));
+
+    if (!local_only_neurons_initialise(data_specification_get_region(
+            LOCAL_ONLY_REGION, ds_regions))){
+        return false;
+    }
+    local_only = local_only_is_compatible();
 
     // Set up the neurons
     uint32_t n_synapse_types;
@@ -244,11 +250,6 @@ static bool initialise(void) {
     rewiring_period = synaptogenesis_rewiring_period();
     rewiring = rewiring_period != -1;
 
-    if (!local_only_neurons_initialise(data_specification_get_region(
-            LOCAL_ONLY_REGION, ds_regions))){
-        return false;
-    }
-    local_only = local_only_is_compatible();
 
     if (!spike_processing_initialise(
             row_max_n_words, MC, USER, incoming_spike_buffer_size,

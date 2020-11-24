@@ -25,6 +25,14 @@
 #include <common/neuron-typedefs.h>
 #include <filter_info.h>
 
+// Whether the address stored in the Master Pop table will be an
+// SDRAM, DTCM or DTCM (conv) one
+#define POP_TABLE_SDRAM_ADDRESS 0
+#define POP_TABLE_DIRECT_ADDRESS 1
+#define POP_TABLE_LOCAL_ADDRESS 2
+// How many bits needed for address types
+#define POP_TABLE_ADDRESS_TYPE_BITS 2
+
 //! \brief the number of times a DMA resulted in 0 entries
 extern uint32_t ghost_pop_table_searches;
 

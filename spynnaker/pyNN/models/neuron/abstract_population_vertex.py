@@ -423,7 +423,7 @@ class AbstractPopulationVertex(
             spec.write_value(data=key)
 
         # Write the number of neurons in the block:
-        spec.write_value(data=n_atoms)
+        spec.write_value(data=vertex_slice.n_atoms)
 
         # Write the number of synapse types
         spec.write_value(data=self.__neuron_impl.get_n_synapse_types())

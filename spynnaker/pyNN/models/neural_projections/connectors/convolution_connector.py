@@ -417,7 +417,7 @@ class ConvolutionConnector(AbstractConnector):
 
         return pack
 
-    def get_local_only_data(self, synapse_info):
+    def get_local_only_data(self, synapse_matrix_app):
         # s411 = DataType()
         # dtp = DataType.S1615
         # I think we don't need a big range for weights (16-bit only)
@@ -436,6 +436,11 @@ class ConvolutionConnector(AbstractConnector):
         ndata = len(klist) + len(shapes)
         data = [ndata] + shapes + klist
         return data
+
+    @property
+    @overrides(AbstractConnector.get_local_only_info_size)
+    def get_local_only_info_size(self):
+        return len(self.get_local_only_data(None))
 
     @property
     def _kernel_properties(self):

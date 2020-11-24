@@ -76,12 +76,12 @@ class SynapticMatrices(object):
         # The address within the synaptic matrix region after the last
         # generated matrix will be written
         "__on_chip_generated_block_addr",
-        # The address in which we'll store local weights information (usually
-        # for a convolution kernel)
-        "__local_weights_block_addr",
+        # The address in which we'll store local weights and (en)decoding
+        # information (usually for a convolution kernel)
+        "__local_only_block_addr",
         # Determine if any of the matrices can be stored locally (usually
         # for a convolution kernel)
-        "__local_weights",
+        "__local_only",
         # Determine if any of the matrices can be generated on the machine
         "__gen_on_machine"
     ]
@@ -123,8 +123,8 @@ class SynapticMatrices(object):
         self.__host_generated_block_addr = 0
         self.__on_chip_generated_block_addr = 0
 
-        self.__local_weights_block_addr = 0
-        self.__local_weights = False
+        self.__local_only_block_addr = 0
+        self.__local_only = False
 
         # Determine whether to generate on machine
         self.__gen_on_machine = False
@@ -142,6 +142,10 @@ class SynapticMatrices(object):
             reserved for the on-machine synaptic generation
         """
         return self.__on_chip_generated_block_addr
+
+    @property
+    def local_only_block_addr(self):
+        return self.__local_only_block_addr
 
     def __app_matrix(self, app_edge, synapse_info):
         """ Get or create an application synaptic matrix object
@@ -191,6 +195,7 @@ class SynapticMatrices(object):
         return (
             self.synapses_size(app_edges) +
             self.__gen_info_size(app_edges) +
+            self.__local_only_info_size(app_edges) +
             self.__poptable.get_master_population_table_size(app_edges))
 
     def __gen_info_size(self, app_edges):
@@ -214,6 +219,16 @@ class SynapticMatrices(object):
         if gen_on_machine:
             size += SYNAPSES_BASE_GENERATOR_SDRAM_USAGE_IN_BYTES
             size += self.__n_synapse_types * BYTES_PER_WORD
+        return size
+
+    def __local_only_info_size(self, app_edges):
+        size = 0
+        for app_edge in app_edges:
+            if not isinstance(app_edge, ProjectionApplicationEdge):
+                continue
+            for synapse_info in app_edge.synapse_information:
+                matrix = self.__app_matrix(app_edge, synapse_info)
+                size += matrix.local_only_info_size
         return size
 
     def write_synaptic_matrix_and_master_population_table(
@@ -276,9 +291,8 @@ class SynapticMatrices(object):
                 app_matrix.set_info(
                     all_syn_block_sz, app_key_info, d_app_key_info,
                     routing_info, weight_scales, m_edges)
-
                 # If the post pop and connector define locally-stored weights
-                if not app_matrix.uses_local_weights_only():
+                if app_matrix.local_only_compatible:
                     local_only_syns.append(app_matrix)
                 # If we can generate the connector on the machine, do so
                 elif app_matrix.can_generate_on_machine(single_addr):
@@ -316,22 +330,6 @@ class SynapticMatrices(object):
         if single_data_words:
             spec.write_array(single_data)
 
-        # how do we get the address (block_addr) after direct_mtx_region
-        local_data = []
-        local_words = 0
-        for syn_mtx in local_only_syns:
-            local_words, data = syn_mtx.get_local_only_data(local_words)
-            local_data.append(data)
-
-        spec.reserve_memory_region(
-            region=self.__local_only_region,
-            size=(local_words + 1) * BYTES_PER_WORD,
-            label='LocalOnlyData')
-
-        spec.switch_write_focus(self.__local_only_region)
-        spec.write_value(local_words * BYTES_PER_WORD)
-        if len(local_data):
-            spec.write_array(local_data)
 
         return generator_data
 

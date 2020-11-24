@@ -5,6 +5,9 @@
 static lc_weight_t* conv_kernel = NULL;
 static lc_shapes_t shapes = {0};
 static uint32_t n_bytes = 0;
+static lc_weight_t* mapped_weights = NULL;
+static lc_neuron_id_t* mapped_post_ids = NULL;
+static uint32_t n_mapped = 0;
 
 bool local_only_initialise(address_t sdram_address){
     log_debug("CONV init.");
@@ -40,6 +43,20 @@ bool local_only_initialise(address_t sdram_address){
         rt_error(RTE_SWERR);
     }
 
+    mapped_weights = (lc_weight_t*)spin1_malloc(n_weights * 2);
+    if(mapped_weights == NULL){
+        log_error("Could not initialise weights buffer");
+        rt_error(RTE_SWERR);
+    }
+
+    mapped_post_ids = (lc_weight_t*)spin1_malloc(n_weights * 2);
+    if(mapped_post_ids == NULL){
+        log_error("Could not initialise post IDs buffer");
+        rt_error(RTE_SWERR);
+    }
+
+    n_mapped = 0;
+
     for(lc_dim_t r=0; r < shapes.kernel.heigth; r++){
         for(lc_dim_t c=0; c < shapes.kernel.width; c++){
             conv_kernel[r * shapes.kernel.width + c] = (lc_weight_t)(&p++);
@@ -54,7 +71,7 @@ bool local_only_is_compatible(){
     return (n_bytes > 0);
 }
 
-void local_only_process_spike();
+void local_only_process_spike(lc_neuron_id_t key);
 
 lc_neuron_id_t local_only_coord_to_id(
     lc_coord_t coord, lc_shapes_t _shapes, bool is_post){

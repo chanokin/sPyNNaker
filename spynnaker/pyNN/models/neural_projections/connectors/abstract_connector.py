@@ -577,3 +577,7 @@ class AbstractConnector(with_metaclass(AbstractBase, object)):
         """
         # Unless we know for sure we must say they could connect
         return True
+
+    @property
+    def get_local_only_info_size(self):
+        return 0

@@ -9,7 +9,7 @@ bool local_only_initialise(address_t sdram_address);
 
 bool local_only_is_compatible();
 
-void local_only_process_spike();
+void local_only_process_spike(lc_neuron_id_t key);
 
 lc_neuron_id_t local_only_coord_to_id(
     lc_coord_t coord, lc_shapes_t shapes, bool is_post);

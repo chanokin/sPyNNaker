@@ -60,6 +60,8 @@ class SynapticMatrix(object):
         "__delay_matrix_size",
         # The expected size of a "direct" or "single" matrix
         "__single_matrix_size",
+
+        "__local_only_matrix_size",
         # The index of the matrix in the master population table
         "__index",
         # The index of the delayed matrix in the master population table
@@ -127,6 +129,10 @@ class SynapticMatrix(object):
         self.__single_matrix_size = (
             self.__machine_edge.pre_vertex.vertex_slice.n_atoms *
             BYTES_PER_WORD)
+        self.__local_only_matrix_size = (
+                self.__synapse_info.connector.get_local_only_info_size *
+                BYTES_PER_WORD
+        )
 
         self.__index = None
         self.__delay_index = None
@@ -167,6 +173,18 @@ class SynapticMatrix(object):
             not self.__synapse_info.prepop_is_view and
             not self.__synapse_info.postpop_is_view)
         return is_direct, next_addr
+
+    def is_local_only(self, local_only_addr):
+        si = self.__synapse_info
+        pre = si.pre_population
+        post = si.post_population
+        conn = si.connector
+
+        local_only = (si.uses_local_only_weights() and
+                       conn.shapes_are_compatible(pre, post))
+        next_addr = local_only_addr + self.__local_only_matrix_size
+        return local_only, next_addr
+
 
     def get_row_data(self):
         """ Generate the row data for a synaptic matrix from the description

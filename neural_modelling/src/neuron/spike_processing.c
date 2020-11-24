@@ -23,6 +23,7 @@
 #include "synapses.h"
 #include "direct_synapses.h"
 #include "structural_plasticity/synaptogenesis_dynamics.h"
+#include "local_only.h"
 #include <simulation.h>
 #include <debug.h>
 #include <common/in_spikes.h>
@@ -58,6 +59,8 @@ enum spike_processing_dma_tags {
 
 //! The current timer tick value
 extern uint32_t time;
+
+extern bool local_only;
 
 //! True if the DMA "loop" is currently running
 static volatile bool dma_busy;
@@ -307,7 +310,13 @@ static void multicast_packet_received_callback(uint key, uint payload) {
 
     // cycle through the packet insertion
     for (uint count = payload; count > 0; count--) {
+        if(local_only){
+            local_only_process_spikes(key);
+            continue;
+        }
+
         in_spikes_add_spike(key);
+
     }
 
     // If we're not already processing synaptic DMAs,
@@ -363,6 +372,10 @@ static void dma_complete_callback(UNUSED uint unused, uint tag) {
     // Process synaptic row repeatedly for any upcoming spikes
     while (n_spikes > 0) {
 
+        if(local_only){
+            n_spikes--;
+            continue;
+        }
         // Process synaptic row, writing it back if it's the last time
         // it's going to be processed
         bool write_back_now = false;
@@ -457,10 +470,11 @@ bool spike_processing_initialise( // EXPORTED
     }
 
     // Set up the callbacks
-    spin1_callback_on(MC_PACKET_RECEIVED,
+    spin1_callback_on(MC_PACKET_RECEIVED, //NO PAYLOAD
             multicast_packet_received_callback, mc_packet_callback_priority);
-    spin1_callback_on(MCPL_PACKET_RECEIVED,
+    spin1_callback_on(MCPL_PACKET_RECEIVED, //WITH PAYLOAD
             multicast_packet_received_callback, mc_packet_callback_priority);
+
     simulation_dma_transfer_done_callback_on(
             DMA_TAG_READ_SYNAPTIC_ROW, dma_complete_callback);
     spin1_callback_on(USER_EVENT, user_event_callback, user_event_priority);

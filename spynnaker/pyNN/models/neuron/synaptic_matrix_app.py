@@ -224,6 +224,32 @@ class SynapticMatrixApp(object):
         return addr
 
     @property
+    def local_only_info_size(self):
+        """ The number of bytes required for pre, post shapes and kernel
+        """
+        si = self.__synapse_info
+        pre = si.pre_population
+        post = si.post_population
+        conn = si.connector
+
+        local_only = (si.uses_local_only_weights() and
+                      conn.shapes_are_compatible(pre, post))
+        if not local_only:
+            return 0
+
+        return conn.get_local_only_info_size * BYTES_PER_WORD
+
+    @property
+    def local_only_compatible(self):
+        si = self.__synapse_info
+        pre = si.pre_population
+        post = si.post_population
+        conn = si.connector
+
+        return (si.uses_local_only_weights() and
+                conn.shapes_are_compatible(pre, post))
+
+    @property
     def generator_info_size(self):
         """ The number of bytes required by the generator information
 
@@ -767,7 +793,7 @@ class SynapticMatrixApp(object):
         return matrix.delay_index
 
     def uses_local_weights_only(self):
-        self.__synapse_info.uses_local_weights_only()
+        return self.__synapse_info.uses_local_weights_only()
 
     def get_local_only_data(self, block_size):
         si = self.__synapse_info
@@ -778,7 +804,7 @@ class SynapticMatrixApp(object):
         if not conn.shapes_are_compatible(pre, post):
             raise Exception("Pre/Post shapes are not compatible")
 
-        data = conn.get_local_only_data(si)
+        data = conn.get_local_only_data(self)
         print(self, data)
         block_size += len(data)
         return block_size, data

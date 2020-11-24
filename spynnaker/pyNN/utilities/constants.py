@@ -16,6 +16,7 @@
 from enum import Enum
 from spinn_front_end_common.utilities.constants import (
     BYTES_PER_WORD, BYTES_PER_KB)
+import numpy
 
 POISSON_SIGMA_SUMMATION_LIMIT = 3.0
 
@@ -63,6 +64,16 @@ MAX_TIMER_TICS_SUPPORTED_PER_BLOCK = 16
 #: the minimum supported delay slot between two neurons
 MIN_SUPPORTED_DELAY = 1
 
+
+class POP_TABLE_ADDRESS_TYPES(Enum):
+    SDRAM = 0
+    SINGLE = 1
+    LOCAL = 2
+
+
+NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES = int(
+    numpy.ceil(numpy.log2(len(POP_TABLE_ADDRESS_TYPES)))
+)
 
 class POPULATION_BASED_REGIONS(Enum):
     """Regions for populations."""

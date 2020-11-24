@@ -34,7 +34,7 @@
 
 //! \brief The number of bits of address.
 //!        This is a constant as it is used more than once below.
-#define N_ADDRESS_BITS 23
+#define N_ADDRESS_BITS 22
 
 //! \brief The shift to apply to indirect addresses.
 //!    The address is in units of four words, so this multiplies by 16 (= up
@@ -73,8 +73,8 @@ typedef struct {
     uint32_t row_length : 8;
     //! the address
     uint32_t address : N_ADDRESS_BITS;
-    //! whether this is a direct/single address
-    uint32_t is_single : 1;
+    //! whether this is a direct/single address (or sdram-based, or conv/local-proc)
+    uint32_t is_single : POP_TABLE_ADDRESS_TYPE_BITS;
 } address_and_row_length;
 
 //! \brief An entry in the address list is either an address and row length or extra
