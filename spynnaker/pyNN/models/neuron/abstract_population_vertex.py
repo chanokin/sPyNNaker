@@ -456,13 +456,13 @@ class AbstractPopulationVertex(
         # close spec
         spec.end_specification()
 
-    @overrides(AbstractRewritesDataSpecification
-               .requires_memory_regions_to_be_reloaded)
-    def requires_memory_regions_to_be_reloaded(self):
+    # @overrides(AbstractRewritesDataSpecification
+    #            .reload_required)
+    def reload_required(self):
         return self.__change_requires_neuron_parameters_reload
 
-    @overrides(AbstractRewritesDataSpecification.mark_regions_reloaded)
-    def mark_regions_reloaded(self):
+    # @overrides(AbstractRewritesDataSpecification.set_reload_required)
+    def set_reload_required(self):
         self.__change_requires_neuron_parameters_reload = False
 
     @inject_items({

@@ -21,7 +21,10 @@ from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from spynnaker.pyNN.models.neuron.synapse_dynamics import SynapseDynamicsStatic
 from spynnaker.pyNN.models.neural_projections.connectors import (
     OneToOneConnector)
-
+from spynnaker.pyNN.utilities.constants import (
+    POP_TABLE_MAX_ROW_LENGTH,
+    POP_TABLE_ADDRESS_TYPES, NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES
+)
 from .generator_data import GeneratorData, SYN_REGION_UNUSED
 
 
@@ -54,6 +57,7 @@ class SynapticMatrix(object):
         "__all_syn_block_sz",
         # The maximum summed size of the "direct" or "single" matrices
         "__all_single_syn_sz",
+        "__all_local_only_syn_sz",
         # The expected size of a synaptic matrix
         "__matrix_size",
         # The expected size of a delayed synaptic matrix
@@ -71,7 +75,7 @@ class SynapticMatrix(object):
         # The offset of the delayed matrix within the synaptic region
         "__delay_syn_mat_offset",
         # Indicates if the matrix is a "direct" or "single" matrix
-        "__is_single",
+        "__address_type",
         # A cached version of a received synaptic matrix
         "__received_block",
         # A cached version of a received delayed synaptic matrix
@@ -81,7 +85,7 @@ class SynapticMatrix(object):
     def __init__(self, synapse_io, poptable, synapse_info, machine_edge,
                  app_edge, n_synapse_types, max_row_info, routing_info,
                  delay_routing_info, weight_scales, all_syn_block_sz,
-                 all_single_syn_sz):
+                 all_single_syn_sz, all_local_only_syn_sz):
         """
 
         :param SynapseIO synapse_io: The reader and writer of synapses
@@ -117,6 +121,7 @@ class SynapticMatrix(object):
         self.__weight_scales = weight_scales
         self.__all_syn_block_sz = all_syn_block_sz
         self.__all_single_syn_sz = all_single_syn_sz
+        self.__all_local_only_syn_sz = all_local_only_syn_sz
 
         # The matrix size can be calculated up-front; use for checking later
         self.__matrix_size = (
@@ -138,7 +143,7 @@ class SynapticMatrix(object):
         self.__delay_index = None
         self.__syn_mat_offset = None
         self.__delay_syn_mat_offset = None
-        self.__is_single = False
+        self.__address_type = POP_TABLE_ADDRESS_TYPES.SDRAM
         self.__received_block = None
         self.__delay_received_block = None
 
@@ -149,6 +154,18 @@ class SynapticMatrix(object):
         :rtype: bool
         """
         return self.__app_edge.n_delay_stages > 0
+
+    def address_type(self, address_base):
+        s, _ = self.is_direct(address_base)
+        if s:
+            return POP_TABLE_ADDRESS_TYPES.SINGLE
+
+        s, _ = self.is_local_only(address_base)
+        if s:
+            return POP_TABLE_ADDRESS_TYPES.LOCAL
+
+        return POP_TABLE_ADDRESS_TYPES.SDRAM
+
 
     def is_direct(self, single_addr):
         """ Determine if the given connection can be done with a "direct"\
@@ -216,7 +233,8 @@ class SynapticMatrix(object):
         return row_data, delayed_row_data
 
     def write_machine_matrix(
-            self, spec, block_addr, single_synapses, single_addr, row_data):
+            self, spec, block_addr, single_synapses, single_addr,
+            local_only_synapses, local_only_addr, row_data):
         """ Write a matrix for the incoming machine vertex
 
         :param DataSpecificationGenerator spec: The specification to write to
@@ -232,13 +250,13 @@ class SynapticMatrix(object):
         """
         # We can't write anything if there isn't a key
         if self.__routing_info is None:
-            return block_addr, single_addr
+            return block_addr, single_addr, local_only_addr
 
         # If we have routing info but no synapses, write an invalid entry
         if self.__max_row_info.undelayed_max_n_synapses == 0:
             self.__index = self.__poptable.add_invalid_entry(
                 self.__routing_info.first_key_and_mask)
-            return block_addr, single_addr
+            return block_addr, single_addr, local_only_addr
 
         size = len(row_data) * BYTES_PER_WORD
         if size != self.__matrix_size:
@@ -249,7 +267,7 @@ class SynapticMatrix(object):
         if is_direct:
             single_addr = self.__write_single_machine_matrix(
                 single_synapses, single_addr, row_data)
-            return block_addr, single_addr
+            return block_addr, single_addr, local_only_addr
 
         block_addr = self.__poptable.write_padding(spec, block_addr)
         self.__index = self.__poptable.add_machine_entry(
@@ -258,7 +276,7 @@ class SynapticMatrix(object):
         spec.write_array(row_data)
         self.__syn_mat_offset = block_addr
         block_addr = self.__next_addr(block_addr, self.__matrix_size)
-        return block_addr, single_addr
+        return block_addr, single_addr, local_only_addr
 
     def write_delayed_machine_matrix(self, spec, block_addr, row_data):
         """ Write a delayed matrix for an incoming machine vertex
@@ -315,7 +333,32 @@ class SynapticMatrix(object):
             self.__routing_info.first_key_and_mask, is_single=True)
         single_synapses.append(single_rows)
         self.__syn_mat_offset = single_addr
-        self.__is_single = True
+        self.__is_single = POP_TABLE_ADDRESS_TYPES.SINGLE
+        single_addr = single_addr + self.__single_matrix_size
+        return single_addr
+
+    def __write_local_only_machine_matrix(
+            self, local_only_synapses, local_only_addr, row_data):
+        """ Write a direct (single synapse) matrix for an incoming machine\
+            vertex
+
+        :param list single_synapses: A list of single synapses to add to
+        :param int single_addr: The initial address to write to
+        :param ~numpy.ndarray row_data: The row data to write
+        :return: The updated single address
+        :rtype: int
+        """
+        single_rows = row_data.reshape(-1, 4)[:, 3]
+        data_size = len(single_rows) * BYTES_PER_WORD
+        if data_size != self.__single_matrix_size:
+            raise Exception("Row data incorrect size: {} instead of {}".format(
+                data_size, self.__single_matrix_size))
+        self.__index = self.__poptable.add_machine_entry(
+            single_addr, self.__max_row_info.undelayed_max_words,
+            self.__routing_info.first_key_and_mask, is_single=True)
+        single_synapses.append(single_rows)
+        self.__syn_mat_offset = single_addr
+        self.__is_single = POP_TABLE_ADDRESS_TYPES.SINGLE
         single_addr = single_addr + self.__single_matrix_size
         return single_addr
 
@@ -498,7 +541,8 @@ class SynapticMatrix(object):
         return self.__delay_index
 
     def read_connections(
-            self, transceiver, placement, synapses_address, single_address):
+            self, transceiver, placement, synapses_address, single_address,
+            local_only_address):
         """ Read the connections from the machine
 
         :param Transceiver transceiver: How to read the data from the machine
@@ -517,12 +561,16 @@ class SynapticMatrix(object):
         connections = list()
 
         if self.__syn_mat_offset is not None:
-            if self.__is_single:
+            if self.__address_type == POP_TABLE_ADDRESS_TYPES.SINGLE:
                 block = self.__get_single_block(
                     transceiver, placement, single_address)
+            elif self.__address_type == POP_TABLE_ADDRESS_TYPES.LOCAL:
+                block = self.__get_local_only_block(
+                    transceiver, placement, local_only_address)
             else:
                 block = self.__get_block(
                     transceiver, placement, synapses_address)
+
             connections.append(self.__synapse_io.convert_to_connections(
                 self.__synapse_info, pre_slice, post_slice,
                 self.__max_row_info.undelayed_max_words,
@@ -594,6 +642,20 @@ class SynapticMatrix(object):
         address = self.__syn_mat_offset + single_address
         block = transceiver.read_memory(
             placement.x, placement.y, address, self.__single_matrix_size)
+        numpy_data = numpy.asarray(block, dtype="uint8").view("uint32")
+        n_rows = len(numpy_data)
+        numpy_block = numpy.zeros((n_rows, BYTES_PER_WORD), dtype="uint32")
+        numpy_block[:, 3] = numpy_data
+        numpy_block[:, 1] = 1
+        self.__received_block = numpy_block
+        return numpy_block.tobytes()
+
+    def __get_local_only_block(self, transceiver, placement, local_only_address):
+        if self.__received_block is not None:
+            return self.__received_block
+        address = self.__syn_mat_offset + local_only_address
+        block = transceiver.read_memory(
+            placement.x, placement.y, address, self.__local_only_matrix_size)
         numpy_data = numpy.asarray(block, dtype="uint8").view("uint32")
         n_rows = len(numpy_data)
         numpy_block = numpy.zeros((n_rows, BYTES_PER_WORD), dtype="uint32")

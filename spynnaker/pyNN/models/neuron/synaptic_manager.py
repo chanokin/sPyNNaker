@@ -30,7 +30,12 @@ from spynnaker.pyNN.models.neural_projections import ProjectionMachineEdge
 from spynnaker.pyNN.models.abstract_models import AbstractMaxSpikes
 from spynnaker.pyNN.models.neuron.synapse_io import SynapseIORowBased
 from spynnaker.pyNN.utilities.constants import (
-    POPULATION_BASED_REGIONS, POISSON_SIGMA_SUMMATION_LIMIT)
+    POPULATION_BASED_REGIONS,
+    POISSON_SIGMA_SUMMATION_LIMIT,
+    POP_TABLE_MAX_ROW_LENGTH,
+    POP_TABLE_ADDRESS_TYPES,
+    NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES
+)
 from spynnaker.pyNN.utilities.utility_calls import (get_n_bits)
 from spynnaker.pyNN.utilities.running_stats import RunningStats
 
@@ -62,6 +67,7 @@ class SynapticManager(object):
         "__n_synapse_types",
         # The maximum size of the direct or single synaptic matrix
         "__all_single_syn_sz",
+        "__all_local_only_syn_sz",
         # The number of sigmas to use when calculating the ring buffer upper
         # bound
         "__ring_buffer_sigma",
@@ -164,6 +170,9 @@ class SynapticManager(object):
         self.__all_single_syn_sz = config.getint(
             "Simulation", "one_to_one_connection_dtcm_max_bytes")
 
+        # todo: how to set this one?
+        self.__all_local_only_syn_sz = 10000000
+
         # Post vertex slice to synaptic matrices
         self.__synaptic_matrices = dict()
 
@@ -181,7 +190,8 @@ class SynapticManager(object):
         # Otherwise generate new ones
         matrices = SynapticMatrices(
             post_vertex_slice, self.__n_synapse_types,
-            self.__all_single_syn_sz, self.__synapse_io,
+            self.__all_single_syn_sz, self.__all_local_only_syn_sz,
+            self.__synapse_io,
             self._synaptic_matrix_region, self._direct_matrix_region,
             self._pop_table_region, self._local_only_data_region)
         self.__synaptic_matrices[post_vertex_slice] = matrices

@@ -129,7 +129,7 @@ class _AddressAndRowLengthCType(ctypes.LittleEndianStructure):
         # the address
         ("address", ctypes.c_uint32, 22),
         # whether this is a direct/single address
-        ("is_single", ctypes.c_uint32, NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES)
+        ("address_type", ctypes.c_uint32, NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES)
     ]
 
 
@@ -214,7 +214,7 @@ class _MasterPopEntry(object):
         self.__n_neurons = n_neurons
         self.__addresses_and_row_lengths = list()
 
-    def append(self, address, row_length, is_single):
+    def append(self, address, row_length, address_type):
         """ Add a synaptic matrix pointer to the entry
 
         :param address: The address of the synaptic matrix
@@ -229,7 +229,7 @@ class _MasterPopEntry(object):
                 "{} connections for the same source key (maximum {})".format(
                     index, _MAX_ADDRESS_COUNT))
         self.__addresses_and_row_lengths.append(
-            (address, row_length, is_single, True))
+            (address, row_length, address_type, True))
         return index
 
     def append_invalid(self):
@@ -301,13 +301,13 @@ class _MasterPopEntry(object):
             next_addr += 1
             n_entries += 1
 
-        for j, (address, row_length, is_single, is_valid) in enumerate(
+        for j, (address, row_length, address_type, is_valid) in enumerate(
                 self.__addresses_and_row_lengths):
             address_entry = address_list[next_addr + j].addr
             if not is_valid:
                 address_entry.address = _INVALID_ADDDRESS
             else:
-                address_entry.is_single = is_single
+                address_entry.address_type = address_type
                 address_entry.row_length = row_length
                 address_entry.address = address
         return n_entries
@@ -402,7 +402,7 @@ class MasterPopTableAsBinarySearch(object):
         self.__n_addresses = 0
 
     def add_machine_entry(
-            self, block_start_addr, row_length, key_and_mask, is_single=False):
+            self, block_start_addr, row_length, key_and_mask, address_type=POP_TABLE_ADDRESS_TYPES.SDRAM):
         """ Add an entry for a machine-edge to the population table
 
         :param int block_start_addr: where the synaptic matrix block starts
@@ -416,7 +416,7 @@ class MasterPopTableAsBinarySearch(object):
         :raises SynapticConfigurationException: If a bad address is used.
         """
         return self.__update_master_population_table(
-            block_start_addr, row_length, key_and_mask, 0, 0, 0, is_single)
+            block_start_addr, row_length, key_and_mask, 0, 0, 0, address_type)
 
     def add_application_entry(
             self, block_start_addr, row_length, key_and_mask, core_mask,
@@ -452,11 +452,11 @@ class MasterPopTableAsBinarySearch(object):
 
         self.__update_master_population_table(
             block_start_addr, row_length, key_and_mask, core_mask, core_shift,
-            n_neurons, False)
+            n_neurons, POP_TABLE_ADDRESS_TYPES.SDRAM)
 
     def __update_master_population_table(
             self, block_start_addr, row_length, key_and_mask, core_mask,
-            core_shift, n_neurons, is_single):
+            core_shift, n_neurons, address_type):
         """ Add an entry in the binary search to deal with the synaptic matrix
 
         :param int block_start_addr: where the synaptic matrix block starts
@@ -490,7 +490,7 @@ class MasterPopTableAsBinarySearch(object):
 
         # if not single, scale the address
         start_addr = block_start_addr
-        if not is_single:
+        if address_type == POP_TABLE_ADDRESS_TYPES.SDRAM:
             if block_start_addr % _ADDRESS_SCALE != 0:
                 raise SynapticConfigurationException(
                     "Address {} is not compatible with this table".format(
@@ -502,7 +502,7 @@ class MasterPopTableAsBinarySearch(object):
                         block_start_addr))
         row_length = self.get_allowed_row_length(row_length)
         index = self.__entries[key_and_mask.key].append(
-            start_addr, row_length - 1, is_single)
+            start_addr, row_length - 1, address_type)
         self.__n_addresses += 1
         return index
 

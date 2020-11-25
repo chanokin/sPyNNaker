@@ -56,6 +56,7 @@ class SynapticMatrices(object):
         "__n_synapse_types",
         # The maximum summed size of the "direct" or "single" matrices
         "__all_single_syn_sz",
+        "__all_local_only_syn_sz",
         # The synapse reader and writer to convert between SpiNNaker and host
         "__synapse_io",
         # The ID of the synaptic matrix region
@@ -88,6 +89,7 @@ class SynapticMatrices(object):
 
     def __init__(
             self, post_vertex_slice, n_synapse_types, all_single_syn_sz,
+            all_local_only_syn_sz,
             synapse_io, synaptic_matrix_region, direct_matrix_region,
             poptable_region, local_only_data_region):
         """
@@ -107,6 +109,7 @@ class SynapticMatrices(object):
         self.__post_vertex_slice = post_vertex_slice
         self.__n_synapse_types = n_synapse_types
         self.__all_single_syn_sz = all_single_syn_sz
+        self.__all_local_only_syn_sz = all_local_only_syn_sz
         self.__synapse_io = synapse_io
         self.__synaptic_matrix_region = synaptic_matrix_region
         self.__direct_matrix_region = direct_matrix_region
@@ -163,6 +166,7 @@ class SynapticMatrices(object):
         matrix = SynapticMatrixApp(
             self.__synapse_io, self.__poptable, synapse_info, app_edge,
             self.__n_synapse_types, self.__all_single_syn_sz,
+            self.__all_local_only_syn_sz,
             self.__post_vertex_slice, self.__synaptic_matrix_region,
             self.__direct_matrix_region, self.__local_only_region)
         self.__matrices[key] = matrix
