@@ -98,7 +98,7 @@ class SynapticMatrices(object):
         :param int n_synapse_types: The number of synapse types available
         :param int all_single_syn_sz:
             The space available for "direct" or "single" synapses
-        :param .SynapseIO synapse_io: How to read and write synapses
+        :param SynapseIORowBased synapse_io: How to read and write synapses
         :param int synaptic_matrix_region:
             The region where synaptic matrices are stored
         :param int direct_matrix_region:
@@ -175,7 +175,9 @@ class SynapticMatrices(object):
     def synapses_size(self, app_edges):
         """ The size of the synaptic blocks in bytes
 
-        :param app_edges: The incoming application edges
+        :param iterable(~pacman.model.graphs.application.ApplicationEdge) \
+                app_edges:
+            The incoming application edges
         :rtype: int
         """
         # Base size requirements
@@ -193,7 +195,9 @@ class SynapticMatrices(object):
     def size(self, app_edges):
         """ The size required by all parts of the matrices
 
-        :param app_edges: The incoming application edges
+        :param iterable(~pacman.model.graphs.application.ApplicationEdge) \
+                app_edges:
+            The incoming application edges
         :rtype: int
         """
         return (
@@ -205,7 +209,9 @@ class SynapticMatrices(object):
     def __gen_info_size(self, app_edges):
         """ The size in bytes of the synaptic expander parameters
 
-        :param app_edges: The incoming application edges
+        :param iterable(~pacman.model.graphs.application.ApplicationEdge) \
+                app_edges:
+            The incoming application edges
         :rtype: int
         """
         gen_on_machine = False
@@ -241,14 +247,17 @@ class SynapticMatrices(object):
         """ Simultaneously generates both the master population table and
             the synaptic matrix.
 
-        :param ~.DataSpecificationGenerator spec: The spec to write to
-        :param .MachineVertex machine_vertex: The machine vertex to write for
+        :param ~data_specification.DataSpecificationGenerator spec:
+            The spec to write to
+        :param ~pacman.model.graphs.machine.MachineVertex machine_vertex:
+            The machine vertex to write for
         :param int all_syn_block_sz:
             The size in bytes of the space reserved for synapses
         :param list(float) weight_scales: The weight scale of each synapse
-        :param .RoutingInfo routing_info:
+        :param ~pacman.model.routing_info.RoutingInfo routing_info:
             The routing information for all edges
-        :param .MachineGraph machine_graph: The machine graph
+        :param ~pacman.model.graphs.machine.MachineGraph machine_graph:
+            The machine graph
         :return: A list of generator data to be written elsewhere
         :rtype: list(GeneratorData)
         """
@@ -562,8 +571,10 @@ class SynapticMatrices(object):
             self, transceiver, placement, app_edge, synapse_info):
         """ Get the synaptic connections from the machine
 
-        :param Transceiver transceiver: Used to read the data from the machine
-        :param Placements placements: Where the vertices are on the machine
+        :param ~spinnman.transceiver.Transceiver transceiver:
+            Used to read the data from the machine
+        :param ~pacman.model.placements.Placements placements:
+            Where the vertices are on the machine
         :param ProjectionApplicationEdge app_edge:
             The application edge of the projection
         :param SynapseInformation synapse_info:
@@ -579,8 +590,10 @@ class SynapticMatrices(object):
         """ Fill in any pre-run connection holders for data which is generated
             on the machine, after it has been generated
 
-        :param Transceiver transceiver: How to read the data from the machine
-        :param Placement placement: where the data is to be read from
+        :param ~spinnman.transceiver.Transceiver transceiver:
+            How to read the data from the machine
+        :param ~pacman.model.placements.Placement placement:
+            where the data is to be read from
         """
         for matrix in itervalues(self.__matrices):
             matrix.read_generated_connection_holders(transceiver, placement)

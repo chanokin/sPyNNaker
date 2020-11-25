@@ -229,6 +229,7 @@ static inline uint32_t get_extended_neuron_id(
 //!
 //! For debugging
 static inline void print_master_population_table(void) {
+#if log_level >= LOG_DEBUG
     log_info("Master_population\n");
     for (uint32_t i = 0; i < master_population_table_length; i++) {
         master_population_table_entry entry = master_population_table[i];
@@ -255,6 +256,7 @@ static inline void print_master_population_table(void) {
         }
     }
     log_info("Population table has %u entries", master_population_table_length);
+#endif
 }
 
 //! \brief Check if the entry is a match for the given key
@@ -292,11 +294,11 @@ static inline void print_bitfields(uint32_t mp_i, uint32_t start,
 #endif
 }
 
-//! \brief Initialise the bitfield filtering system.
-//! \param[in] filter_region: Where the bitfield configuration is
-//! \return True on success
-static inline bool bit_field_filter_initialise(filter_region_t *filter_region) {
+bool population_table_load_bitfields(filter_region_t *filter_region) {
 
+    if (master_population_table_length == 0) {
+        return true;
+    }
     // try allocating DTCM for starting array for bitfields
     connectivity_bit_field =
             spin1_malloc(sizeof(bit_field_t) * master_population_table_length);
@@ -355,7 +357,7 @@ static inline bool bit_field_filter_initialise(filter_region_t *filter_region) {
                      sizeof(bit_field_t) * n_words_total);
              if (connectivity_bit_field[mp_i] == NULL) {
                  // If allocation fails, we can still continue
-                 log_info(
+                 log_debug(
                          "Could not initialise bit field for key %d, packets with "
                          "that key will use a DMA to check if the packet targets "
                          "anything within this core. Potentially slowing down the "
@@ -412,8 +414,7 @@ static inline bool population_table_position_in_the_master_pop_array(
 
 bool population_table_initialise(
         address_t table_address, address_t synapse_rows_address,
-        address_t direct_rows_address, filter_region_t *bitfield_address,
-        uint32_t *row_max_n_words) {
+        address_t direct_rows_address, uint32_t *row_max_n_words) {
     log_debug("Population_table_initialise: starting");
 
     master_population_table_length = table_address[0];
@@ -467,11 +468,6 @@ bool population_table_initialise(
     direct_rows_base_address = (uint32_t) direct_rows_address;
 
     *row_max_n_words = 0xFF + N_SYNAPSE_ROW_HEADER_WORDS;
-
-    // Initialise bitfields
-    if (!bit_field_filter_initialise(bitfield_address)) {
-        return false;
-    }
 
     print_master_population_table();
     return true;

@@ -88,7 +88,7 @@ class SynapticMatrix(object):
                  all_single_syn_sz, all_local_only_syn_sz):
         """
 
-        :param SynapseIO synapse_io: The reader and writer of synapses
+        :param SynapseIORowBased synapse_io: The reader and writer of synapses
         :param MasterPopTableAsBinarySearch poptable:
             The master population table
         :param SynapseInformation synapse_info:
@@ -99,9 +99,10 @@ class SynapticMatrix(object):
             The projection application edge
         :param int n_synapse_types: The number of synapse types accepted
         :param MaxRowInfo max_row_info: Maximum row length information
-        :param PartitionRoutingInfo routing_info:
+        :param ~pacman.model.routing_info.PartitionRoutingInfo routing_info:
             Routing information for the edge
-        :param PartitionRoutingInfo delay_routing_info:
+        :param ~pacman.model.routing_info.PartitionRoutingInfo \
+                delay_routing_info:
             Routing information for the delay edge if any
         :param list(float) weight_scales: Weight scale for each synapse type
         :param all_syn_block_sz:
@@ -237,7 +238,8 @@ class SynapticMatrix(object):
             local_only_synapses, local_only_addr, row_data):
         """ Write a matrix for the incoming machine vertex
 
-        :param DataSpecificationGenerator spec: The specification to write to
+        :param ~data_specification.DataSpecificationGenerator spec:
+            The specification to write to
         :param int block_addr:
             The address in the synaptic matrix region to start writing at
         :param int single_addr:
@@ -281,7 +283,8 @@ class SynapticMatrix(object):
     def write_delayed_machine_matrix(self, spec, block_addr, row_data):
         """ Write a delayed matrix for an incoming machine vertex
 
-        :param DataSpecificationGenerator spec: The specification to write to
+        :param ~data_specification.DataSpecificationGenerator spec:
+            The specification to write to
         :param int block_addr:
             The address in the synaptic matrix region to start writing at
         :param ~numpy.ndarray row_data: The data to write
@@ -545,8 +548,10 @@ class SynapticMatrix(object):
             local_only_address):
         """ Read the connections from the machine
 
-        :param Transceiver transceiver: How to read the data from the machine
-        :param Placement placement: Where the matrix is on the machine
+        :param ~spinnman.transciever.Transceiver transceiver:
+            How to read the data from the machine
+        :param ~pacman.model.placements.Placement placement:
+            Where the matrix is on the machine
         :param int synapses_address:
             The base address of the synaptic matrix region
         :param int single_address:
@@ -597,8 +602,10 @@ class SynapticMatrix(object):
     def __get_block(self, transceiver, placement, synapses_address):
         """ Get a block of data for undelayed synapses
 
-        :param Transceiver transceiver: How to read the data from the machine
-        :param Placement placement: Where the matrix is on the machine
+        :param ~spinnman.transceiver.Transceiver transceiver:
+            How to read the data from the machine
+        :param ~pacman.model.placements.Placement placement:
+            Where the matrix is on the machine
         :param int synapses_address:
             The base address of the synaptic matrix region
         :rtype: bytearray
