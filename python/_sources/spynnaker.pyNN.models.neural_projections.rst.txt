@@ -1,0 +1,17 @@
+spynnaker.pyNN.models.neural_projections package
+================================================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    spynnaker.pyNN.models.neural_projections.connectors
+
+Module contents
+---------------
+
+.. automodule:: spynnaker.pyNN.models.neural_projections
+    :members:
+    :undoc-members:
+    :show-inheritance:

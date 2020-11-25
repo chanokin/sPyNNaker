@@ -1,0 +1,10 @@
+spynnaker.pyNN.connections package
+==================================
+
+Module contents
+---------------
+
+.. automodule:: spynnaker.pyNN.connections
+    :members:
+    :undoc-members:
+    :show-inheritance:

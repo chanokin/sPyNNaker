@@ -1,0 +1,10 @@
+spynnaker.pyNN.protocols package
+================================
+
+Module contents
+---------------
+
+.. automodule:: spynnaker.pyNN.protocols
+    :members:
+    :undoc-members:
+    :show-inheritance:

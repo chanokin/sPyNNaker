@@ -1,0 +1,10 @@
+spynnaker.pyNN.models.utility_models.delays package
+===================================================
+
+Module contents
+---------------
+
+.. automodule:: spynnaker.pyNN.models.utility_models.delays
+    :members:
+    :undoc-members:
+    :show-inheritance:

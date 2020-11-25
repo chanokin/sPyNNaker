@@ -1,0 +1,10 @@
+spynnaker.pyNN.models.utility_models.spike_injector package
+===========================================================
+
+Module contents
+---------------
+
+.. automodule:: spynnaker.pyNN.models.utility_models.spike_injector
+    :members:
+    :undoc-members:
+    :show-inheritance:
