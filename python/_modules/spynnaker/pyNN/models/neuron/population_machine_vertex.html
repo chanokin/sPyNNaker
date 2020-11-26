@@ -682,10 +682,10 @@
         <span class="n">spec</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">incoming_spike_buffer_size</span><span class="p">)</span>
 
         <span class="c1"># Write the neuron parameters</span>
-        <span class="n">vs</span> <span class="o">=</span> <span class="n">Slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">local_only_compat</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_slice</span>
+        <span class="n">vslice</span> <span class="o">=</span> <span class="n">Slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">local_only_compat</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_slice</span>
         <span class="n">neuron_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">neuron_impl</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">parameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">state_variables</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span>
-            <span class="n">local_only_compat</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">parameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">state_variables</span><span class="p">,</span>
+            <span class="n">vslice</span><span class="p">,</span> <span class="n">local_only_compat</span>
         <span class="p">)</span>
         <span class="n">spec</span><span class="o">.</span><span class="n">write_array</span><span class="p">(</span><span class="n">neuron_data</span><span class="p">)</span>
 

@@ -83,8 +83,9 @@
 <span class="kn">from</span> <span class="nn">spinn_front_end_common.utilities.constants</span> <span class="kn">import</span> <span class="n">BYTES_PER_WORD</span>
 <span class="kn">from</span> <span class="nn">spynnaker.pyNN.utilities.struct</span> <span class="kn">import</span> <span class="n">Struct</span>
 <span class="kn">from</span> <span class="nn">.ranged_dict_vertex_slice</span> <span class="kn">import</span> <span class="n">RangedDictVertexSlice</span>
-
-
+<span class="kn">from</span> <span class="nn">spynnaker.pyNN.models.abstract_pynn_model</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AbstractPyNNModel</span>
+<span class="p">)</span>
 <span class="c1"># with_metaclass due to https://github.com/benjaminp/six/issues/219</span>
 <div class="viewcode-block" id="AbstractStandardNeuronComponent"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.implementations.html#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent">[docs]</a><span class="k">class</span> <span class="nc">AbstractStandardNeuronComponent</span><span class="p">(</span><span class="n">with_metaclass</span><span class="p">(</span><span class="n">AbstractBase</span><span class="p">,</span> <span class="nb">object</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot; Represents a component of a standard neural model.</span>
@@ -168,7 +169,7 @@
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="AbstractStandardNeuronComponent.get_data"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.implementations.html#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">state_variables</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span>
-                 <span class="n">local_only_compatible</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="n">local_only_compatible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">expand_lists</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the data *to be written to the machine* for this model.</span>
 
 <span class="sd">        :param ~spinn_utilities.ranged.RangeDictionary parameters:</span>
@@ -182,22 +183,27 @@
         <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">state_variables</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
         <span class="n">array_size</span> <span class="o">=</span> <span class="n">vertex_slice</span><span class="o">.</span><span class="n">n_atoms</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="n">vertex_slice</span><span class="o">.</span><span class="n">lo_atom</span>
-        <span class="k">if</span> <span class="n">local_only_compatible</span><span class="p">:</span>
-            <span class="n">array_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">new_field_types</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># this is more like can share parameters</span>
+        <span class="k">if</span> <span class="n">local_only_compatible</span> <span class="ow">and</span> <span class="n">expand_lists</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">array_size</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">field_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">field_types</span>
             <span class="n">new_field_types</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">new_values</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># state variables are explicit, not shared</span>
-                    <span class="n">array_size</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                     <span class="n">new_field_types</span> <span class="o">+=</span> <span class="p">[</span><span class="n">field_types</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                    <span class="n">new_values</span> <span class="o">+=</span> <span class="n">v</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="c1"># everything else are shared parameters, so only pass 1 copy</span>
-                    <span class="n">array_size</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">new_field_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">new_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">new_values</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">field_types</span> <span class="o">=</span> <span class="n">new_field_types</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">array_size</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">array_size</span><span class="p">,</span>
+                                    <span class="n">override_field_types</span><span class="o">=</span><span class="n">new_field_types</span><span class="p">)</span></div>
 
     <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="AbstractStandardNeuronComponent.update_values"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.implementations.html#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.update_values">[docs]</a>    <span class="k">def</span> <span class="nf">update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">state_variables</span><span class="p">):</span>

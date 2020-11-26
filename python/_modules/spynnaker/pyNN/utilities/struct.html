@@ -150,14 +150,16 @@
 <span class="sd">        :rtype: ~numpy.ndarray(dtype=&quot;uint32&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Create an array to store values in</span>
-
-        <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">array_size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">numpy_dtype</span><span class="p">)</span>
+        <span class="n">ftypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">override_field_types</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">override_field_types</span> <span class="ow">is</span> <span class="kc">None</span>
+                  <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">)</span>
+        <span class="n">np_dtypes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_numpy_dtypes</span><span class="p">(</span><span class="n">ftypes</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">array_size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np_dtypes</span><span class="p">)</span>
 
         <span class="c1"># Go through and get the values and put them in the array</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">ftypes</span><span class="p">)):</span>
+
             <span class="k">if</span> <span class="n">is_singleton</span><span class="p">(</span><span class="n">vals</span><span class="p">):</span>
-                <span class="n">data_value</span> <span class="o">=</span> <span class="n">convert_to</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
+                <span class="n">data_value</span> <span class="o">=</span> <span class="n">convert_to</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
                 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;f&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data_value</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">RangedList</span><span class="p">):</span>
                 <span class="n">data_value</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_to</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
