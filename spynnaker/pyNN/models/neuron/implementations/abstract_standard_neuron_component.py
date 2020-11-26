@@ -18,8 +18,9 @@ from spinn_utilities.abstract_base import AbstractBase, abstractmethod
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from spynnaker.pyNN.utilities.struct import Struct
 from .ranged_dict_vertex_slice import RangedDictVertexSlice
-
-
+from spynnaker.pyNN.models.abstract_pynn_model import (
+    AbstractPyNNModel
+)
 # with_metaclass due to https://github.com/benjaminp/six/issues/219
 class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
     """ Represents a component of a standard neural model.
@@ -103,7 +104,7 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
         """
 
     def get_data(self, parameters, state_variables, vertex_slice, ts,
-                 local_only_compatible=False):
+                 local_only_compatible=False, expand_lists=False):
         """ Get the data *to be written to the machine* for this model.
 
         :param ~spinn_utilities.ranged.RangeDictionary parameters:
@@ -117,22 +118,27 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
         values = self.get_values(parameters, state_variables, vertex_slice, ts)
         array_size = vertex_slice.n_atoms
         offset = vertex_slice.lo_atom
-        if local_only_compatible:
-            array_size = 0
+        new_field_types = None
+        # this is more like can share parameters
+        if local_only_compatible and expand_lists:
+            offset = 1
+            array_size = 1
             field_types = self.struct.field_types
             new_field_types = []
+            new_values = []
             for i, v in enumerate(values):
                 try:
                     # state variables are explicit, not shared
-                    array_size += len(v)
                     new_field_types += [field_types[i]] * len(v)
+                    new_values += v
                 except:
                     # everything else are shared parameters, so only pass 1 copy
-                    array_size += 1
                     new_field_types.append(field_types[i])
+                    new_values.append(v)
+            values = new_values
 
-            self.struct.field_types = new_field_types
-        return self.struct.get_data(values, offset, array_size)
+        return self.struct.get_data(values, offset, array_size,
+                                    override_field_types=new_field_types)
 
     @abstractmethod
     def update_values(self, values, parameters, state_variables):

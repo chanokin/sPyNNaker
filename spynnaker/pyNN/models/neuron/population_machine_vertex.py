@@ -617,10 +617,10 @@ class PopulationMachineVertex(
         spec.write_value(data=self.app_vertex.incoming_spike_buffer_size)
 
         # Write the neuron parameters
-        vs = Slice(0, 0) if local_only_compat else self.vertex_slice
+        vslice = Slice(0, 0) if local_only_compat else self.vertex_slice
         neuron_data = self.app_vertex.neuron_impl.get_data(
-            self.app_vertex.parameters, self.app_vertex.state_variables, vs,
-            local_only_compat
+            self.app_vertex.parameters, self.app_vertex.state_variables,
+            vslice, local_only_compat
         )
         spec.write_array(neuron_data)
 

@@ -130,7 +130,7 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
             parameters[TAU_M].apply_operation(
                     operation=lambda x: numpy.exp(float(-ts) / (1000.0 * x)))[0],
             parameters[I_OFFSET][0],
-            state_variables[COUNT_REFRAC][0],
+            state_variables[COUNT_REFRAC],
             parameters[V_RESET][0],
             parameters[TAU_REFRAC].apply_operation(
                     operation=lambda x: int(numpy.ceil(x / (ts / 1000.0))))[0]]

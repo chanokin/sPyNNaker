@@ -85,14 +85,16 @@ class Struct(object):
         :rtype: ~numpy.ndarray(dtype="uint32")
         """
         # Create an array to store values in
-
-        data = numpy.zeros(array_size, dtype=self.numpy_dtype)
+        ftypes = (override_field_types if not override_field_types is None
+                  else self.field_types)
+        np_dtypes = self.__get_numpy_dtypes(ftypes)
+        data = numpy.zeros(array_size, dtype=np_dtypes)
 
         # Go through and get the values and put them in the array
-        for i, vals in enumerate(values):
-            data_type = self.field_types[i]
+        for i, (vals, data_type) in enumerate(zip(values, ftypes)):
+
             if is_singleton(vals):
-                data_value = convert_to(values, data_type)
+                data_value = convert_to(vals, data_type)
                 data["f" + str(i)] = data_value
             elif not isinstance(vals, RangedList):
                 data_value = [convert_to(v, data_type)
