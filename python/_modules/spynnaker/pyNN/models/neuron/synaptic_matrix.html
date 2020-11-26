@@ -401,7 +401,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__routing_info</span><span class="o">.</span><span class="n">first_key_and_mask</span><span class="p">,</span> <span class="n">is_single</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">single_synapses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">single_rows</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__syn_mat_offset</span> <span class="o">=</span> <span class="n">single_addr</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__is_single</span> <span class="o">=</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SINGLE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__address_type</span> <span class="o">=</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SINGLE</span>
         <span class="n">single_addr</span> <span class="o">=</span> <span class="n">single_addr</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__single_matrix_size</span>
         <span class="k">return</span> <span class="n">single_addr</span>
 
