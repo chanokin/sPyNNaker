@@ -15,6 +15,8 @@
 from enum import Enum
 
 from pacman.executor.injection_decorator import inject_items
+from pacman.model.graphs.common import Slice
+
 from spinn_front_end_common.interface.simulation import simulation_utilities
 from spinn_utilities.overrides import overrides
 from pacman.model.graphs.machine import MachineVertex
@@ -579,10 +581,11 @@ class PopulationMachineVertex(
 
     def _write_neuron_parameters(self, spec, key, region_id):
 
-        self._app_vertex.update_state_variables()
+        self.app_vertex.update_state_variables()
+        local_only_compat = self.app_vertex.pynn_model.local_only_compatible
 
         # pylint: disable=too-many-arguments
-        n_atoms = self.vertex_slice.n_atoms
+        n_atoms = self.get_per_neuron_type_n_atoms(self.vertex_slice)
         spec.comment("\nWriting Neuron Parameters for {} Neurons:\n".format(
             n_atoms))
 
@@ -604,19 +607,21 @@ class PopulationMachineVertex(
             spec.write_value(data=key)
 
         # Write the number of neurons in the block:
-        spec.write_value(data=n_atoms)
+        spec.write_value(data=self.vertex_slice.n_atoms)
 
         # Write the number of synapse types
         spec.write_value(
-            data=self._app_vertex.neuron_impl.get_n_synapse_types())
+            data=self.app_vertex.neuron_impl.get_n_synapse_types())
 
         # Write the size of the incoming spike buffer
-        spec.write_value(data=self._app_vertex.incoming_spike_buffer_size)
+        spec.write_value(data=self.app_vertex.incoming_spike_buffer_size)
 
         # Write the neuron parameters
-        neuron_data = self._app_vertex.neuron_impl.get_data(
-            self._app_vertex.parameters, self._app_vertex.state_variables,
-            self.vertex_slice)
+        vs = Slice(0, 0) if local_only_compat else self.vertex_slice
+        neuron_data = self.app_vertex.neuron_impl.get_data(
+            self.app_vertex.parameters, self.app_vertex.state_variables, vs,
+            local_only_compat
+        )
         spec.write_array(neuron_data)
 
     @overrides(AbstractSynapseExpandable.gen_on_machine)
@@ -660,3 +665,7 @@ class PopulationMachineVertex(
         self._app_vertex.neuron_impl.read_data(
             byte_array, 0, vertex_slice, self._app_vertex.parameters,
             self._app_vertex.state_variables)
+
+    def get_per_neuron_type_n_atoms(self, vertex_slice):
+        return (1 if self.app_vertex.pynn_model.local_only_compatible
+                else vertex_slice.n_atoms)

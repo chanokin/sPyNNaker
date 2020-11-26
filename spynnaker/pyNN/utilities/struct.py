@@ -42,16 +42,23 @@ class Struct(object):
         """
         return self.__field_types
 
+    @field_types.setter
+    def field_types(self, v):
+        self.__field_types = v
+
+    def __get_numpy_dtypes(self, field_types):
+        return numpy.dtype(
+            [("f" + str(i), numpy.dtype(data_type.struct_encoding))
+             for i, data_type in enumerate(field_types)],
+            align=True)
+
     @property
     def numpy_dtype(self):
         """ The numpy data type of the struct
 
         :rtype: ~numpy.dtype
         """
-        return numpy.dtype(
-            [("f" + str(i), numpy.dtype(data_type.struct_encoding))
-             for i, data_type in enumerate(self.field_types)],
-            align=True)
+        return self.__get_numpy_dtypes(self.__field_types)
 
     def get_size_in_whole_words(self, array_size=1):
         """ Get the size of the struct in whole words in an array of given\
@@ -64,7 +71,7 @@ class Struct(object):
         size_in_bytes = array_size * datatype.itemsize
         return (size_in_bytes + (BYTES_PER_WORD - 1)) // BYTES_PER_WORD
 
-    def get_data(self, values, offset=0, array_size=1):
+    def get_data(self, values, offset=0, array_size=1, override_field_types=None):
         """ Get a numpy array of uint32 of data for the given values
 
         :param values:
@@ -78,25 +85,26 @@ class Struct(object):
         :rtype: ~numpy.ndarray(dtype="uint32")
         """
         # Create an array to store values in
+
         data = numpy.zeros(array_size, dtype=self.numpy_dtype)
 
         # Go through and get the values and put them in the array
-        for i, (values, data_type) in enumerate(zip(values, self.field_types)):
-
-            if is_singleton(values):
+        for i, vals in enumerate(values):
+            data_type = self.field_types[i]
+            if is_singleton(vals):
                 data_value = convert_to(values, data_type)
                 data["f" + str(i)] = data_value
-            elif not isinstance(values, RangedList):
+            elif not isinstance(vals, RangedList):
                 data_value = [convert_to(v, data_type)
-                              for v in values[offset:(offset + array_size)]]
+                              for v in vals[offset:(offset + array_size)]]
                 data["f" + str(i)] = data_value
             else:
-                for start, end, value in values.iter_ranges_by_slice(
+                for start, end, value in vals.iter_ranges_by_slice(
                         offset, offset + array_size):
                     # Get the values and get them into the correct data type
                     if isinstance(value, RandomDistribution):
-                        values = value.next(end - start)
-                        data_value = [convert_to(v, data_type) for v in values]
+                        rand_vals = value.next(end - start)
+                        data_value = [convert_to(v, data_type) for v in rand_vals]
                     else:
                         data_value = convert_to(value, data_type)
                     data["f" + str(i)][

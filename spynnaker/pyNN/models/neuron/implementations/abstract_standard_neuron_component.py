@@ -102,7 +102,8 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
             ~spinn_utilities.ranged.RangedList)
         """
 
-    def get_data(self, parameters, state_variables, vertex_slice, ts):
+    def get_data(self, parameters, state_variables, vertex_slice, ts,
+                 local_only_compatible=False):
         """ Get the data *to be written to the machine* for this model.
 
         :param ~spinn_utilities.ranged.RangeDictionary parameters:
@@ -114,8 +115,24 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
         :rtype: ~numpy.ndarray(~numpy.uint32)
         """
         values = self.get_values(parameters, state_variables, vertex_slice, ts)
-        return self.struct.get_data(
-            values, vertex_slice.lo_atom, vertex_slice.n_atoms)
+        array_size = vertex_slice.n_atoms
+        offset = vertex_slice.lo_atom
+        if local_only_compatible:
+            array_size = 0
+            field_types = self.struct.field_types
+            new_field_types = []
+            for i, v in enumerate(values):
+                try:
+                    # state variables are explicit, not shared
+                    array_size += len(v)
+                    new_field_types += [field_types[i]] * len(v)
+                except:
+                    # everything else are shared parameters, so only pass 1 copy
+                    array_size += 1
+                    new_field_types.append(field_types[i])
+
+            self.struct.field_types = new_field_types
+        return self.struct.get_data(values, offset, array_size)
 
     @abstractmethod
     def update_values(self, values, parameters, state_variables):

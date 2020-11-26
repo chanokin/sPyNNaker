@@ -177,6 +177,10 @@ class AbstractPopulationVertex(
             config, "Reports", "n_profile_samples")
 
     @property
+    def pynn_model(self):
+        return self.__pynn_model
+
+    @property
     @overrides(TDMAAwareApplicationVertex.n_atoms)
     def n_atoms(self):
         return self.__n_atoms

@@ -134,6 +134,7 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
             parameters[V_RESET][0],
             parameters[TAU_REFRAC].apply_operation(
                     operation=lambda x: int(numpy.ceil(x / (ts / 1000.0))))[0]]
+        # d = numpy.concatenate([d[0], d[1:]])
         return d
 
     @overrides(AbstractStandardNeuronComponent.update_values)

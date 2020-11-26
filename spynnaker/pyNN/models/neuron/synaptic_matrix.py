@@ -336,7 +336,7 @@ class SynapticMatrix(object):
             self.__routing_info.first_key_and_mask, is_single=True)
         single_synapses.append(single_rows)
         self.__syn_mat_offset = single_addr
-        self.__is_single = POP_TABLE_ADDRESS_TYPES.SINGLE
+        self.__address_type = POP_TABLE_ADDRESS_TYPES.SINGLE
         single_addr = single_addr + self.__single_matrix_size
         return single_addr
 
