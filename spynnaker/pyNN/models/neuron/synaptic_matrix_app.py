@@ -97,7 +97,7 @@ class SynapticMatrixApp(object):
 
     def __init__(
             self, synapse_io, poptable, synapse_info, app_edge,
-            n_synapse_types, all_single_syn_sz, post_vertex_slice,
+            n_synapse_types, all_single_syn_sz, all_local_only_syn_sz, post_vertex_slice,
             synaptic_matrix_region, direct_matrix_region, local_only_region):
         """
 
