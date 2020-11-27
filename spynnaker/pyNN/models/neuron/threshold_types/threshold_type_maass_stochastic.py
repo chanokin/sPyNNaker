@@ -79,7 +79,8 @@ class ThresholdTypeMaassStochastic(AbstractThresholdType):
         return variable in UNITS
 
     @overrides(AbstractThresholdType.get_values)
-    def get_values(self, parameters, state_variables, vertex_slice, ts):
+    def get_values(self, parameters, state_variables, vertex_slice, ts,
+                   state_variables_indices=None):
         # pylint: disable=arguments-differ
 
         # Add the rest of the data

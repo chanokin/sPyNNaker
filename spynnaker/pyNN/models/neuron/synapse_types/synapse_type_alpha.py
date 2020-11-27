@@ -107,7 +107,8 @@ class SynapseTypeAlpha(AbstractSynapseType):
         return variable in UNITS
 
     @overrides(AbstractSynapseType.get_values)
-    def get_values(self, parameters, state_variables, vertex_slice, ts):
+    def get_values(self, parameters, state_variables, vertex_slice, ts,
+                   state_variables_indices=None):
         """
         :param int ts: machine time step
         """

@@ -66,7 +66,8 @@ class InputTypeCurrentSEMD(AbstractInputType):
         return variable in UNITS
 
     @overrides(AbstractInputType.get_values)
-    def get_values(self, parameters, state_variables, vertex_slice, ts):
+    def get_values(self, parameters, state_variables, vertex_slice, ts,
+                   state_variables_indices=None):
 
         # Add the rest of the data
         return [parameters[MULTIPLICATOR], state_variables[INH_INPUT_PREVIOUS]]

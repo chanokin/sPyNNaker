@@ -141,3 +141,5 @@ class AbstractPyNNModel(object):
     @requires_spike_mapping.setter
     def requires_spike_mapping(self, v):
         self._requires_spike_mapping = v
+
+    

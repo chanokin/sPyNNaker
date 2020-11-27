@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import numpy
 from six import with_metaclass
 from spinn_utilities.abstract_base import AbstractBase, abstractmethod
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
@@ -26,7 +27,12 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
     """ Represents a component of a standard neural model.
     """
 
-    __slots__ = ["__struct"]
+    __slots__ = [
+        "__struct",
+        "extend_state_variables",
+        "needs_dma_weights",
+        "requires_spike_mapping",
+    ]
 
     def __init__(self, data_types):
         """
@@ -35,6 +41,10 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
             they appear
         """
         self.__struct = Struct(data_types)
+        self.extend_state_variables = False
+        self.needs_dma_weights = True
+        self.requires_spike_mapping = False
+
 
     @property
     def struct(self):
@@ -87,7 +97,8 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
         """
 
     @abstractmethod
-    def get_values(self, parameters, state_variables, vertex_slice, ts):
+    def get_values(self, parameters, state_variables, vertex_slice, ts,
+                   state_variables_indices=None):
         """ Get the values to be written to the machine for this model
 
         :param ~spinn_utilities.ranged.RangeDictionary parameters:
@@ -104,7 +115,7 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
         """
 
     def get_data(self, parameters, state_variables, vertex_slice, ts,
-                 local_only_compatible=False, expand_lists=False):
+                 local_only_compatible=False):
         """ Get the data *to be written to the machine* for this model.
 
         :param ~spinn_utilities.ranged.RangeDictionary parameters:
@@ -115,26 +126,28 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
             The slice of the vertex to generate parameters for
         :rtype: ~numpy.ndarray(~numpy.uint32)
         """
-        values = self.get_values(parameters, state_variables, vertex_slice, ts)
+        state_var_indices = []
+        values = self.get_values(parameters, state_variables, vertex_slice, ts,
+                                 state_var_indices)
         array_size = vertex_slice.n_atoms
         offset = vertex_slice.lo_atom
         new_field_types = None
         # this is more like can share parameters
-        if local_only_compatible and expand_lists:
+        if local_only_compatible and self.extend_state_variables:
             offset = 1
             array_size = 1
             field_types = self.struct.field_types
             new_field_types = []
             new_values = []
             for i, v in enumerate(values):
-                try:
+                if i in state_var_indices:
                     # state variables are explicit, not shared
-                    new_field_types += [field_types[i]] * len(v)
-                    new_values += v
-                except:
+                    new_field_types.extend([field_types[i]] * len(v))
+                    new_values.extend(v)
+                else:
                     # everything else are shared parameters, so only pass 1 copy
                     new_field_types.append(field_types[i])
-                    new_values.append(v)
+                    new_values.append(numpy.mean(v))
             values = new_values
 
         return self.struct.get_data(values, offset, array_size,

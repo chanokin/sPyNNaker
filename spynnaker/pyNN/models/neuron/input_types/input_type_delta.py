@@ -40,7 +40,8 @@ class InputTypeDelta(AbstractInputType):
         pass
 
     @overrides(AbstractInputType.get_values)
-    def get_values(self, parameters, state_variables, vertex_slice, ts):
+    def get_values(self, parameters, state_variables, vertex_slice, ts,
+                   state_variables_indices=None):
         # pylint: disable=arguments-differ
         scale_factor = 1000.0 / float(ts)
         return [scale_factor]

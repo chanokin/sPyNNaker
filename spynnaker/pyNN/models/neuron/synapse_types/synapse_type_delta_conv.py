@@ -26,7 +26,7 @@ UNITS = {
 }
 
 
-class SynapseTypeDelta(AbstractSynapseType):
+class SynapseTypeDeltaConv(AbstractSynapseType):
     """ This represents a synapse type with two delta synapses
     """
     __slots__ = [
@@ -38,11 +38,15 @@ class SynapseTypeDelta(AbstractSynapseType):
         :param float isyn_exc: :math:`I^{syn}_e`
         :param float isyn_inh: :math:`I^{syn}_i`
         """
-        super(SynapseTypeDelta, self).__init__([
+        super(SynapseTypeDeltaConv, self).__init__([
             DataType.S1615,   # isyn_exc
             DataType.S1615])  # isyn_inh
         self.__isyn_exc = isyn_exc
         self.__isyn_inh = isyn_inh
+        self.extend_state_variables = True
+        self.needs_dma_weights = False
+        self.requires_spike_mapping = True
+
 
     @overrides(AbstractSynapseType.get_n_cpu_cycles)
     def get_n_cpu_cycles(self, n_neurons):
@@ -69,6 +73,7 @@ class SynapseTypeDelta(AbstractSynapseType):
     def get_values(self, parameters, state_variables, vertex_slice, ts,
                    state_variables_indices=None):
 
+        state_variables_indices.extend([0, 1])
         # Add the rest of the data
         return [state_variables[ISYN_EXC], state_variables[ISYN_INH]]
 

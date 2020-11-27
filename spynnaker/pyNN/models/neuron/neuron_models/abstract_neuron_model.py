@@ -90,10 +90,10 @@ class AbstractNeuronModel(
 
     @overrides(AbstractStandardNeuronComponent.get_data)
     def get_data(self, parameters, state_variables, vertex_slice, ts,
-                 local_only_compatible=False, expand_lists=True):
+                 local_only_compatible=False):
         super_data = super(AbstractNeuronModel, self).get_data(
             parameters, state_variables, vertex_slice, ts,
-            local_only_compatible, expand_lists)
+            local_only_compatible)
         values = self.get_global_values(ts)
         global_data = self.__global_struct.get_data(values)
         return numpy.concatenate([global_data, super_data])
