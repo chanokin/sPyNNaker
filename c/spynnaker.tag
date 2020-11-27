@@ -3066,6 +3066,69 @@
     <class kind="struct">global_neuron_params_t</class>
   </compound>
   <compound kind="file">
+    <name>neuron_model_lif_conv_impl.c</name>
+    <path>/github/workspace/neural_modelling/src/neuron/models/</path>
+    <filename>neuron__model__lif__conv__impl_8c.html</filename>
+    <includes id="neuron__model__lif__impl_8h" name="neuron_model_lif_impl.h" local="yes" imported="no">neuron_model_lif_impl.h</includes>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>lif_neuron_closed_form</name>
+      <anchorfile>neuron__model__lif__conv__impl_8c.html</anchorfile>
+      <anchor>acdc543d115e02324c243ebbfdd303214</anchor>
+      <arglist>(neuron_t *neuron, REAL V_prev, input_t input_this_timestep)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>neuron_model_set_global_neuron_params</name>
+      <anchorfile>neuron__model__lif__conv__impl_8c.html</anchorfile>
+      <anchor>a2c709e18b3833cf07131b394b0a9b929</anchor>
+      <arglist>(const global_neuron_params_t *params)</arglist>
+    </member>
+    <member kind="function">
+      <type>state_t</type>
+      <name>neuron_model_state_update</name>
+      <anchorfile>neuron__model__lif__conv__impl_8c.html</anchorfile>
+      <anchor>a452331c36f58a564227b5d2a3a20bd3f</anchor>
+      <arglist>(uint16_t num_excitatory_inputs, const input_t *exc_input, uint16_t num_inhibitory_inputs, const input_t *inh_input, input_t external_bias, neuron_t *restrict neuron)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>neuron_model_has_spiked</name>
+      <anchorfile>neuron__model__lif__conv__impl_8c.html</anchorfile>
+      <anchor>a49c629814dc187dc38a4b8f0dbebd111</anchor>
+      <arglist>(neuron_t *restrict neuron)</arglist>
+    </member>
+    <member kind="function">
+      <type>state_t</type>
+      <name>neuron_model_get_membrane_voltage</name>
+      <anchorfile>neuron__model__lif__conv__impl_8c.html</anchorfile>
+      <anchor>a91774a9b87c1875fcb7659fe0f096857</anchor>
+      <arglist>(const neuron_t *neuron)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>neuron_model_print_state_variables</name>
+      <anchorfile>neuron__model__lif__conv__impl_8c.html</anchorfile>
+      <anchor>a039b8ee28cccb786e7c67c985e88e3d6</anchor>
+      <arglist>(const neuron_t *neuron)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>neuron_model_print_parameters</name>
+      <anchorfile>neuron__model__lif__conv__impl_8c.html</anchorfile>
+      <anchor>a645937167c46b7556757b05250f9864d</anchor>
+      <arglist>(const neuron_t *neuron)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>neuron_model_lif_conv_impl.h</name>
+    <path>/github/workspace/neural_modelling/src/neuron/models/</path>
+    <filename>neuron__model__lif__conv__impl_8h.html</filename>
+    <includes id="neuron__model_8h" name="neuron_model.h" local="yes" imported="no">neuron_model.h</includes>
+    <class kind="struct">neuron_t</class>
+    <class kind="struct">global_neuron_params_t</class>
+  </compound>
+  <compound kind="file">
     <name>neuron_model_lif_impl.c</name>
     <path>/github/workspace/neural_modelling/src/neuron/models/</path>
     <filename>neuron__model__lif__impl_8c.html</filename>
@@ -11524,6 +11587,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>int32_t</type>
+      <name>refract_timer</name>
+      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
+      <anchor>acf084ec01328ebc9b41115c053dff303</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>REAL</type>
       <name>V_rest</name>
       <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
@@ -11542,13 +11612,6 @@
       <name>exp_TC</name>
       <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
       <anchor>ae86326c508ef052f75103f8fec5dff82</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>int32_t</type>
-      <name>refract_timer</name>
-      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
-      <anchor>acf084ec01328ebc9b41115c053dff303</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">

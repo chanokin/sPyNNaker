@@ -448,9 +448,14 @@ they appear</td>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.extend_state_variables">
+<code class="descname">extend_state_variables</code><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.extend_state_variables" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.get_data">
-<code class="descname">get_data</code><span class="sig-paren">(</span><em>parameters</em>, <em>state_variables</em>, <em>vertex_slice</em>, <em>ts</em>, <em>local_only_compatible=False</em>, <em>expand_lists=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spynnaker/pyNN/models/neuron/implementations/abstract_standard_neuron_component.html#AbstractStandardNeuronComponent.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.get_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_data</code><span class="sig-paren">(</span><em>parameters</em>, <em>state_variables</em>, <em>vertex_slice</em>, <em>ts</em>, <em>local_only_compatible=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spynnaker/pyNN/models/neuron/implementations/abstract_standard_neuron_component.html#AbstractStandardNeuronComponent.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the data <em>to be written to the machine</em> for this model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -534,7 +539,7 @@ they appear</td>
 
 <dl class="method">
 <dt id="spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.get_values">
-<code class="descname">get_values</code><span class="sig-paren">(</span><em>parameters</em>, <em>state_variables</em>, <em>vertex_slice</em>, <em>ts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spynnaker/pyNN/models/neuron/implementations/abstract_standard_neuron_component.html#AbstractStandardNeuronComponent.get_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.get_values" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_values</code><span class="sig-paren">(</span><em>parameters</em>, <em>state_variables</em>, <em>vertex_slice</em>, <em>ts</em>, <em>state_variables_indices=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spynnaker/pyNN/models/neuron/implementations/abstract_standard_neuron_component.html#AbstractStandardNeuronComponent.get_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.get_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the values to be written to the machine for this model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -575,6 +580,11 @@ they appear</td>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.needs_dma_weights">
+<code class="descname">needs_dma_weights</code><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.needs_dma_weights" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.read_data">
 <code class="descname">read_data</code><span class="sig-paren">(</span><em>data</em>, <em>offset</em>, <em>vertex_slice</em>, <em>parameters</em>, <em>state_variables</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spynnaker/pyNN/models/neuron/implementations/abstract_standard_neuron_component.html#AbstractStandardNeuronComponent.read_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.read_data" title="Permalink to this definition">¶</a></dt>
@@ -601,6 +611,11 @@ they appear</td>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.requires_spike_mapping">
+<code class="descname">requires_spike_mapping</code><a class="headerlink" href="#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.requires_spike_mapping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.struct">
