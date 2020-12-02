@@ -201,8 +201,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__machine_edge</span><span class="o">.</span><span class="n">pre_vertex</span><span class="o">.</span><span class="n">vertex_slice</span><span class="o">.</span><span class="n">n_atoms</span> <span class="o">*</span>
             <span class="n">BYTES_PER_WORD</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_matrix_size</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">get_local_only_info_size</span> <span class="o">*</span>
-                <span class="n">BYTES_PER_WORD</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">get_local_only_info_size</span> <span class="o">*</span>
+            <span class="n">BYTES_PER_WORD</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__index</span> <span class="o">=</span> <span class="kc">None</span>
@@ -337,6 +337,12 @@
                 <span class="n">single_synapses</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">row_data</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">local_only_addr</span>
 
+        <span class="n">is_local_only</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_local_only</span><span class="p">(</span><span class="n">local_only_addr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_local_only</span><span class="p">:</span>
+            <span class="n">local_only_addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_local_only_machine_matrix</span><span class="p">(</span>
+                <span class="n">local_only_synapses</span><span class="p">,</span> <span class="n">local_only_addr</span><span class="p">,</span> <span class="n">row_data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">local_only_addr</span>
+
         <span class="n">block_addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poptable</span><span class="o">.</span><span class="n">write_padding</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poptable</span><span class="o">.</span><span class="n">add_machine_entry</span><span class="p">(</span>
             <span class="n">block_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__max_row_info</span><span class="o">.</span><span class="n">undelayed_max_words</span><span class="p">,</span>
@@ -417,19 +423,23 @@
 <span class="sd">        :return: The updated single address</span>
 <span class="sd">        :rtype: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">single_rows</span> <span class="o">=</span> <span class="n">row_data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[:,</span> <span class="mi">3</span><span class="p">]</span>
-        <span class="n">data_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">single_rows</span><span class="p">)</span> <span class="o">*</span> <span class="n">BYTES_PER_WORD</span>
-        <span class="k">if</span> <span class="n">data_size</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__single_matrix_size</span><span class="p">:</span>
+
+        <span class="c1"># single_rows = row_data.reshape(-1, 4)[:, 3]</span>
+        <span class="n">local_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">get_local_only_data</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">data_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_data</span><span class="p">)</span> <span class="o">*</span> <span class="n">BYTES_PER_WORD</span>
+        <span class="k">if</span> <span class="n">data_size</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_matrix_size</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Row data incorrect size: </span><span class="si">{}</span><span class="s2"> instead of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">data_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__single_matrix_size</span><span class="p">))</span>
+                <span class="n">data_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_matrix_size</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poptable</span><span class="o">.</span><span class="n">add_machine_entry</span><span class="p">(</span>
             <span class="n">local_only_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__max_row_info</span><span class="o">.</span><span class="n">undelayed_max_words</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__routing_info</span><span class="o">.</span><span class="n">first_key_and_mask</span><span class="p">,</span> <span class="n">is_single</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">local_only_synapses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">single_rows</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__syn_mat_offset</span> <span class="o">=</span> <span class="n">single_addr</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__is_single</span> <span class="o">=</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SINGLE</span>
-        <span class="n">single_addr</span> <span class="o">=</span> <span class="n">single_addr</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__single_matrix_size</span>
-        <span class="k">return</span> <span class="n">single_addr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__routing_info</span><span class="o">.</span><span class="n">first_key_and_mask</span><span class="p">,</span>
+            <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">LOCAL</span>
+        <span class="p">)</span>
+        <span class="n">local_only_synapses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__syn_mat_offset</span> <span class="o">=</span> <span class="n">local_only_addr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__address_type</span> <span class="o">=</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">LOCAL</span>
+        <span class="n">local_only_addr</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_matrix_size</span>
+        <span class="k">return</span> <span class="n">local_only_addr</span>
 
 <div class="viewcode-block" id="SynapticMatrix.next_app_on_chip_address"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.synaptic_matrix.SynapticMatrix.next_app_on_chip_address">[docs]</a>    <span class="k">def</span> <span class="nf">next_app_on_chip_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_block_addr</span><span class="p">,</span> <span class="n">max_app_addr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Allocate a machine-level address of a matrix from within an</span>

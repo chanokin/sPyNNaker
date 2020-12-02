@@ -372,7 +372,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
                 <span class="n">address_entry</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">_INVALID_ADDDRESS</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">address_entry</span><span class="o">.</span><span class="n">address_type</span> <span class="o">=</span> <span class="n">address_type</span>
+                <span class="n">address_entry</span><span class="o">.</span><span class="n">address_type</span> <span class="o">=</span> <span class="n">address_type</span><span class="o">.</span><span class="n">value</span>
                 <span class="n">address_entry</span><span class="o">.</span><span class="n">row_length</span> <span class="o">=</span> <span class="n">row_length</span>
                 <span class="n">address_entry</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
         <span class="k">return</span> <span class="n">n_entries</span>
@@ -467,7 +467,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__n_addresses</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="MasterPopTableAsBinarySearch.add_machine_entry"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.master_pop_table.MasterPopTableAsBinarySearch.add_machine_entry">[docs]</a>    <span class="k">def</span> <span class="nf">add_machine_entry</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">block_start_addr</span><span class="p">,</span> <span class="n">row_length</span><span class="p">,</span> <span class="n">key_and_mask</span><span class="p">,</span> <span class="n">address_type</span><span class="o">=</span><span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SDRAM</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">block_start_addr</span><span class="p">,</span> <span class="n">row_length</span><span class="p">,</span> <span class="n">key_and_mask</span><span class="p">,</span>
+            <span class="n">address_type</span><span class="o">=</span><span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SDRAM</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add an entry for a machine-edge to the population table</span>
 
 <span class="sd">        :param int block_start_addr: where the synaptic matrix block starts</span>

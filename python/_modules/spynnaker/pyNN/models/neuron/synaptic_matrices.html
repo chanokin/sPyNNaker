@@ -410,6 +410,19 @@
         <span class="k">if</span> <span class="n">single_data_words</span><span class="p">:</span>
             <span class="n">spec</span><span class="o">.</span><span class="n">write_array</span><span class="p">(</span><span class="n">single_data</span><span class="p">)</span>
 
+        <span class="c1"># Write size and data for local-only (conv) synapses</span>
+        <span class="n">local_only_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">local_only_synapses</span><span class="p">)</span>
+        <span class="n">local_only_n_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_only_data</span><span class="p">)</span>
+
+        <span class="n">spec</span><span class="o">.</span><span class="n">reserve_memory_region</span><span class="p">(</span>
+            <span class="n">region</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_only_region</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">local_only_n_words</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">BYTES_PER_WORD</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;LocalOnlyMatrix&#39;</span><span class="p">)</span>
+
+        <span class="n">spec</span><span class="o">.</span><span class="n">switch_write_focus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_only_region</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="n">local_only_n_words</span> <span class="o">*</span> <span class="n">BYTES_PER_WORD</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">local_only_n_words</span><span class="p">:</span>
+            <span class="n">spec</span><span class="o">.</span><span class="n">write_array</span><span class="p">(</span><span class="n">local_only_data</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">generator_data</span></div>
 
