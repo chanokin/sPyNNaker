@@ -368,7 +368,7 @@ class SynapticMatrixApp(object):
                 delayed_matrix_data.append((m_edge, delay_row_data))
             else:
                 # If no app keys, write the data as normal
-                block_addr, single_addr = matrix.write_machine_matrix(
+                block_addr, single_addr, local_only_addr = matrix.write_machine_matrix(
                     spec, block_addr, single_synapses, single_addr,
                     local_only_synapses, local_only_addr,
                     row_data)

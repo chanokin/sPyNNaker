@@ -403,7 +403,7 @@ class ConvolutionConnector(AbstractConnector):
             self, pre_slices, post_slices, pre_vertex_slice, post_vertex_slice,
             synapse_type, synapse_info):
         block = numpy.zeros(self.kernel.size, dtype=self.NUMPY_SYNAPSES_DTYPE)
-        block['weight'] = self.kernel
+        block['weight'] = self.kernel.flatten()
         block['delay'] = 1
 
         return block
