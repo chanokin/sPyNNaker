@@ -345,6 +345,9 @@
         <span class="n">single_synapses</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint32&quot;</span><span class="p">)]</span>
         <span class="n">single_addr</span> <span class="o">=</span> <span class="mi">0</span>
 
+        <span class="n">local_only_synapses</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint32&quot;</span><span class="p">)]</span>
+        <span class="n">local_only_addr</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="c1"># Lets write some synapses</span>
         <span class="n">spec</span><span class="o">.</span><span class="n">switch_write_focus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__synaptic_matrix_region</span><span class="p">)</span>
 
@@ -369,17 +372,16 @@
                 <span class="n">app_matrix</span><span class="o">.</span><span class="n">set_info</span><span class="p">(</span>
                     <span class="n">all_syn_block_sz</span><span class="p">,</span> <span class="n">app_key_info</span><span class="p">,</span> <span class="n">d_app_key_info</span><span class="p">,</span>
                     <span class="n">routing_info</span><span class="p">,</span> <span class="n">weight_scales</span><span class="p">,</span> <span class="n">m_edges</span><span class="p">)</span>
-                <span class="c1"># If the post pop and connector define locally-stored weights</span>
-                <span class="k">if</span> <span class="n">app_matrix</span><span class="o">.</span><span class="n">local_only_compatible</span><span class="p">:</span>
-                    <span class="n">local_only_syns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app_matrix</span><span class="p">)</span>
                 <span class="c1"># If we can generate the connector on the machine, do so</span>
-                <span class="k">elif</span> <span class="n">app_matrix</span><span class="o">.</span><span class="n">can_generate_on_machine</span><span class="p">(</span><span class="n">single_addr</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">app_matrix</span><span class="o">.</span><span class="n">can_generate_on_machine</span><span class="p">(</span><span class="n">single_addr</span><span class="p">):</span>
                     <span class="n">generate_on_machine</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app_matrix</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span> <span class="o">=</span> <span class="n">app_matrix</span><span class="o">.</span><span class="n">write_matrix</span><span class="p">(</span>
-                        <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">single_synapses</span><span class="p">)</span>
+                    <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">local_only_addr</span> <span class="o">=</span> <span class="n">app_matrix</span><span class="o">.</span><span class="n">write_matrix</span><span class="p">(</span>
+                        <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">single_synapses</span><span class="p">,</span>
+                        <span class="n">local_only_addr</span><span class="p">,</span> <span class="n">local_only_synapses</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__host_generated_block_addr</span> <span class="o">=</span> <span class="n">block_addr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_block_addr</span> <span class="o">=</span> <span class="n">local_only_addr</span>
 
         <span class="c1"># Skip blocks that will be written on the machine, but add them</span>
         <span class="c1"># to the master population table</span>

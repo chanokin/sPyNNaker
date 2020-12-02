@@ -111,6 +111,7 @@
         <span class="s2">&quot;__n_synapse_types&quot;</span><span class="p">,</span>
         <span class="c1"># The maximum summed size of the &quot;direct&quot; or &quot;single&quot; matrices</span>
         <span class="s2">&quot;__all_single_syn_sz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__all_local_only_syn_sz&quot;</span><span class="p">,</span>
         <span class="c1"># The slice of the post vertex these matrices are for</span>
         <span class="s2">&quot;__post_vertex_slice&quot;</span><span class="p">,</span>
         <span class="c1"># The ID of the synaptic matrix region</span>
@@ -193,6 +194,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__synaptic_matrix_region</span> <span class="o">=</span> <span class="n">synaptic_matrix_region</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__direct_matrix_region</span> <span class="o">=</span> <span class="n">direct_matrix_region</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_matrix_region</span> <span class="o">=</span> <span class="n">local_only_region</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__all_local_only_syn_sz</span> <span class="o">=</span> <span class="n">all_local_only_syn_sz</span>
 
         <span class="c1"># Map of machine_edge to .SynapticMatrix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__matrices</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -254,7 +256,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_io</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poptable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span><span class="p">,</span>
             <span class="n">machine_edge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__app_edge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__n_synapse_types</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__max_row_info</span><span class="p">,</span> <span class="n">r_info</span><span class="p">,</span> <span class="n">delayed_r_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__weight_scales</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__all_syn_block_sz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__all_single_syn_sz</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__all_syn_block_sz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__all_single_syn_sz</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__all_local_only_syn_sz</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__matrices</span><span class="p">[</span><span class="n">machine_edge</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span>
         <span class="k">return</span> <span class="n">matrix</span>
 
@@ -400,7 +403,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__use_app_keys</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">is_app_key</span> <span class="ow">and</span> <span class="n">is_delay_app_key</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">m_edges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SynapticMatrixApp.write_matrix"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.synaptic_matrix_app.SynapticMatrixApp.write_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">write_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">single_synapses</span><span class="p">):</span>
+<div class="viewcode-block" id="SynapticMatrixApp.write_matrix"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.synaptic_matrix_app.SynapticMatrixApp.write_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">write_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">single_synapses</span><span class="p">,</span>
+                     <span class="n">local_only_addr</span><span class="p">,</span> <span class="n">local_only_synapses</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a synaptic matrix from host</span>
 
 <span class="sd">        :param ~data_specification.DataSpecificationGenerator spec:</span>
@@ -431,6 +435,7 @@
                 <span class="c1"># If no app keys, write the data as normal</span>
                 <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">write_machine_matrix</span><span class="p">(</span>
                     <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_synapses</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span>
+                    <span class="n">local_only_synapses</span><span class="p">,</span> <span class="n">local_only_addr</span><span class="p">,</span>
                     <span class="n">row_data</span><span class="p">)</span>
                 <span class="n">block_addr</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">write_delayed_machine_matrix</span><span class="p">(</span>
                     <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">delay_row_data</span><span class="p">)</span>
@@ -442,7 +447,7 @@
             <span class="n">block_addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_delay_app_matrix</span><span class="p">(</span>
                 <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">delayed_matrix_data</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span></div>
+        <span class="k">return</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">,</span> <span class="n">local_only_addr</span></div>
 
     <span class="k">def</span> <span class="nf">__write_app_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">block_addr</span><span class="p">,</span> <span class="n">matrix_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a matrix for a whole incoming application vertex as one</span>
