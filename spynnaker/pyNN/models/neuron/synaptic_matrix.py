@@ -136,8 +136,8 @@ class SynapticMatrix(object):
             self.__machine_edge.pre_vertex.vertex_slice.n_atoms *
             BYTES_PER_WORD)
         self.__local_only_matrix_size = (
-                self.__synapse_info.connector.get_local_only_info_size *
-                BYTES_PER_WORD
+            self.__synapse_info.connector.get_local_only_info_size *
+            BYTES_PER_WORD
         )
 
         self.__index = None
@@ -272,6 +272,12 @@ class SynapticMatrix(object):
                 single_synapses, single_addr, row_data)
             return block_addr, single_addr, local_only_addr
 
+        is_local_only, _ = self.is_local_only(local_only_addr)
+        if is_local_only:
+            local_only_addr = self.__write_local_only_machine_matrix(
+                local_only_synapses, local_only_addr, row_data)
+            return block_addr, single_addr, local_only_addr
+
         block_addr = self.__poptable.write_padding(spec, block_addr)
         self.__index = self.__poptable.add_machine_entry(
             block_addr, self.__max_row_info.undelayed_max_words,
@@ -352,19 +358,23 @@ class SynapticMatrix(object):
         :return: The updated single address
         :rtype: int
         """
-        single_rows = row_data.reshape(-1, 4)[:, 3]
-        data_size = len(single_rows) * BYTES_PER_WORD
-        if data_size != self.__single_matrix_size:
+
+        # single_rows = row_data.reshape(-1, 4)[:, 3]
+        local_data = self.__synapse_info.connector.get_local_only_data(None)
+        data_size = len(local_data) * BYTES_PER_WORD
+        if data_size != self.__local_only_matrix_size:
             raise Exception("Row data incorrect size: {} instead of {}".format(
-                data_size, self.__single_matrix_size))
+                data_size, self.__local_only_matrix_size))
         self.__index = self.__poptable.add_machine_entry(
             local_only_addr, self.__max_row_info.undelayed_max_words,
-            self.__routing_info.first_key_and_mask, is_single=True)
-        local_only_synapses.append(single_rows)
-        self.__syn_mat_offset = single_addr
-        self.__is_single = POP_TABLE_ADDRESS_TYPES.SINGLE
-        single_addr = single_addr + self.__single_matrix_size
-        return single_addr
+            self.__routing_info.first_key_and_mask,
+            POP_TABLE_ADDRESS_TYPES.LOCAL
+        )
+        local_only_synapses.append(local_data)
+        self.__syn_mat_offset = local_only_addr
+        self.__address_type = POP_TABLE_ADDRESS_TYPES.LOCAL
+        local_only_addr += self.__local_only_matrix_size
+        return local_only_addr
 
     def next_app_on_chip_address(self, app_block_addr, max_app_addr):
         """ Allocate a machine-level address of a matrix from within an

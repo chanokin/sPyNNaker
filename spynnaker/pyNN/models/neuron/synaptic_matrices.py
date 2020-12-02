@@ -345,6 +345,19 @@ class SynapticMatrices(object):
         if single_data_words:
             spec.write_array(single_data)
 
+        # Write size and data for local-only (conv) synapses
+        local_only_data = numpy.concatenate(local_only_synapses)
+        local_only_n_words = len(local_only_data)
+
+        spec.reserve_memory_region(
+            region=self.__local_only_region,
+            size=(local_only_n_words + 1) * BYTES_PER_WORD,
+            label='LocalOnlyMatrix')
+
+        spec.switch_write_focus(self.__local_only_region)
+        spec.write_value(local_only_n_words * BYTES_PER_WORD)
+        if local_only_n_words:
+            spec.write_array(local_only_data)
 
         return generator_data
 

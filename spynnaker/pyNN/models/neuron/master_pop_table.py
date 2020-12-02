@@ -307,7 +307,7 @@ class _MasterPopEntry(object):
             if not is_valid:
                 address_entry.address = _INVALID_ADDDRESS
             else:
-                address_entry.address_type = address_type
+                address_entry.address_type = address_type.value
                 address_entry.row_length = row_length
                 address_entry.address = address
         return n_entries
@@ -402,7 +402,8 @@ class MasterPopTableAsBinarySearch(object):
         self.__n_addresses = 0
 
     def add_machine_entry(
-            self, block_start_addr, row_length, key_and_mask, address_type=POP_TABLE_ADDRESS_TYPES.SDRAM):
+            self, block_start_addr, row_length, key_and_mask,
+            address_type=POP_TABLE_ADDRESS_TYPES.SDRAM):
         """ Add an entry for a machine-edge to the population table
 
         :param int block_start_addr: where the synaptic matrix block starts
