@@ -280,6 +280,9 @@ class SynapticMatrices(object):
         single_synapses = [numpy.array([], dtype="uint32")]
         single_addr = 0
 
+        local_only_synapses = [numpy.array([], dtype="uint32")]
+        local_only_addr = 0
+
         # Lets write some synapses
         spec.switch_write_focus(self.__synaptic_matrix_region)
 
@@ -304,17 +307,16 @@ class SynapticMatrices(object):
                 app_matrix.set_info(
                     all_syn_block_sz, app_key_info, d_app_key_info,
                     routing_info, weight_scales, m_edges)
-                # If the post pop and connector define locally-stored weights
-                if app_matrix.local_only_compatible:
-                    local_only_syns.append(app_matrix)
                 # If we can generate the connector on the machine, do so
-                elif app_matrix.can_generate_on_machine(single_addr):
+                if app_matrix.can_generate_on_machine(single_addr):
                     generate_on_machine.append(app_matrix)
                 else:
-                    block_addr, single_addr = app_matrix.write_matrix(
-                        spec, block_addr, single_addr, single_synapses)
+                    block_addr, single_addr, local_only_addr = app_matrix.write_matrix(
+                        spec, block_addr, single_addr, single_synapses,
+                        local_only_addr, local_only_synapses)
 
         self.__host_generated_block_addr = block_addr
+        self.__local_only_block_addr = local_only_addr
 
         # Skip blocks that will be written on the machine, but add them
         # to the master population table

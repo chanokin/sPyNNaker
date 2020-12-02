@@ -192,6 +192,7 @@ class SynapticMatrix(object):
             not self.__synapse_info.postpop_is_view)
         return is_direct, next_addr
 
+
     def is_local_only(self, local_only_addr):
         si = self.__synapse_info
         pre = si.pre_population
@@ -357,9 +358,9 @@ class SynapticMatrix(object):
             raise Exception("Row data incorrect size: {} instead of {}".format(
                 data_size, self.__single_matrix_size))
         self.__index = self.__poptable.add_machine_entry(
-            single_addr, self.__max_row_info.undelayed_max_words,
+            local_only_addr, self.__max_row_info.undelayed_max_words,
             self.__routing_info.first_key_and_mask, is_single=True)
-        single_synapses.append(single_rows)
+        local_only_synapses.append(single_rows)
         self.__syn_mat_offset = single_addr
         self.__is_single = POP_TABLE_ADDRESS_TYPES.SINGLE
         single_addr = single_addr + self.__single_matrix_size

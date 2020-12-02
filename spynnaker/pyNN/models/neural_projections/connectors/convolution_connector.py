@@ -402,7 +402,11 @@ class ConvolutionConnector(AbstractConnector):
     def create_synaptic_block(
             self, pre_slices, post_slices, pre_vertex_slice, post_vertex_slice,
             synapse_type, synapse_info):
-        return {}
+        block = numpy.zeros(self.kernel.size, dtype=self.NUMPY_SYNAPSES_DTYPE)
+        block['weights'] = self.kernel
+        block['delays'] = 1
+
+        return block
 
     @staticmethod
     def pack_kernel(kernel):

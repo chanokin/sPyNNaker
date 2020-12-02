@@ -46,6 +46,7 @@ class SynapticMatrixApp(object):
         "__n_synapse_types",
         # The maximum summed size of the "direct" or "single" matrices
         "__all_single_syn_sz",
+        "__all_local_only_syn_sz",
         # The slice of the post vertex these matrices are for
         "__post_vertex_slice",
         # The ID of the synaptic matrix region
@@ -128,6 +129,7 @@ class SynapticMatrixApp(object):
         self.__synaptic_matrix_region = synaptic_matrix_region
         self.__direct_matrix_region = direct_matrix_region
         self.__local_only_matrix_region = local_only_region
+        self.__all_local_only_syn_sz = all_local_only_syn_sz
 
         # Map of machine_edge to .SynapticMatrix
         self.__matrices = dict()
@@ -189,7 +191,8 @@ class SynapticMatrixApp(object):
             self.__synapse_io, self.__poptable, self.__synapse_info,
             machine_edge, self.__app_edge, self.__n_synapse_types,
             self.__max_row_info, r_info, delayed_r_info, self.__weight_scales,
-            self.__all_syn_block_sz, self.__all_single_syn_sz)
+            self.__all_syn_block_sz, self.__all_single_syn_sz,
+            self.__all_local_only_syn_sz)
         self.__matrices[machine_edge] = matrix
         return matrix
 
@@ -335,7 +338,8 @@ class SynapticMatrixApp(object):
         self.__use_app_keys = (
             is_app_key and is_delay_app_key and len(m_edges) > 1)
 
-    def write_matrix(self, spec, block_addr, single_addr, single_synapses):
+    def write_matrix(self, spec, block_addr, single_addr, single_synapses,
+                     local_only_addr, local_only_synapses):
         """ Write a synaptic matrix from host
 
         :param ~data_specification.DataSpecificationGenerator spec:
@@ -366,6 +370,7 @@ class SynapticMatrixApp(object):
                 # If no app keys, write the data as normal
                 block_addr, single_addr = matrix.write_machine_matrix(
                     spec, block_addr, single_synapses, single_addr,
+                    local_only_synapses, local_only_addr,
                     row_data)
                 block_addr = matrix.write_delayed_machine_matrix(
                     spec, block_addr, delay_row_data)
@@ -377,7 +382,7 @@ class SynapticMatrixApp(object):
             block_addr = self.__write_delay_app_matrix(
                 spec, block_addr, delayed_matrix_data)
 
-        return block_addr, single_addr
+        return block_addr, single_addr, local_only_addr
 
     def __write_app_matrix(self, spec, block_addr, matrix_data):
         """ Write a matrix for a whole incoming application vertex as one
