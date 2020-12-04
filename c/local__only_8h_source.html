@@ -80,25 +80,28 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keywordtype">bool</span> local_only_initialise(<a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> sdram_address);</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keywordtype">bool</span> local_only_is_compatible();</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keywordtype">bool</span> local_only_is_compatible(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordtype">void</span> local_only_process_spike(lc_neuron_id_t <a class="code" href="delay__extension_8c.html#a6d4ec8e4f3148d51041635da9986c3fa">key</a>);</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;lc_neuron_id_t local_only_coord_to_id(</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> coord, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, <span class="keywordtype">bool</span> is_post);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<a class="code" href="structlc__coord__t.html">lc_coord_t</a> local_only_id_to_coord(</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    lc_neuron_id_t <span class="keywordtype">id</span>, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, <span class="keywordtype">bool</span> is_post);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="structlc__coord__t.html">lc_coord_t</a> local_only_map_pre_to_post(<a class="code" href="structlc__coord__t.html">lc_coord_t</a> pre, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> local_only_coord_to_id(</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> coord, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, <span class="keywordtype">bool</span> is_post,</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    lc_neuron_id_t *output);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> local_only_id_to_coord(</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    lc_neuron_id_t <span class="keywordtype">id</span>, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, <span class="keywordtype">bool</span> is_post,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> *output);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;lc_dim_t local_only_get_ids_and_weights(</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    lc_neuron_id_t pre_id, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, lc_weight_t* <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>,</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    lc_neuron_id_t* post_ids, lc_weight_t* currents);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;lc_dim_t num_possible_post(<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> local_only_map_pre_to_post(<a class="code" href="structlc__coord__t.html">lc_coord_t</a> pre, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes,</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> *output);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;lc_dim_t local_only_get_ids_and_weights(</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    lc_neuron_id_t pre_id, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, lc_weight_t* <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    lc_neuron_id_t* post_ids, lc_weight_t* weights);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;lc_dim_t num_possible_post(<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astructlc__coord__t_html"><div class="ttname"><a href="structlc__coord__t.html">lc_coord_t</a></div><div class="ttdef"><b>Definition:</b> <a href="local__only__typedefs_8h_source.html#l00010">local_only_typedefs.h:10</a></div></div>
 <div class="ttc" id="aconnection__generator__kernel_8h_html_structkernel"><div class="ttname"><a href="connection__generator__kernel_8h.html#structkernel">kernel</a></div><div class="ttdoc">The parameters to be passed around for this connector.</div><div class="ttdef"><b>Definition:</b> <a href="connection__generator__kernel_8h_source.html#l00031">connection_generator_kernel.h:31</a></div></div>
@@ -107,7 +110,7 @@ $(function() {
 <div class="ttc" id="acommon-typedefs_8h_html_ac8dc08dd5f5827994d1b06351f925669"><div class="ttname"><a href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a></div><div class="ttdeci">uint32_t * address_t</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 4 2020 12:27:25 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+Generated on Fri Dec 4 2020 17:16:03 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
 </small></address>
 </body>
 </html>
