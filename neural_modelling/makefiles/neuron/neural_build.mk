@@ -143,7 +143,8 @@ else
 	      -include $(INPUT_TYPE_H) \
 	      -include $(THRESHOLD_TYPE_H) \
 	      -include $(ADDITIONAL_INPUT_H) \
-	      -include $(NEURON_IMPL_H)
+	      -include $(NEURON_IMPL_H) \
+
     endif
 endif
 
@@ -223,6 +224,17 @@ ifdef ELIMINATION
     ELIMINATION_O := $(BUILD_DIR)$(ELIMINATION:%.c=%.o)
 endif
 
+LOCAL_ONLY_ENABLED = 0
+ifndef LOCAL_ONLY
+	LOCAL_ONLY := neuron/local_only/local_only_dummy_impl.c
+	LOCAL_ONLY_C := $(MODIFIED_DIR)$(LOCAL_ONLY)
+else
+	LOCAL_ONLY_C := $(call replace_source_dirs,$(LOCAL_ONLY))
+    LOCAL_ONLY := $(call strip_source_dirs,$(LOCAL_ONLY))
+	LOCAL_ONLY_ENABLED = 1
+endif
+LOCAL_ONLY_O := $(BUILD_DIR)$(LOCAL_ONLY_C:%.c=%.o)
+
 OTHER_SOURCES_CONVERTED := $(call strip_source_dirs,$(OTHER_SOURCES))
 
 # List all the sources relative to one of SOURCE_DIRS
@@ -235,7 +247,9 @@ SOURCES = neuron/c_main.c \
           neuron/population_table/population_table_$(POPULATION_TABLE_IMPL)_impl.c \
           $(NEURON_MODEL) $(SYNAPSE_DYNAMICS) $(WEIGHT_DEPENDENCE) \
           $(TIMING_DEPENDENCE) $(SYNAPTOGENESIS_DYNAMICS) \
-          $(PARTNER_SELECTION) $(FORMATION) $(ELIMINATION) $(OTHER_SOURCES_CONVERTED)
+          $(PARTNER_SELECTION) $(FORMATION) $(ELIMINATION) \
+          $(LOCAL_ONLY) \
+          $(OTHER_SOURCES_CONVERTED)
 
 include $(SPINN_DIRS)/make/local.mk
 
@@ -256,6 +270,12 @@ $(BUILD_DIR)neuron/synapses.o: $(MODIFIED_DIR)neuron/synapses.c
 
 $(BUILD_DIR)neuron/direct_synapses.o: $(MODIFIED_DIR)neuron/direct_synapses.c
 	#direct_synapses.c
+	-mkdir -p $(dir $@)
+	$(SYNAPSE_TYPE_COMPILE) -o $@ $<
+
+
+$(LOCAL_ONLY_O): $(LOCAL_ONLY)
+	#local_only_X.c
 	-mkdir -p $(dir $@)
 	$(SYNAPSE_TYPE_COMPILE) -o $@ $<
 
@@ -337,6 +357,8 @@ $(ELIMINATION_O): $(ELIMINATION_C) $(SYNAPSE_TYPE_H)
 	-mkdir -p $(dir $@)
 	$(CC) -DLOG_LEVEL=$(PLASTIC_DEBUG) $(CFLAGS) \
 	        -include $(SYNAPSE_TYPE_H) -o $@ $<
+
+
 
 $(BUILD_DIR)neuron/neuron.o: $(MODIFIED_DIR)neuron/neuron.c $(NEURON_MODEL_H) \
                              $(SYNAPSE_TYPE_H)

@@ -186,7 +186,7 @@ static bool initialise(void) {
             c_main_store_provenance_data,
             data_specification_get_region(PROVENANCE_DATA_REGION, ds_regions));
 
-    if (!local_only_neurons_initialise(data_specification_get_region(
+    if (!local_only_initialise(data_specification_get_region(
             LOCAL_ONLY_REGION, ds_regions))){
         return false;
     }

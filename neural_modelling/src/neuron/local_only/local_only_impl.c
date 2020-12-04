@@ -1,6 +1,8 @@
 #include "local_only.h"
 #include "local_only_typedefs.h"
 #include <common/neuron-typedefs.h>
+#include <debug.h>
+
 
 static lc_weight_t* conv_kernel = NULL;
 static lc_shapes_t shapes = {0};
@@ -12,13 +14,13 @@ static uint32_t n_mapped = 0;
 bool local_only_initialise(address_t sdram_address){
     log_debug("CONV init.");
     // total incoming local-only connections data size
-    n_bytes = &((uint32_t*)sdram_address++);
+    n_bytes = *((uint32_t*)sdram_address++);
     if(n_bytes == 0){
         return true;
     }
 
     // how many elements are in a single connector data
-    uint32_t n_elem = &((uint32_t*)sdram_address);
+    uint32_t n_elem = *((uint32_t*)sdram_address);
 
     // shapes are 16-bit uints, hopefully enough for future too?
     uint16_t *p = ((lc_dim_t*)(sdram_address+1));

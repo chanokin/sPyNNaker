@@ -14,13 +14,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 APP = $(notdir $(CURDIR))
-
-NEURON_MODEL = $(NEURON_DIR)/neuron/models/neuron_model_lif_impl.c
-NEURON_MODEL_H = $(NEURON_DIR)/neuron/models/neuron_model_lif_impl.h
+LOCAL_ONLY = $(NEURON_DIR)/neuron/local_only/local_only_impl.c
+NEURON_MODEL = $(NEURON_DIR)/neuron/models/neuron_model_lif_conv_impl.c
+NEURON_MODEL_H = $(NEURON_DIR)/neuron/models/neuron_model_lif_conv_impl.h
 INPUT_TYPE_H = $(NEURON_DIR)/neuron/input_types/input_type_current.h
 NEURON_IMPL_H = $(NEURON_DIR)/neuron/implementations/neuron_impl_standard.h
 THRESHOLD_TYPE_H = $(NEURON_DIR)/neuron/threshold_types/threshold_type_static.h
-SYNAPSE_TYPE_H = $(NEURON_DIR)/neuron/synapse_types/synapse_types_exponential_impl.h
+SYNAPSE_TYPE_H = $(NEURON_DIR)/neuron/synapse_types/synapse_types_delta_conv_impl.h
 SYNAPSE_DYNAMICS = $(NEURON_DIR)/neuron/plasticity/synapse_dynamics_static_impl.c
 
 include ../neural_build.mk

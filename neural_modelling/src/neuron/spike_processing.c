@@ -23,7 +23,7 @@
 #include "synapses.h"
 #include "direct_synapses.h"
 #include "structural_plasticity/synaptogenesis_dynamics.h"
-#include "local_only.h"
+#include "local_only/local_only.h"
 #include <simulation.h>
 #include <debug.h>
 #include <common/in_spikes.h>
@@ -311,7 +311,7 @@ static void multicast_packet_received_callback(uint key, uint payload) {
     // cycle through the packet insertion
     for (uint count = payload; count > 0; count--) {
         if(local_only){
-            local_only_process_spikes(key);
+            local_only_process_spike(key);
             continue;
         }
 
