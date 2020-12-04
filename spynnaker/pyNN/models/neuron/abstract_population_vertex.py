@@ -35,7 +35,6 @@ from spinn_front_end_common.utilities.constants import (
 from spinn_front_end_common.interface.profiling import profile_utils
 from spynnaker.pyNN.models.common import (
     AbstractSpikeRecordable, AbstractNeuronRecordable, NeuronRecorder)
-from spynnaker.pyNN.utilities import bit_field_utilities
 from spynnaker.pyNN.models.abstract_models import (
     AbstractPopulationInitializable, AbstractAcceptsIncomingSynapses,
     AbstractPopulationSettable, AbstractContainsUnits)
@@ -43,7 +42,6 @@ from spynnaker.pyNN.exceptions import InvalidParameterType
 from spynnaker.pyNN.utilities.ranged import (
     SpynnakerRangeDictionary, SpynnakerRangedList)
 from .synaptic_manager import SynapticManager
-from .population_machine_vertex import PopulationMachineVertex
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +58,7 @@ class AbstractPopulationVertex(
         AbstractPopulationInitializable, AbstractPopulationSettable,
         AbstractChangableAfterRun, AbstractAcceptsIncomingSynapses,
         ProvidesKeyToAtomMappingImpl, AbstractCanReset):
-    """ Underlying vertex model for Neural Populations.
+    """ Underlying vertex model for Neural Populations.\
         Not actually abstract.
     """
 
@@ -78,7 +76,6 @@ class AbstractPopulationVertex(
         "__synapse_manager",
         "__time_between_requests",
         "__units",
-        "__n_subvertices",
         "__n_data_specs",
         "__initial_state_variables",
         "__has_reset_last",
@@ -101,7 +98,7 @@ class AbstractPopulationVertex(
     def __init__(
             self, n_neurons, label, constraints, max_atoms_per_core,
             spikes_per_second, ring_buffer_sigma, incoming_spike_buffer_size,
-            neuron_impl, pynn_model, drop_late_spikes):
+            neuron_impl, pynn_model, drop_late_spikes, splitter):
         """
         :param int n_neurons: The number of neurons in the population
         :param str label: The label on the population
@@ -112,8 +109,8 @@ class AbstractPopulationVertex(
         :param spikes_per_second: Expected spike rate
         :type spikes_per_second: float or None
         :param ring_buffer_sigma:
-            How many SD above the mean to go for upper bound of ring buffer \
-            size; a good starting choice is 5.0. Given length of simulation \
+            How many SD above the mean to go for upper bound of ring buffer
+            size; a good starting choice is 5.0. Given length of simulation
             we can set this for approximate number of saturation events.
         :type ring_buffer_sigma: float or None
         :param incoming_spike_buffer_size:
@@ -123,14 +120,16 @@ class AbstractPopulationVertex(
             The (Python side of the) implementation of the neurons themselves.
         :param AbstractPyNNNeuronModel pynn_model:
             The PyNN neuron model that this vertex is working on behalf of.
+        :param splitter: splitter object
+        :type splitter: None or
+            ~pacman.model.partitioner_splitters.abstract_splitters.AbstractSplitterCommon
         """
 
         # pylint: disable=too-many-arguments, too-many-locals
         TDMAAwareApplicationVertex.__init__(
-            self, label, constraints, max_atoms_per_core)
+            self, label, constraints, max_atoms_per_core, splitter)
 
-        self.__n_atoms = int(n_neurons)
-        self.__n_subvertices = 0
+        self.__n_atoms = self.round_n_atoms(n_neurons, "n_neurons")
         self.__n_data_specs = 0
 
         # buffer data
@@ -180,6 +179,12 @@ class AbstractPopulationVertex(
     def pynn_model(self):
         return self.__pynn_model
 
+    @overrides(AbstractNeuronRecordable.get_expected_n_rows)
+    def get_expected_n_rows(
+            self, n_machine_time_steps, sampling_rate, vertex, variable):
+        return self.__neuron_recorder.expected_rows_for_a_run_time(
+            n_machine_time_steps, sampling_rate)
+
     @property
     @overrides(TDMAAwareApplicationVertex.n_atoms)
     def n_atoms(self):
@@ -206,7 +211,7 @@ class AbstractPopulationVertex(
         return self.__n_profile_samples
 
     @property
-    def neuron_recorder(self):  # for testing only
+    def neuron_recorder(self):
         return self.__neuron_recorder
 
     @property
@@ -235,31 +240,6 @@ class AbstractPopulationVertex(
         # Reset things that need resetting
         self.__has_reset_last = False
         self.__updated_state_variables.clear()
-
-    @inject_items({
-        "graph": "MemoryApplicationGraph"
-    })
-    @overrides(
-        TDMAAwareApplicationVertex.get_resources_used_by_atoms,
-        additional_arguments={"graph"}
-    )
-    def get_resources_used_by_atoms(self, vertex_slice, graph):
-        # pylint: disable=arguments-differ
-
-        variableSDRAM = self.__neuron_recorder.get_variable_sdram_usage(
-            vertex_slice)
-        constantSDRAM = ConstantSDRAM(
-            self._get_sdram_usage_for_atoms(vertex_slice, graph))
-
-        # set resources required from this object
-        container = ResourceContainer(
-            sdram=variableSDRAM + constantSDRAM,
-            dtcm=DTCMResource(self.get_dtcm_usage_for_atoms(vertex_slice)),
-            cpu_cycles=CPUCyclesPerTickResource(
-                self.get_cpu_usage_for_atoms(vertex_slice)))
-
-        # return the total resources.
-        return container
 
     @property
     @overrides(AbstractChangableAfterRun.requires_mapping)
@@ -325,24 +305,6 @@ class AbstractPopulationVertex(
             self.BYTES_TILL_START_OF_GLOBAL_PARAMETERS +
             self.tdma_sdram_size_in_bytes +
             self.__neuron_impl.get_sdram_usage_in_bytes(n_atoms))
-
-    def _get_sdram_usage_for_atoms(self, vertex_slice, graph):
-        sdram_requirement = (
-            SYSTEM_BYTES_REQUIREMENT +
-            self.get_sdram_usage_for_neuron_params(vertex_slice) +
-            self.neuron_recorder.get_static_sdram_usage(vertex_slice) +
-            PopulationMachineVertex.get_provenance_data_size(
-                len(PopulationMachineVertex.EXTRA_PROVENANCE_DATA_ENTRIES)) +
-            self.__synapse_manager.get_sdram_usage_in_bytes(
-                vertex_slice, graph, self) +
-            profile_utils.get_profile_region_size(
-                self.__n_profile_samples) +
-            bit_field_utilities.get_estimated_sdram_for_bit_field_region(
-                graph, self) +
-            bit_field_utilities.get_estimated_sdram_for_key_region(
-                graph, self) +
-            bit_field_utilities.exact_sdram_for_bit_field_builder_region())
-        return sdram_requirement
 
     @staticmethod
     def __copy_ranged_dict(source, merge=None, merge_keys=None):
@@ -459,17 +421,6 @@ class AbstractPopulationVertex(
         raise KeyError("No variable {} found in {}".format(
             variable, self.__neuron_impl.model_name))
 
-    def _get_binary_file_name(self):
-
-        # Split binary name into title and extension
-        binary_title, binary_extension = os.path.splitext(
-            self.__neuron_impl.binary_name)
-
-        # Reunite title and extension and return
-        return (binary_title +
-                self.__synapse_manager.vertex_executable_suffix +
-                binary_extension)
-
     @overrides(AbstractPopulationInitializable.get_initial_value)
     def get_initial_value(self, variable, selector=None):
         parameter = self._get_parameter(variable)
@@ -575,10 +526,6 @@ class AbstractPopulationVertex(
     def clear_connection_cache(self):
         self.__synapse_manager.clear_connection_cache()
 
-    def get_maximum_delay_supported_in_ms(self, machine_time_step):
-        return self.__synapse_manager.get_maximum_delay_supported_in_ms(
-            machine_time_step)
-
     @overrides(AbstractProvidesOutgoingPartitionConstraints.
                get_outgoing_partition_constraints)
     def get_outgoing_partition_constraints(self, partition):
@@ -635,11 +582,11 @@ class AbstractPopulationVertex(
     def describe(self):
         """ Get a human-readable description of the cell or synapse type.
 
-        The output may be customised by specifying a different template\
-        together with an associated template engine\
+        The output may be customised by specifying a different template
+        together with an associated template engine
         (see :py:mod:`pyNN.descriptions`).
 
-        If template is None, then a dictionary containing the template context\
+        If template is None, then a dictionary containing the template context
         will be returned.
 
         :rtype: dict(str, ...)
@@ -678,4 +625,4 @@ class AbstractPopulationVertex(
             self.__change_requires_data_generation = True
             for vertex in self.machine_vertices:
                 if isinstance(vertex, AbstractRewritesDataSpecification):
-                    vertex.set_reload_required(False)
+                    vertex.set_reload_required(True)
