@@ -27,7 +27,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="spynnaker.pyNN.model_binaries package" href="spynnaker.pyNN.model_binaries.html" />
+    <link rel="next" title="spynnaker.pyNN.extra_algorithms.splitter_components package" href="spynnaker.pyNN.extra_algorithms.splitter_components.html" />
     <link rel="prev" title="spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link package" href="spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link.html" /> 
   </head>
   <body role="document">
@@ -41,7 +41,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="spynnaker.pyNN.model_binaries.html" title="spynnaker.pyNN.model_binaries package"
+          <a href="spynnaker.pyNN.extra_algorithms.splitter_components.html" title="spynnaker.pyNN.extra_algorithms.splitter_components package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link.html" title="spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link package"
@@ -57,14 +57,16 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">spynnaker.pyNN.extra_algorithms package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-connection-holder-finisher-module">spynnaker.pyNN.extra_algorithms.connection_holder_finisher module</a></li>
+<li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-delay-support-adder-module">spynnaker.pyNN.extra_algorithms.delay_support_adder module</a></li>
 <li><a class="reference internal" href="#module-spynnaker.pyNN.extra_algorithms.graph_edge_weight_updater">spynnaker.pyNN.extra_algorithms.graph_edge_weight_updater module</a></li>
 <li><a class="reference internal" href="#module-spynnaker.pyNN.extra_algorithms.on_chip_bit_field_generator">spynnaker.pyNN.extra_algorithms.on_chip_bit_field_generator module</a></li>
 <li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-redundant-packet-count-report-module">spynnaker.pyNN.extra_algorithms.redundant_packet_count_report module</a></li>
 <li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-spynnaker-connection-holder-generations-module">spynnaker.pyNN.extra_algorithms.spynnaker_connection_holder_generations module</a></li>
-<li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-spynnaker-data-specification-writer-module">spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer module</a></li>
-<li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-spynnaker-machine-bit-field-router-compressor-module">spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor module</a></li>
+<li><a class="reference internal" href="#module-spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer">spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer module</a></li>
+<li><a class="reference internal" href="#module-spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor">spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor module</a></li>
 <li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-spynnaker-neuron-network-specification-report-module">spynnaker.pyNN.extra_algorithms.spynnaker_neuron_network_specification_report module</a></li>
 <li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-spynnaker-synaptic-matrix-report-module">spynnaker.pyNN.extra_algorithms.spynnaker_synaptic_matrix_report module</a></li>
 <li><a class="reference internal" href="#spynnaker-pynn-extra-algorithms-synapse-expander-module">spynnaker.pyNN.extra_algorithms.synapse_expander module</a></li>
@@ -77,8 +79,8 @@
   <p class="topless"><a href="spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link.html"
                         title="previous chapter">spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="spynnaker.pyNN.model_binaries.html"
-                        title="next chapter">spynnaker.pyNN.model_binaries package</a></p>
+  <p class="topless"><a href="spynnaker.pyNN.extra_algorithms.splitter_components.html"
+                        title="next chapter">spynnaker.pyNN.extra_algorithms.splitter_components package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -106,11 +108,32 @@
             
   <div class="section" id="spynnaker-pynn-extra-algorithms-package">
 <h1>spynnaker.pyNN.extra_algorithms package<a class="headerlink" href="#spynnaker-pynn-extra-algorithms-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html">spynnaker.pyNN.extra_algorithms.splitter_components package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#module-spynnaker.pyNN.extra_algorithms.splitter_components.abstract_spynnaker_splitter_delay">spynnaker.pyNN.extra_algorithms.splitter_components.abstract_spynnaker_splitter_delay module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#spynnaker-pynn-extra-algorithms-splitter-components-splitter-abstract-pop-vertex-slice-module">spynnaker.pyNN.extra_algorithms.splitter_components.splitter_abstract_pop_vertex_slice module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#spynnaker-pynn-extra-algorithms-splitter-components-splitter-delay-vertex-slice-module">spynnaker.pyNN.extra_algorithms.splitter_components.splitter_delay_vertex_slice module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#module-spynnaker.pyNN.extra_algorithms.splitter_components.spynnaker_splitter_partitioner">spynnaker.pyNN.extra_algorithms.splitter_components.spynnaker_splitter_partitioner module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#spynnaker-pynn-extra-algorithms-splitter-components-spynnaker-splitter-selector-module">spynnaker.pyNN.extra_algorithms.splitter_components.spynnaker_splitter_selector module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#spynnaker-pynn-extra-algorithms-splitter-components-spynnaker-splitter-slice-legacy-module">spynnaker.pyNN.extra_algorithms.splitter_components.spynnaker_splitter_slice_legacy module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spynnaker.pyNN.extra_algorithms.splitter_components.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="spynnaker-pynn-extra-algorithms-connection-holder-finisher-module">
 <h2>spynnaker.pyNN.extra_algorithms.connection_holder_finisher module<a class="headerlink" href="#spynnaker-pynn-extra-algorithms-connection-holder-finisher-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="spynnaker-pynn-extra-algorithms-delay-support-adder-module">
+<h2>spynnaker.pyNN.extra_algorithms.delay_support_adder module<a class="headerlink" href="#spynnaker-pynn-extra-algorithms-delay-support-adder-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-spynnaker.pyNN.extra_algorithms.graph_edge_weight_updater">
 <span id="spynnaker-pynn-extra-algorithms-graph-edge-weight-updater-module"></span><h2>spynnaker.pyNN.extra_algorithms.graph_edge_weight_updater module<a class="headerlink" href="#module-spynnaker.pyNN.extra_algorithms.graph_edge_weight_updater" title="Permalink to this headline">¶</a></h2>
@@ -159,11 +182,37 @@
 <div class="section" id="spynnaker-pynn-extra-algorithms-spynnaker-connection-holder-generations-module">
 <h2>spynnaker.pyNN.extra_algorithms.spynnaker_connection_holder_generations module<a class="headerlink" href="#spynnaker-pynn-extra-algorithms-spynnaker-connection-holder-generations-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="spynnaker-pynn-extra-algorithms-spynnaker-data-specification-writer-module">
-<h2>spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer module<a class="headerlink" href="#spynnaker-pynn-extra-algorithms-spynnaker-data-specification-writer-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer">
+<span id="spynnaker-pynn-extra-algorithms-spynnaker-data-specification-writer-module"></span><h2>spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer module<a class="headerlink" href="#module-spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer.SpynnakerDataSpecificationWriter">
+<em class="property">class </em><code class="descclassname">spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer.</code><code class="descname">SpynnakerDataSpecificationWriter</code><a class="reference internal" href="_modules/spynnaker/pyNN/extra_algorithms/spynnaker_data_specification_writer.html#SpynnakerDataSpecificationWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.extra_algorithms.spynnaker_data_specification_writer.SpynnakerDataSpecificationWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">spinn_front_end_common.interface.interface_functions.graph_data_specification_writer.GraphDataSpecificationWriter</span></code></p>
+<p>Executes data specification generation for sPyNNaker</p>
+</dd></dl>
+
 </div>
-<div class="section" id="spynnaker-pynn-extra-algorithms-spynnaker-machine-bit-field-router-compressor-module">
-<h2>spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor module<a class="headerlink" href="#spynnaker-pynn-extra-algorithms-spynnaker-machine-bit-field-router-compressor-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor">
+<span id="spynnaker-pynn-extra-algorithms-spynnaker-machine-bit-field-router-compressor-module"></span><h2>spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor module<a class="headerlink" href="#module-spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor">
+<em class="property">class </em><code class="descclassname">spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.</code><code class="descname">AbstractMachineBitFieldRouterCompressor</code><a class="reference internal" href="_modules/spynnaker/pyNN/extra_algorithms/spynnaker_machine_bit_field_router_compressor.html#AbstractMachineBitFieldRouterCompressor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Adds in regeneration of synaptic matrices to bitfield compression.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.SpynnakerMachineBitFieldPairRouterCompressor">
+<em class="property">class </em><code class="descclassname">spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.</code><code class="descname">SpynnakerMachineBitFieldPairRouterCompressor</code><a class="reference internal" href="_modules/spynnaker/pyNN/extra_algorithms/spynnaker_machine_bit_field_router_compressor.html#SpynnakerMachineBitFieldPairRouterCompressor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.SpynnakerMachineBitFieldPairRouterCompressor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor" title="spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor"><code class="xref py py-class docutils literal"><span class="pre">spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.SpynnakerMachineBitFieldUnorderedRouterCompressor">
+<em class="property">class </em><code class="descclassname">spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.</code><code class="descname">SpynnakerMachineBitFieldUnorderedRouterCompressor</code><a class="reference internal" href="_modules/spynnaker/pyNN/extra_algorithms/spynnaker_machine_bit_field_router_compressor.html#SpynnakerMachineBitFieldUnorderedRouterCompressor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.SpynnakerMachineBitFieldUnorderedRouterCompressor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor" title="spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor"><code class="xref py py-class docutils literal"><span class="pre">spynnaker.pyNN.extra_algorithms.spynnaker_machine_bit_field_router_compressor.AbstractMachineBitFieldRouterCompressor</span></code></a></p>
+</dd></dl>
+
 </div>
 <div class="section" id="spynnaker-pynn-extra-algorithms-spynnaker-neuron-network-specification-report-module">
 <h2>spynnaker.pyNN.extra_algorithms.spynnaker_neuron_network_specification_report module<a class="headerlink" href="#spynnaker-pynn-extra-algorithms-spynnaker-neuron-network-specification-report-module" title="Permalink to this headline">¶</a></h2>
@@ -195,7 +244,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="spynnaker.pyNN.model_binaries.html" title="spynnaker.pyNN.model_binaries package"
+          <a href="spynnaker.pyNN.extra_algorithms.splitter_components.html" title="spynnaker.pyNN.extra_algorithms.splitter_components package"
              >next</a> |</li>
         <li class="right" >
           <a href="spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link.html" title="spynnaker.pyNN.external_devices_models.push_bot.push_bot_spinnaker_link package"

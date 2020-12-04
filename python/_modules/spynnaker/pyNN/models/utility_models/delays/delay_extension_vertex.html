@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>spynnaker.pyNN.models.utility_models.delays.delay_extension_vertex &#8212; sPyNNaker  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">sPyNNaker  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for spynnaker.pyNN.models.utility_models.delays.delay_extension_vertex</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2017-2019 The University of Manchester</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">spinn_utilities.overrides</span> <span class="kn">import</span> <span class="n">overrides</span>
+<span class="kn">from</span> <span class="nn">pacman.model.constraints.key_allocator_constraints</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ContiguousKeyRangeContraint</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">spinn_front_end_common.abstract_models</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AbstractProvidesOutgoingPartitionConstraints</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">spinn_front_end_common.abstract_models.impl</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TDMAAwareApplicationVertex</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">spynnaker.pyNN.exceptions</span> <span class="kn">import</span> <span class="n">DelayExtensionException</span>
+<span class="kn">from</span> <span class="nn">.delay_block</span> <span class="kn">import</span> <span class="n">DelayBlock</span>
+<span class="kn">from</span> <span class="nn">spynnaker.pyNN.models.abstract_models</span> <span class="kn">import</span> <span class="n">AbstractHasDelayStages</span>
+
+<span class="kn">from</span> <span class="nn">.delay_generator_data</span> <span class="kn">import</span> <span class="n">DelayGeneratorData</span>
+<span class="kn">from</span> <span class="nn">spynnaker.pyNN.utilities.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">POP_TABLE_MAX_ROW_LENGTH</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DelayExtensionVertex"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex">[docs]</a><span class="k">class</span> <span class="nc">DelayExtensionVertex</span><span class="p">(</span>
+        <span class="n">TDMAAwareApplicationVertex</span><span class="p">,</span> <span class="n">AbstractHasDelayStages</span><span class="p">,</span>
+        <span class="n">AbstractProvidesOutgoingPartitionConstraints</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provide delays to incoming spikes in multiples of the maximum delays\</span>
+<span class="sd">        of a neuron (typically 16 or 32)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;__delay_blocks&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__delay_per_stage&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__max_delay_needed_to_support&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__n_atoms&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__n_delay_stages&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__source_vertex&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__delay_generator_data&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__n_data_specs&quot;</span><span class="p">]</span>
+
+    <span class="c1"># this maps to what master assumes</span>
+    <span class="n">MAX_TICKS_POSSIBLE_TO_SUPPORT</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">16</span>
+    <span class="n">SAFETY_FACTOR</span> <span class="o">=</span> <span class="mi">5000</span>
+    <span class="n">MAX_DTCM_AVAILABLE</span> <span class="o">=</span> <span class="mi">59756</span> <span class="o">-</span> <span class="n">SAFETY_FACTOR</span>
+
+    <span class="n">MISMATCHED_DELAY_PER_STAGE_ERROR_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The delay per stage is already set to </span><span class="si">{}</span><span class="s2">, and therefore </span><span class="si">{}</span><span class="s2"> is not &quot;</span>
+        <span class="s2">&quot;yet feasible. Please report it to Spinnaker user mail list.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">,</span> <span class="n">delay_per_stage</span><span class="p">,</span> <span class="n">max_delay_to_support</span><span class="p">,</span>
+            <span class="n">source_vertex</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DelayExtension&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param int n_neurons: the number of neurons</span>
+<span class="sd">        :param int delay_per_stage: the delay per stage</span>
+<span class="sd">        :param int max_delay_to_support: the max delay this will cover</span>
+<span class="sd">        :param ~pacman.model.graphs.application.ApplicationVertex \</span>
+<span class="sd">                source_vertex:</span>
+<span class="sd">            where messages are coming from</span>
+
+<span class="sd">        :param iterable(~pacman.model.constraints.AbstractConstraint) \</span>
+<span class="sd">                constraints:</span>
+<span class="sd">            the vertex constraints</span>
+<span class="sd">        :param str label: the vertex label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=too-many-arguments</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DelayExtensionVertex</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">label</span><span class="p">,</span> <span class="n">constraints</span><span class="p">,</span> <span class="n">POP_TABLE_MAX_ROW_LENGTH</span><span class="p">,</span> <span class="n">splitter</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__source_vertex</span> <span class="o">=</span> <span class="n">source_vertex</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__n_delay_stages</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__max_delay_needed_to_support</span> <span class="o">=</span> <span class="n">max_delay_to_support</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span> <span class="o">=</span> <span class="n">delay_per_stage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__delay_generator_data</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__n_data_specs</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_new_n_delay_stages_and_delay_per_stage</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__max_delay_needed_to_support</span><span class="p">)</span>
+
+        <span class="c1"># atom store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__n_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">round_n_atoms</span><span class="p">(</span><span class="n">n_neurons</span><span class="p">,</span> <span class="s2">&quot;n_neurons&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Dictionary of vertex_slice -&gt; delay block for data specification</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__delay_blocks</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__n_atoms</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DelayExtensionVertex.get_max_delay_ticks_supported"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.get_max_delay_ticks_supported">[docs]</a>    <span class="k">def</span> <span class="nf">get_max_delay_ticks_supported</span><span class="p">(</span><span class="n">delay_ticks_at_post_vertex</span><span class="p">):</span>
+        <span class="n">max_slots</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span>
+            <span class="n">DelayExtensionVertex</span><span class="o">.</span><span class="n">MAX_TICKS_POSSIBLE_TO_SUPPORT</span> <span class="o">/</span>
+            <span class="n">delay_ticks_at_post_vertex</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">max_slots</span> <span class="o">*</span> <span class="n">delay_ticks_at_post_vertex</span></div>
+
+    <span class="nd">@property</span>
+    <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractHasDelayStages</span><span class="o">.</span><span class="n">n_delay_stages</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">n_delay_stages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; The maximum number of delay stages required by any connection\</span>
+<span class="sd">            out of this delay extension vertex</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__n_delay_stages</span>
+
+<div class="viewcode-block" id="DelayExtensionVertex.set_new_n_delay_stages_and_delay_per_stage"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.set_new_n_delay_stages_and_delay_per_stage">[docs]</a>    <span class="k">def</span> <span class="nf">set_new_n_delay_stages_and_delay_per_stage</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">new_post_vertex_n_delay</span><span class="p">,</span> <span class="n">new_max_delay</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_post_vertex_n_delay</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DelayExtensionException</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">MISMATCHED_DELAY_PER_STAGE_ERROR_MESSAGE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span><span class="p">,</span> <span class="n">new_post_vertex_n_delay</span><span class="p">))</span>
+
+        <span class="n">new_n_stages</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">new_max_delay</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span><span class="p">)</span> <span class="o">/</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">new_n_stages</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__n_delay_stages</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__n_delay_stages</span> <span class="o">=</span> <span class="n">new_n_stages</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">delay_per_stage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">source_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :rtype: ~pacman.model.graphs.application.ApplicationVertex</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__source_vertex</span>
+
+<div class="viewcode-block" id="DelayExtensionVertex.add_delays"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.add_delays">[docs]</a>    <span class="k">def</span> <span class="nf">add_delays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">,</span> <span class="n">source_ids</span><span class="p">,</span> <span class="n">stages</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add delayed connections for a given vertex slice</span>
+
+<span class="sd">        :param ~pacman.model.graphs.common.Slice vertex_slice:</span>
+<span class="sd">        :param list(int) source_ids:</span>
+<span class="sd">        :param list(int) stages:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">vertex_slice</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_blocks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__delay_blocks</span><span class="p">[</span><span class="n">vertex_slice</span><span class="p">]</span> <span class="o">=</span> <span class="n">DelayBlock</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__n_delay_stages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="n">stage</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_ids</span><span class="p">,</span> <span class="n">stages</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__delay_blocks</span><span class="p">[</span><span class="n">vertex_slice</span><span class="p">]</span><span class="o">.</span><span class="n">add_delay</span><span class="p">(</span><span class="n">source_id</span><span class="p">,</span> <span class="n">stage</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DelayExtensionVertex.delay_blocks_for"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.delay_blocks_for">[docs]</a>    <span class="k">def</span> <span class="nf">delay_blocks_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">vertex_slice</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_blocks</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_blocks</span><span class="p">[</span><span class="n">vertex_slice</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DelayBlock</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__n_delay_stages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_per_stage</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DelayExtensionVertex.add_generator_data"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.add_generator_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_generator_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">max_row_n_synapses</span><span class="p">,</span> <span class="n">max_delayed_row_n_synapses</span><span class="p">,</span> <span class="n">pre_slices</span><span class="p">,</span>
+            <span class="n">post_slices</span><span class="p">,</span> <span class="n">pre_vertex_slice</span><span class="p">,</span> <span class="n">post_vertex_slice</span><span class="p">,</span>
+            <span class="n">synapse_information</span><span class="p">,</span> <span class="n">max_stage</span><span class="p">,</span> <span class="n">max_delay_per_stage</span><span class="p">,</span>
+            <span class="n">machine_time_step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add delays for a connection to be generated</span>
+
+<span class="sd">        :param int max_row_n_synapses:</span>
+<span class="sd">            The maximum number of synapses in a row</span>
+<span class="sd">        :param int max_delayed_row_n_synapses:</span>
+<span class="sd">            The maximum number of synapses in a delay row</span>
+<span class="sd">        :param list(~pacman.model.graphs.common.Slice) pre_slices:</span>
+<span class="sd">            The list of slices of the pre application vertex</span>
+<span class="sd">        :param list(~pacman.model.graphs.common.Slice) post_slices:</span>
+<span class="sd">            The list of slices of the post application vertex</span>
+<span class="sd">        :param ~pacman.model.graphs.common.Slice pre_vertex_slice:</span>
+<span class="sd">            The slice of the pre applcation vertex currently being</span>
+<span class="sd">            considered</span>
+<span class="sd">        :param ~pacman.model.graphs.common.Slice post_vertex_slice:</span>
+<span class="sd">            The slice of the post application vertex currently being</span>
+<span class="sd">            considered</span>
+<span class="sd">        :param ~spynnaker.pyNN.models.neural_projections.SynapseInformation \</span>
+<span class="sd">                synapse_information:</span>
+<span class="sd">            The synapse information of the connection</span>
+<span class="sd">        :param synapse_information:</span>
+<span class="sd">        :type synapse_information: \</span>
+<span class="sd">            ~spynnaker.pyNN.models.neural_projections.SynapseInformation</span>
+<span class="sd">        :param int max_stage:</span>
+<span class="sd">            The maximum delay stage</span>
+<span class="sd">        :param int machine_time_step: sim machine time step</span>
+<span class="sd">        :param int max_delay_per_stage: max delay per stage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__delay_generator_data</span><span class="p">[</span><span class="n">pre_vertex_slice</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">DelayGeneratorData</span><span class="p">(</span>
+                <span class="n">max_row_n_synapses</span><span class="p">,</span> <span class="n">max_delayed_row_n_synapses</span><span class="p">,</span>
+                <span class="n">pre_slices</span><span class="p">,</span> <span class="n">post_slices</span><span class="p">,</span>
+                <span class="n">pre_vertex_slice</span><span class="p">,</span> <span class="n">post_vertex_slice</span><span class="p">,</span>
+                <span class="n">synapse_information</span><span class="p">,</span> <span class="n">max_stage</span><span class="p">,</span> <span class="n">max_delay_per_stage</span><span class="p">,</span>
+                <span class="n">machine_time_step</span><span class="p">))</span></div>
+
+    <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractProvidesOutgoingPartitionConstraints</span><span class="o">.</span>
+               <span class="n">get_outgoing_partition_constraints</span><span class="p">)</span>
+<div class="viewcode-block" id="DelayExtensionVertex.get_outgoing_partition_constraints"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.get_outgoing_partition_constraints">[docs]</a>    <span class="k">def</span> <span class="nf">get_outgoing_partition_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partition</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">ContiguousKeyRangeContraint</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="DelayExtensionVertex.gen_on_machine"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.gen_on_machine">[docs]</a>    <span class="k">def</span> <span class="nf">gen_on_machine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Determine if the given slice needs to be generated on the machine</span>
+
+<span class="sd">        :param ~pacman.model.graphs.common.Slice vertex_slice:</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">vertex_slice</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_generator_data</span></div>
+
+<div class="viewcode-block" id="DelayExtensionVertex.delay_generator_data"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.utility_models.delays.html#spynnaker.pyNN.models.utility_models.delays.DelayExtensionVertex.delay_generator_data">[docs]</a>    <span class="k">def</span> <span class="nf">delay_generator_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__delay_generator_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">vertex_slice</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">sPyNNaker  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014-2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>
