@@ -424,6 +424,10 @@
                 <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">all_pre_ids</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;uint32&#39;</span><span class="p">),</span>
                 <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">all_delays</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">all_weights</span><span class="p">))</span>
 
+    <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractConnector</span><span class="o">.</span><span class="n">get_delay_minimum</span><span class="p">)</span>
+<div class="viewcode-block" id="ConvolutionConnector.get_delay_minimum"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neural_projections.connectors.html#spynnaker.pyNN.models.neural_projections.connectors.ConvolutionConnector.get_delay_minimum">[docs]</a>    <span class="k">def</span> <span class="nf">get_delay_minimum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">synapse_info</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractConnector</span><span class="o">.</span><span class="n">get_delay_maximum</span><span class="p">)</span>
 <div class="viewcode-block" id="ConvolutionConnector.get_delay_maximum"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neural_projections.connectors.html#spynnaker.pyNN.models.neural_projections.connectors.ConvolutionConnector.get_delay_maximum">[docs]</a>    <span class="k">def</span> <span class="nf">get_delay_maximum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">synapse_info</span><span class="p">):</span>
         <span class="c1"># I think this is overestimated, but not by much</span>
