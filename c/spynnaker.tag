@@ -7255,6 +7255,151 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>synapse_types_delta_conv_impl.h</name>
+    <path>/github/workspace/neural_modelling/src/neuron/synapse_types/</path>
+    <filename>synapse__types__delta__conv__impl_8h.html</filename>
+    <includes id="neuron-typedefs_8h" name="neuron-typedefs.h" local="no" imported="no">common/neuron-typedefs.h</includes>
+    <includes id="synapse__types_8h" name="synapse_types.h" local="yes" imported="no">synapse_types.h</includes>
+    <class kind="struct">delta_params_t</class>
+    <class kind="struct">synapse_param_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>SYNAPSE_TYPE_BITS</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a6a9484756434bfd11111a5187ac8f4bb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SYNAPSE_TYPE_COUNT</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a5be51be8977cd8a1209495229df7c491</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NUM_EXCITATORY_RECEPTORS</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>ad780fbb2c43b8bbf0f73ff0561061174</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NUM_INHIBITORY_RECEPTORS</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a6dd746ed60f4dc54e7e604f239843aa6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
+      <name>synapse_delta_input_buffer_regions</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>afcd85a8de2d9bb81e9a220ddf1427841</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>EXCITATORY</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>INHIBITORY</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>EXCITATORY</name>
+      <anchorfile>synapse__types__delta__impl_8h.html</anchorfile>
+      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>INHIBITORY</name>
+      <anchorfile>synapse__types__delta__impl_8h.html</anchorfile>
+      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>delta_shaping</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>aefa7a5c5b0733fa2e07811fc7f4bf646</anchor>
+      <arglist>(delta_params_t *delta_param)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>synapse_types_shape_input</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a9252e28ec9676ec472c3128ff88c368d</anchor>
+      <arglist>(synapse_param_t *parameters)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>add_input_delta</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a4ad32bf38141af059e3de4e3d29fcb52</anchor>
+      <arglist>(delta_params_t *delta_param, input_t input)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>synapse_types_add_neuron_input</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>aebfa05875ff9afaae47150029297e087</anchor>
+      <arglist>(index_t synapse_type_index, synapse_param_t *parameters, input_t input)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static input_t *</type>
+      <name>synapse_types_get_excitatory_input</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a9fd01e5900cf9b627c21265d1a295602</anchor>
+      <arglist>(synapse_param_t *parameters)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static input_t *</type>
+      <name>synapse_types_get_inhibitory_input</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>ae75a451bed82759a5aaf19b930688771</anchor>
+      <arglist>(synapse_param_t *parameters)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static const char *</type>
+      <name>synapse_types_get_type_char</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a33e2109c0192ac4353dd6b2de44e1bed</anchor>
+      <arglist>(index_t synapse_type_index)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>synapse_types_print_input</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a4d26d3dff1703c07eca4dbf846a0946d</anchor>
+      <arglist>(synapse_param_t *parameters)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>synapse_types_print_parameters</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a8c173175ef5d71b07f3bc7d511cc11c7</anchor>
+      <arglist>(synapse_param_t *parameters)</arglist>
+    </member>
+    <member kind="variable">
+      <type>input_t</type>
+      <name>excitatory_response</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>ae1f301d101d1e4954564a57317649d50</anchor>
+      <arglist>[NUM_EXCITATORY_RECEPTORS]</arglist>
+    </member>
+    <member kind="variable">
+      <type>input_t</type>
+      <name>inhibitory_response</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>a5ef64fabd445e3721d6d59a083793b97</anchor>
+      <arglist>[NUM_INHIBITORY_RECEPTORS]</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>synapse_types_delta_impl.h</name>
     <path>/github/workspace/neural_modelling/src/neuron/synapse_types/</path>
     <filename>synapse__types__delta__impl_8h.html</filename>
@@ -7295,6 +7440,18 @@
       <name>synapse_delta_input_buffer_regions</name>
       <anchorfile>synapse__types__delta__impl_8h.html</anchorfile>
       <anchor>afcd85a8de2d9bb81e9a220ddf1427841</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>EXCITATORY</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>INHIBITORY</name>
+      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
+      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
