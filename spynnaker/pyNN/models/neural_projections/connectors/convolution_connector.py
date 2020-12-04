@@ -359,6 +359,10 @@ class ConvolutionConnector(AbstractConnector):
                 numpy.asarray(all_pre_ids, dtype='uint32'),
                 numpy.asarray(all_delays), numpy.asarray(all_weights))
 
+    @overrides(AbstractConnector.get_delay_minimum)
+    def get_delay_minimum(self, synapse_info):
+        return 1
+
     @overrides(AbstractConnector.get_delay_maximum)
     def get_delay_maximum(self, synapse_info):
         # I think this is overestimated, but not by much

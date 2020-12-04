@@ -205,7 +205,6 @@ class SynapticMatrix(object):
         return local_only, next_addr
 
 
-    def get_row_data(self):
     def get_row_data(self, machine_time_step):
         """ Generate the row data for a synaptic matrix from the description
 

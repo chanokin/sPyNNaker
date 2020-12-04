@@ -259,40 +259,6 @@ class AbstractPopulationVertex(
         self.__change_requires_mapping = False
         self.__change_requires_data_generation = False
 
-    @overrides(TDMAAwareApplicationVertex.create_machine_vertex)
-    def create_machine_vertex(
-            self, vertex_slice, resources_required, label=None,
-            constraints=None):
-        self.__n_subvertices += 1
-        return PopulationMachineVertex(
-            resources_required,
-            self.__neuron_recorder.recorded_ids_by_slice(vertex_slice),
-            label, constraints, self, vertex_slice,
-            self.__synapse_manager.drop_late_spikes,
-            self._get_binary_file_name())
-
-    def get_cpu_usage_for_atoms(self, vertex_slice):
-        """
-        :param ~pacman.model.graphs.common.Slice vertex_slice:
-        """
-        return (
-            _NEURON_BASE_N_CPU_CYCLES +
-            (_NEURON_BASE_N_CPU_CYCLES_PER_NEURON * vertex_slice.n_atoms) +
-            self.__neuron_recorder.get_n_cpu_cycles(vertex_slice.n_atoms) +
-            self.__neuron_impl.get_n_cpu_cycles(vertex_slice.n_atoms) +
-            self.__synapse_manager.get_n_cpu_cycles())
-
-    def get_dtcm_usage_for_atoms(self, vertex_slice):
-        """
-        :param ~pacman.model.graphs.common.Slice vertex_slice:
-        """
-        n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)
-        return (
-            _NEURON_BASE_DTCM_USAGE_IN_BYTES +
-            self.__neuron_impl.get_dtcm_usage_in_bytes(n_atoms) +
-            self.__neuron_recorder.get_dtcm_usage_in_bytes(vertex_slice) +
-            self.__synapse_manager.get_dtcm_usage_in_bytes())
-
     def get_sdram_usage_for_neuron_params(self, vertex_slice):
         """ Calculate the SDRAM usage for just the neuron parameters region.
 
