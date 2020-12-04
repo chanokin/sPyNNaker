@@ -26,16 +26,16 @@ bool local_only_initialise(address_t sdram_address){
     uint16_t *p = ((lc_dim_t*)(sdram_address+1));
     // todo: can this be done with just a single memset?
     // todo: does it matter?
-    shapes.pre.width = &p++;
-    shapes.pre.height = &p++;
-    shapes.post.width = &p++;
-    shapes.post.height = &p++;
-    shapes.padding.width = &p++;
-    shapes.padding.height = &p++;
-    shapes.strides.width = &p++;
-    shapes.strides.height = &p++;
-    shapes.kernel.width = &p++;
-    shapes.kernel.height = &p++;
+    shapes.pre.width = *p++;
+    shapes.pre.height = *p++;
+    shapes.post.width = *p++;
+    shapes.post.height = *p++;
+    shapes.padding.width = *p++;
+    shapes.padding.height = *p++;
+    shapes.strides.width = *p++;
+    shapes.strides.height = *p++;
+    shapes.kernel.width = *p++;
+    shapes.kernel.height = *p;
 
     // weight kernel data is also 16-bit
     lc_dim_t n_weights = shapes.kernel.width * shapes.kernel.height;
@@ -51,7 +51,7 @@ bool local_only_initialise(address_t sdram_address){
         rt_error(RTE_SWERR);
     }
 
-    mapped_post_ids = (lc_weight_t*)spin1_malloc(n_weights * 2);
+    mapped_post_ids = (lc_neuron_id_t*)spin1_malloc(n_weights * 2);
     if(mapped_post_ids == NULL){
         log_error("Could not initialise post IDs buffer");
         rt_error(RTE_SWERR);
@@ -59,9 +59,9 @@ bool local_only_initialise(address_t sdram_address){
 
     n_mapped = 0;
 
-    for(lc_dim_t r=0; r < shapes.kernel.heigth; r++){
+    for(lc_dim_t r=0; r < shapes.kernel.height; r++){
         for(lc_dim_t c=0; c < shapes.kernel.width; c++){
-            conv_kernel[r * shapes.kernel.width + c] = (lc_weight_t)(&p++);
+            conv_kernel[r * shapes.kernel.width + c] = (lc_weight_t)(*p++);
         }
     }
     sdram_address += n_elem;
@@ -69,58 +69,61 @@ bool local_only_initialise(address_t sdram_address){
     return true;
 }
 
-bool local_only_is_compatible(){
+bool local_only_is_compatible(void){
     return (n_bytes > 0);
 }
 
-void local_only_process_spike(lc_neuron_id_t key);
-
-lc_neuron_id_t local_only_coord_to_id(
-    lc_coord_t coord, lc_shapes_t _shapes, bool is_post){
-    lc_neuron_id_t id = 0;
-    if (is_post){
-        id = coord.row * _shapes.post.width + col;
-    } else {
-        id = coord.row * _shapes.pre.width + col;
-    }
-    return id;
+void local_only_process_spike(lc_neuron_id_t key){
 }
 
-lc_coord_t local_only_id_to_coord(
-    lc_neuron_id_t id, lc_shapes_t shapes, bool is_post){
-    lc_coord_t c = {0, 0};
+void local_only_coord_to_id(
+    lc_coord_t coord, lc_shapes_t _shapes, bool is_post,
+    lc_neuron_id_t *id){
     if (is_post){
-        c.row = id / shapes.post.width;
-        c.col = id % shapes.post.width;
+        *id = coord.row * _shapes.post.width + coord.col;
     } else {
-        c.row = id / shapes.pre.width;
-        c.col = id % shapes.pre.width;
+        *id = coord.row * _shapes.pre.width + coord.col;
     }
-    return c;
 }
 
-lc_coord_t local_only_map_pre_to_post(lc_coord_t pre, lc_shapes_t _shapes){
-    lc_coord_t c = {0, 0};
-    c.row = (pre.row - _shapes.kernel.height - 1 + 2 * _shapes.padding.height);
-    c.row /= _shapes.strides.height;
-    c.row += 1;
+void local_only_id_to_coord(
+    lc_neuron_id_t id, lc_shapes_t shapes, bool is_post,
+    lc_coord_t *coord){
 
-    c.col = (pre.col - _shapes.kernel.width - 1 + 2 * _shapes.padding.width);
-    c.col /= _shapes.strides.width;
-    c.col += 1;
+    if (is_post){
+        coord->row = id / shapes.post.width;
+        coord->col = id % shapes.post.width;
+    } else {
+        coord->row = id / shapes.pre.width;
+        coord->col = id % shapes.pre.width;
+    }
+}
 
-    return c;
+void local_only_map_pre_to_post(
+	lc_coord_t pre, lc_shapes_t _shapes,
+	lc_coord_t *post){
+    post->row = (pre.row - _shapes.kernel.height - 1 + 2 * _shapes.padding.height);
+    post->row /= _shapes.strides.height;
+    post->row += 1;
+
+    post->col = (pre.col - _shapes.kernel.width - 1 + 2 * _shapes.padding.width);
+    post->col /= _shapes.strides.width;
+    post->col += 1;
 }
 
 lc_dim_t local_only_get_ids_and_weights(
     lc_neuron_id_t pre_id, lc_shapes_t _shapes, lc_weight_t* kernel,
-    lc_neuron_id_t* post_ids, lc_weight_t* currents){
+    lc_neuron_id_t* post_ids, lc_weight_t* weights){
+
     lc_dim_t n_out = 0;
-    lc_coord_t post = local_only_map_pre_to_post(
-        local_only_id_to_coord(pre_id, _shapes, false), _shapes
-    );
+    lc_coord_t pre = {0, 0};
+    lc_coord_t post = {0, 0};
     lc_coord_t tmp = {0,0};
-    lc_coord_t half_k = {_shapes.kernel.width/2, _shapes.kernel.height/2};
+    lc_shape_t half_k = {_shapes.kernel.width/2, _shapes.kernel.height/2};
+
+    local_only_id_to_coord(pre_id, _shapes, false, &pre);
+    local_only_map_pre_to_post(pre, _shapes, &post);
+
     for(lc_dim_t r = -half_k.height; r <= half_k.height; r++){
         tmp.row = post.row + r;
         if((tmp.row < 0) || (tmp.row >= _shapes.post.height)){
@@ -131,9 +134,10 @@ lc_dim_t local_only_get_ids_and_weights(
             if((tmp.col < 0) || (tmp.row >= _shapes.post.width)){
                 continue;
             }
-            post_ids[n_out] = local_only_coord_to_id(tmp, _shapes, true);
+            local_only_coord_to_id(tmp, _shapes, true,
+                                   &post_ids[n_out]);
             weights[n_out] =
-                conv_kernel[(r + half_k.height) * _shapes.kernel.width +
+                kernel[(r + half_k.height) * _shapes.kernel.width +
                             (c + half_k.width)];
             n_out++;
         }

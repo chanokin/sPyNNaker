@@ -4,7 +4,7 @@
 #include <common/neuron-typedefs.h>
 
 typedef int16_t lc_weight_t;
-typedef uint16_t lc_dim_t;
+typedef int16_t lc_dim_t;
 typedef uint32_t lc_neuron_id_t;
 
 typedef struct {

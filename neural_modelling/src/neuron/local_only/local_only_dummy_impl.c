@@ -13,28 +13,30 @@ bool local_only_initialise(address_t sdram_address){
     return true;
 }
 
-bool local_only_is_compatible(){
+bool local_only_is_compatible(void){
     return false;
 }
 
 void local_only_process_spike(UNUSED lc_neuron_id_t key){
 }
 
-lc_neuron_id_t local_only_coord_to_id(
+void local_only_coord_to_id(
     UNUSED lc_coord_t coord,
     UNUSED lc_shapes_t _shapes,
-    UNUSED bool is_post){
-    return 0;
+    UNUSED bool is_post,
+    UNUSED lc_neuron_id_t *output){
 }
 
-lc_coord_t local_only_id_to_coord(
+void local_only_id_to_coord(
     UNUSED lc_neuron_id_t id,
     UNUSED lc_shapes_t shapes,
-    UNUSED bool is_post){
+    UNUSED bool is_post,
+    UNUSED lc_coord_t *output){
 }
 
-lc_coord_t local_only_map_pre_to_post(
-    UNUSED lc_coord_t pre, UNUSED lc_shapes_t _shapes){
+void local_only_map_pre_to_post(
+    UNUSED lc_coord_t pre, UNUSED lc_shapes_t _shapes,
+    UNUSED lc_coord_t *output){
 }
 
 lc_dim_t local_only_get_ids_and_weights(

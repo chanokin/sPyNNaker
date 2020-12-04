@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 MODELS = IF_curr_exp \
-         IF_curr_exp
+         IF_curr_exp_conv
 
 #          IF_cond_exp \
 #          IZK_curr_exp \
