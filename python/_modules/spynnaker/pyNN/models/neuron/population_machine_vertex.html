@@ -650,7 +650,8 @@
         <span class="n">local_only_compat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">pynn_model</span><span class="o">.</span><span class="n">local_only_compatible</span>
 
         <span class="c1"># pylint: disable=too-many-arguments</span>
-        <span class="n">n_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_per_neuron_type_n_atoms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_slice</span><span class="p">)</span>
+        <span class="n">n_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_slice</span><span class="o">.</span><span class="n">n_atoms</span>
+        <span class="c1"># n_atoms = self.get_per_neuron_type_n_atoms(self.vertex_slice)</span>
         <span class="n">spec</span><span class="o">.</span><span class="n">comment</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Writing Neuron Parameters for </span><span class="si">{}</span><span class="s2"> Neurons:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">n_atoms</span><span class="p">))</span>
 
@@ -682,7 +683,8 @@
         <span class="n">spec</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">incoming_spike_buffer_size</span><span class="p">)</span>
 
         <span class="c1"># Write the neuron parameters</span>
-        <span class="n">vslice</span> <span class="o">=</span> <span class="n">Slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">local_only_compat</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_slice</span>
+        <span class="c1"># vslice = Slice(0, 0) if local_only_compat else self.vertex_slice</span>
+        <span class="n">vslice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_slice</span>
         <span class="n">neuron_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">neuron_impl</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">parameters</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">app_vertex</span><span class="o">.</span><span class="n">state_variables</span><span class="p">,</span>
             <span class="n">vslice</span><span class="p">,</span> <span class="n">local_only_compat</span>

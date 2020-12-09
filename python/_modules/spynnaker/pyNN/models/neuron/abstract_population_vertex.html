@@ -331,7 +331,8 @@
 <span class="sd">            the slice of atoms.</span>
 <span class="sd">        :return: The SDRAM required for the neuron region</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">n_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_per_neuron_type_n_atoms</span><span class="p">(</span><span class="n">vertex_slice</span><span class="p">)</span>
+        <span class="c1"># n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)</span>
+        <span class="n">n_atoms</span> <span class="o">=</span> <span class="n">vertex_slice</span><span class="o">.</span><span class="n">n_atoms</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">BYTES_TILL_START_OF_GLOBAL_PARAMETERS</span> <span class="o">+</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tdma_sdram_size_in_bytes</span> <span class="o">+</span>

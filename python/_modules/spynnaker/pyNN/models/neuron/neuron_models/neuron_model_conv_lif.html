@@ -84,6 +84,8 @@
 <span class="kn">from</span> <span class="nn">.abstract_neuron_model</span> <span class="kn">import</span> <span class="n">AbstractNeuronModel</span>
 <span class="kn">from</span> <span class="nn">spynnaker.pyNN.models.neuron.implementations</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AbstractStandardNeuronComponent</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">spinn_front_end_common.utilities.constants</span> <span class="kn">import</span> <span class="n">BYTES_PER_WORD</span>
+
 
 <span class="n">V</span> <span class="o">=</span> <span class="s2">&quot;v&quot;</span>
 <span class="n">V_REST</span> <span class="o">=</span> <span class="s2">&quot;v_rest&quot;</span>
@@ -299,7 +301,16 @@
 
     <span class="nd">@tau_refrac</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">tau_refrac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau_refrac</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__tau_refrac</span> <span class="o">=</span> <span class="n">tau_refrac</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tau_refrac</span> <span class="o">=</span> <span class="n">tau_refrac</span>
+
+    <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractStandardNeuronComponent</span><span class="o">.</span><span class="n">get_sdram_usage_in_bytes</span><span class="p">)</span>
+<div class="viewcode-block" id="NeuronModelLeakyIntegrateAndFireConv.get_sdram_usage_in_bytes"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.neuron_models.html#spynnaker.pyNN.models.neuron.neuron_models.NeuronModelLeakyIntegrateAndFireConv.get_sdram_usage_in_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">get_sdram_usage_in_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">):</span>
+        <span class="c1"># voltage (v) and current (I)</span>
+        <span class="n">num_state_variables</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="c1"># v_rest, tau_m, cm, i_offset, v_reset, tau_refract</span>
+        <span class="n">num_shared_parameters</span> <span class="o">=</span> <span class="mi">6</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">num_state_variables</span> <span class="o">*</span> <span class="n">n_neurons</span> <span class="o">+</span> <span class="n">num_shared_parameters</span><span class="p">)</span> <span class="o">*</span> <span class="n">BYTES_PER_WORD</span></div></div>
 </pre></div>
 
           </div>
