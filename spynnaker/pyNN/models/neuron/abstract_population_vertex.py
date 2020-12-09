@@ -266,7 +266,8 @@ class AbstractPopulationVertex(
             the slice of atoms.
         :return: The SDRAM required for the neuron region
         """
-        n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)
+        # n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)
+        n_atoms = vertex_slice.n_atoms
         return (
             self.BYTES_TILL_START_OF_GLOBAL_PARAMETERS +
             self.tdma_sdram_size_in_bytes +

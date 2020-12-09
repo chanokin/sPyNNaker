@@ -16,6 +16,8 @@
 from spinn_utilities.overrides import overrides
 from data_specification.enums import DataType
 from .abstract_threshold_type import AbstractThresholdType
+from spynnaker.pyNN.models.neuron.implementations import (
+    AbstractStandardNeuronComponent)
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 
 V_THRESH = "v_thresh"
@@ -23,7 +25,7 @@ V_THRESH = "v_thresh"
 UNITS = {V_THRESH: "mV"}
 
 
-class ThresholdTypeStatic(AbstractThresholdType):
+class ThresholdTypeStaticConv(AbstractThresholdType):
     """ A threshold that is a static value.
     """
     __slots__ = ["__v_thresh"]
@@ -32,9 +34,14 @@ class ThresholdTypeStatic(AbstractThresholdType):
         """
         :param float v_thresh: :math:`V_{thresh}`
         """
-        super(ThresholdTypeStatic, self).__init__([
+        super(ThresholdTypeStaticConv, self).__init__([
             DataType.S1615])  # v_thresh
         self.__v_thresh = v_thresh
+
+        self.needs_dma_weights = False
+        self.requires_spike_mapping = True
+        self.extend_state_variables = True
+
 
     @overrides(AbstractThresholdType.get_n_cpu_cycles)
     def get_n_cpu_cycles(self, n_neurons):
@@ -80,3 +87,13 @@ class ThresholdTypeStatic(AbstractThresholdType):
     @v_thresh.setter
     def v_thresh(self, v_thresh):
         self.__v_thresh = v_thresh
+
+    @overrides(AbstractStandardNeuronComponent.get_sdram_usage_in_bytes)
+    def get_sdram_usage_in_bytes(self, n_neurons):
+        # none
+        # num_state_variables = 1
+        # threshold
+        num_shared_parameters = 1
+
+        return num_shared_parameters * BYTES_PER_WORD
+

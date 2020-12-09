@@ -19,7 +19,7 @@ from spynnaker.pyNN.models.neuron.neuron_models import (
     NeuronModelLeakyIntegrateAndFireConv)
 from spynnaker.pyNN.models.neuron.synapse_types import SynapseTypeDeltaConv
 from spynnaker.pyNN.models.neuron.input_types import InputTypeCurrent
-from spynnaker.pyNN.models.neuron.threshold_types import ThresholdTypeStatic
+from spynnaker.pyNN.models.neuron.threshold_types import ThresholdTypeStaticConv
 
 
 class IFCurrExpConv(AbstractPyNNNeuronModelStandard):
@@ -49,10 +49,11 @@ class IFCurrExpConv(AbstractPyNNNeuronModelStandard):
 
         synapse_type = SynapseTypeDeltaConv(isyn_exc, isyn_inh)
         input_type = InputTypeCurrent()
-        threshold_type = ThresholdTypeStatic(v_thresh)
+        threshold_type = ThresholdTypeStaticConv(v_thresh)
 
         super(IFCurrExpConv, self).__init__(
             model_name="IF_curr_exp_conv", binary="IF_curr_exp_conv.aplx",
             neuron_model=neuron_model, input_type=input_type,
             synapse_type=synapse_type, threshold_type=threshold_type)
+
 

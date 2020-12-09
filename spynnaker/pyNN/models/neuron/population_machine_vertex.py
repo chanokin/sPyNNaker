@@ -585,7 +585,8 @@ class PopulationMachineVertex(
         local_only_compat = self.app_vertex.pynn_model.local_only_compatible
 
         # pylint: disable=too-many-arguments
-        n_atoms = self.get_per_neuron_type_n_atoms(self.vertex_slice)
+        n_atoms = self.vertex_slice.n_atoms
+        # n_atoms = self.get_per_neuron_type_n_atoms(self.vertex_slice)
         spec.comment("\nWriting Neuron Parameters for {} Neurons:\n".format(
             n_atoms))
 
@@ -617,7 +618,8 @@ class PopulationMachineVertex(
         spec.write_value(data=self.app_vertex.incoming_spike_buffer_size)
 
         # Write the neuron parameters
-        vslice = Slice(0, 0) if local_only_compat else self.vertex_slice
+        # vslice = Slice(0, 0) if local_only_compat else self.vertex_slice
+        vslice = self.vertex_slice
         neuron_data = self.app_vertex.neuron_impl.get_data(
             self.app_vertex.parameters, self.app_vertex.state_variables,
             vslice, local_only_compat

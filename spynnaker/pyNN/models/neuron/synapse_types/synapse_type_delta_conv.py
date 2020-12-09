@@ -16,6 +16,9 @@
 from spinn_utilities.overrides import overrides
 from data_specification.enums import DataType
 from .abstract_synapse_type import AbstractSynapseType
+from spynnaker.pyNN.models.neuron.implementations import (
+    AbstractStandardNeuronComponent)
+from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 
 ISYN_EXC = "isyn_exc"
 ISYN_INH = "isyn_inh"
@@ -117,3 +120,16 @@ class SynapseTypeDeltaConv(AbstractSynapseType):
     @isyn_inh.setter
     def isyn_inh(self, isyn_inh):
         self.__isyn_inh = isyn_inh
+
+    @overrides(AbstractStandardNeuronComponent.get_sdram_usage_in_bytes)
+    def get_sdram_usage_in_bytes(self, n_neurons):
+        # current (isyn_X)
+        num_state_variables = 1
+        # none
+        # num_shared_parameters = 0
+
+        return (
+            num_state_variables * n_neurons * self.get_n_synapse_types()
+        ) * BYTES_PER_WORD
+
+

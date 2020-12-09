@@ -133,7 +133,7 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
         offset = vertex_slice.lo_atom
         new_field_types = None
         # this is more like can share parameters
-        if local_only_compatible and self.extend_state_variables:
+        if self.local_only_compatible and self.extend_state_variables:
             offset = 1
             array_size = 1
             field_types = self.struct.field_types
@@ -205,3 +205,10 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
 
         :param str variable: The name of the variable
         """
+
+    @property
+    def local_only_compatible(self):
+        return (
+            (not self.needs_dma_weights) and
+            self.requires_spike_mapping
+        )

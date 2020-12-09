@@ -19,6 +19,8 @@ from data_specification.enums import DataType
 from .abstract_neuron_model import AbstractNeuronModel
 from spynnaker.pyNN.models.neuron.implementations import (
     AbstractStandardNeuronComponent)
+from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
+
 
 V = "v"
 V_REST = "v_rest"
@@ -235,3 +237,12 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
     @tau_refrac.setter
     def tau_refrac(self, tau_refrac):
         self.__tau_refrac = tau_refrac
+
+    @overrides(AbstractStandardNeuronComponent.get_sdram_usage_in_bytes)
+    def get_sdram_usage_in_bytes(self, n_neurons):
+        # voltage (v) and current (I)
+        num_state_variables = 2
+        # v_rest, tau_m, cm, i_offset, v_reset, tau_refract
+        num_shared_parameters = 6
+
+        return (num_state_variables * n_neurons + num_shared_parameters) * BYTES_PER_WORD
