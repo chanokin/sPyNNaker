@@ -213,7 +213,7 @@ $(function() {
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;}</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
 <div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="population__table__binary__search__impl_8c.html#a3c2c10dcc54c9ec95a730e4c1324a2c5">  231</a></span>&#160;<span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="population__table__binary__search__impl_8c.html#a3c2c10dcc54c9ec95a730e4c1324a2c5">print_master_population_table</a>(<span class="keywordtype">void</span>) {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#if log_level &gt;= LOG_DEBUG</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">//#if log_level &gt;= LOG_DEBUG</span></div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Master_population\n&quot;</span>);</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code" href="population__table__binary__search__impl_8c.html#ac791e8f016a5422c047f964641706f42">master_population_table_length</a>; i++) {</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <a class="code" href="population__table__binary__search__impl_8c.html#structmaster__population__table__entry">master_population_table_entry</a> entry = <a class="code" href="population__table__binary__search__impl_8c.html#a165c9820d20b3f9cce795f65e326708b">master_population_table</a>[i];</div>
@@ -240,7 +240,7 @@ $(function() {
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        }</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    }</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Population table has %u entries&quot;</span>, <a class="code" href="population__table__binary__search__impl_8c.html#ac791e8f016a5422c047f964641706f42">master_population_table_length</a>);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">//#endif</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;}</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
 <div class="line"><a name="l00266"></a><span class="lineno"><a class="line" href="population__table__binary__search__impl_8c.html#a84c16f8e8fdf9909791cbca87e983dde">  266</a></span>&#160;<span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="population__table__binary__search__impl_8c.html#a84c16f8e8fdf9909791cbca87e983dde">matches</a>(uint32_t mp_i, uint32_t <a class="code" href="delay__extension_8c.html#a6d4ec8e4f3148d51041635da9986c3fa">key</a>) {</div>
@@ -638,7 +638,7 @@ $(function() {
 <div class="ttc" id="apopulation__table__binary__search__impl_8c_html_a2233d5046582aeea3564c6ec3e72c553"><div class="ttname"><a href="population__table__binary__search__impl_8c.html#a2233d5046582aeea3564c6ec3e72c553">N_ADDRESS_BITS</a></div><div class="ttdeci">#define N_ADDRESS_BITS</div><div class="ttdoc">The number of bits of address. This is a constant as it is used more than once below.</div><div class="ttdef"><b>Definition:</b> <a href="population__table__binary__search__impl_8c_source.html#l00037">population_table_binary_search_impl.c:37</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 9 2020 12:06:43 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+Generated on Thu Dec 10 2020 12:53:56 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
 </small></address>
 </body>
 </html>
