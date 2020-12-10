@@ -2,6 +2,7 @@
 #define _LOCAL_ONLY_H_
 
 #define N_FROM_SHAPE(s) (s.width * s.height;)
+#define LEN_SHAPE_DATA 5
 
 #include "local_only_typedefs.h"
 

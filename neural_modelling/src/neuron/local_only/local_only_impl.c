@@ -12,30 +12,39 @@ static lc_neuron_id_t* mapped_post_ids = NULL;
 static uint32_t n_mapped = 0;
 
 bool local_only_initialise(address_t sdram_address){
-    log_debug("CONV init.");
+    log_info("+++++++++++++++++ CONV init ++++++++++++++++++++");
     // total incoming local-only connections data size
     n_bytes = *((uint32_t*)sdram_address++);
+    log_info("num bytes %d", n_bytes);
     if(n_bytes == 0){
         return true;
     }
 
     // how many elements are in a single connector data
     uint32_t n_elem = *((uint32_t*)sdram_address);
+    log_info("Num elem %d", n_elem);
 
     // shapes are 16-bit uints, hopefully enough for future too?
-    uint16_t *p = ((lc_dim_t*)(sdram_address+1));
+    uint16_t *p = ((uint16_t*)(++sdram_address));
     // todo: can this be done with just a single memset?
     // todo: does it matter?
-    shapes.pre.width = *p++;
-    shapes.pre.height = *p++;
-    shapes.post.width = *p++;
-    shapes.post.height = *p++;
-    shapes.padding.width = *p++;
-    shapes.padding.height = *p++;
-    shapes.strides.width = *p++;
-    shapes.strides.height = *p++;
-    shapes.kernel.width = *p++;
-    shapes.kernel.height = *p;
+    shapes.pre.width = *((lc_dim_t*)(p++));
+    shapes.pre.height = *((lc_dim_t*)(p++));
+    shapes.post.width = *((lc_dim_t*)(p++));
+    shapes.post.height = *((lc_dim_t*)(p++));
+    shapes.padding.width = *((lc_dim_t*)(p++));
+    shapes.padding.height = *((lc_dim_t*)(p++));
+    shapes.strides.width = *((lc_dim_t*)(p++));
+    shapes.strides.height = *((lc_dim_t*)(p++));
+    shapes.kernel.width = *((lc_dim_t*)(p++));
+    shapes.kernel.height = *((lc_dim_t*)(p));
+
+    log_info("shape pre %d, %d", shapes.pre.width, shapes.pre.height);
+    log_info("shape post %d, %d", shapes.post.width, shapes.post.height);
+    log_info("shape padding %d, %d", shapes.padding.width, shapes.padding.height);
+    log_info("shape strides %d, %d", shapes.strides.width, shapes.strides.height);
+    log_info("shape kernel %d, %d", shapes.kernel.width, shapes.kernel.height);
+
 
     // weight kernel data is also 16-bit
     lc_dim_t n_weights = shapes.kernel.width * shapes.kernel.height;
@@ -59,13 +68,31 @@ bool local_only_initialise(address_t sdram_address){
 
     n_mapped = 0;
 
+    p = (lc_weight_t *)(sdram_address + LEN_SHAPE_DATA);
+    uint32_t *p32 = sdram_address + LEN_SHAPE_DATA;
     for(lc_dim_t r=0; r < shapes.kernel.height; r++){
         for(lc_dim_t c=0; c < shapes.kernel.width; c++){
-            conv_kernel[r * shapes.kernel.width + c] = (lc_weight_t)(*p++);
+            uint32_t idx = r * shapes.kernel.width + c;
+            if((idx%2) == 0){
+                conv_kernel[idx] = (lc_weight_t)(p32[idx/2] >> 16);
+            } else {
+                conv_kernel[idx] = (lc_weight_t)(p32[idx/2] & ((1 << 16) - 1));
+            }
+
+
+            log_info("w(%d, %d) = 32 %u signed %d fixed-point %d.%u",
+            r, c,
+            p32[idx/2],
+            conv_kernel[idx],
+            conv_kernel[idx] >> 7,
+            conv_kernel[idx] & ((1 << 7) - 1));
         }
     }
-    sdram_address += n_elem;
 
+    *p32 = sdram_address;
+    for(uint32_t i = 0; i  < n_elem; i++){
+        log_info("%u", *p32++);
+    }
     return true;
 }
 

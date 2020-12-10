@@ -229,7 +229,7 @@ static inline uint32_t get_extended_neuron_id(
 //!
 //! For debugging
 static inline void print_master_population_table(void) {
-#if log_level >= LOG_DEBUG
+//#if log_level >= LOG_DEBUG
     log_info("Master_population\n");
     for (uint32_t i = 0; i < master_population_table_length; i++) {
         master_population_table_entry entry = master_population_table[i];
@@ -256,7 +256,7 @@ static inline void print_master_population_table(void) {
         }
     }
     log_info("Population table has %u entries", master_population_table_length);
-#endif
+//#endif
 }
 
 //! \brief Check if the entry is a match for the given key

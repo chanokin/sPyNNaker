@@ -416,23 +416,30 @@ class ConvolutionConnector(AbstractConnector):
     def pack_kernel(kernel):
         n = len(kernel)
         n = n // 2 + int(n % 2 > 0)
+        # print(len(kernel), n)
         pack = numpy.zeros(n, dtype='uint32')
-        for i, v in enumerate(kernel):
-            s = (1 - (i % 2)) * 16
-            p = i // 2
-            v32 = numpy.uint32(0) | v.astype('uint16')
-            pack[p] = pack[p] | (v32 << s)
+
+        for i in range(n):
+            vl = kernel[i*2]
+            vr = kernel[i*2 + 1] if (i*2 + 1) < len(kernel) else 0
+
+            v0 = numpy.int16(numpy.round(float(1 << 7) * vl))
+            vil = numpy.uint32(numpy.uint16(v0))
+
+            v1 = numpy.int16(numpy.round(float(1 << 7) * vr))
+            vir = numpy.uint32(numpy.uint16(v1))
+
+            pack[i] = (vil << 16) | vir
 
         return pack
+
 
     def get_local_only_data(self, synapse_matrix_app):
         # s411 = DataType()
         # dtp = DataType.S1615
         # I think we don't need a big range for weights (16-bit only)
         dtp = DataType.S87
-        klist = self.pack_kernel(
-            dtp.encode_as_numpy_int_array(self.kernel.flatten())
-        ).tolist()
+        klist = self.pack_kernel(self.kernel.flatten()).tolist()
 
         shapes = [
             shape2word(self.pre_shape[WIDTH], self.pre_shape[HEIGHT]),
@@ -441,8 +448,14 @@ class ConvolutionConnector(AbstractConnector):
             shape2word(self.strides[WIDTH], self.strides[HEIGHT]),
             shape2word(self.kernel_shape[WIDTH], self.kernel_shape[HEIGHT])]
 
-        ndata = len(klist) + len(shapes)
-        data = [ndata] + shapes + klist
+        print(shapes)
+        print(self.kernel.flatten())
+        print(klist)
+
+        data = [numpy.uint32(len(klist) + len(shapes))]
+        data.extend(shapes)
+        data.extend(klist)
+        print(data)
         return data
 
     @property
