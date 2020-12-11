@@ -8308,6 +8308,20 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>threshold_type_static_conv.h</name>
+    <path>/github/workspace/neural_modelling/src/neuron/threshold_types/</path>
+    <filename>threshold__type__static__conv_8h.html</filename>
+    <includes id="threshold__type_8h" name="threshold_type.h" local="yes" imported="no">threshold_type.h</includes>
+    <class kind="struct">threshold_type_t</class>
+    <member kind="function" static="yes">
+      <type>static bool</type>
+      <name>threshold_type_is_above_threshold</name>
+      <anchorfile>threshold__type__static__conv_8h.html</anchorfile>
+      <anchor>a78e80ccc57135aa9f338b0e82001fb89</anchor>
+      <arglist>(state_t value, threshold_type_t *threshold_type)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>robot_motor_control.c</name>
     <path>/github/workspace/neural_modelling/src/robot_motor_control/</path>
     <filename>robot__motor__control_8c.html</filename>
@@ -12688,40 +12702,40 @@
   </compound>
   <compound kind="struct">
     <name>threshold_type_t</name>
-    <filename>threshold__type__static_8h.html</filename>
+    <filename>threshold__type__static__conv_8h.html</filename>
     <anchor>structthreshold__type__t</anchor>
     <member kind="variable">
       <type>REAL</type>
       <name>du_th_inv</name>
-      <anchorfile>threshold__type__static_8h.html</anchorfile>
+      <anchorfile>threshold__type__static__conv_8h.html</anchorfile>
       <anchor>acaf821c33da7ceffd34956d24bef0d3a</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>REAL</type>
       <name>tau_th_inv</name>
-      <anchorfile>threshold__type__static_8h.html</anchorfile>
+      <anchorfile>threshold__type__static__conv_8h.html</anchorfile>
       <anchor>ae06bd5cdb86afcc206e80fc52f08944f</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>REAL</type>
       <name>v_thresh</name>
-      <anchorfile>threshold__type__static_8h.html</anchorfile>
+      <anchorfile>threshold__type__static__conv_8h.html</anchorfile>
       <anchor>ab45ec840ac2e212feee7e2b5782a8ed0</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>REAL</type>
       <name>neg_machine_time_step_ms_div_10</name>
-      <anchorfile>threshold__type__static_8h.html</anchorfile>
+      <anchorfile>threshold__type__static__conv_8h.html</anchorfile>
       <anchor>ad4d04f4117f32c07cd86ee51cdc9eb74</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>REAL</type>
       <name>threshold_value</name>
-      <anchorfile>threshold__type__static_8h.html</anchorfile>
+      <anchorfile>threshold__type__static__conv_8h.html</anchorfile>
       <anchor>a8d25a3b92dbeffe773c096f0289aeb44</anchor>
       <arglist></arglist>
     </member>

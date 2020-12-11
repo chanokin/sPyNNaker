@@ -100,7 +100,7 @@ var searchData=
   ['ds_419',['DS',['http://spinnakermanchester.github.io/spinnaker_tools/spinn__net_8h.html#a16ed05e077e3c1f75a258903d8b05aa4',1,'ip_hdr_t']]],
   ['dse_5fheader_5ft_420',['dse_header_t',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/extra__monitor__support_8c.html',1,'']]],
   ['dt_5fdivided_5fby_5ftau_5fsqr_421',['dt_divided_by_tau_sqr',['../synapse__types__alpha__impl_8h.html#a302d76f88428da70bcddb6d6eae4d078',1,'alpha_params_t']]],
-  ['du_5fth_5finv_422',['du_th_inv',['../threshold__type__static_8h.html#acaf821c33da7ceffd34956d24bef0d3a',1,'threshold_type_t']]],
+  ['du_5fth_5finv_422',['du_th_inv',['../threshold__type__static__conv_8h.html#acaf821c33da7ceffd34956d24bef0d3a',1,'threshold_type_t']]],
   ['dual_5ffsm_5fconfig_5ft_423',['dual_fsm_config_t',['../timing__recurrent__dual__fsm__impl_8c.html#structdual__fsm__config__t',1,'']]],
   ['dump_424',['dump',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html',1,'router_t']]],
   ['dump_5finterrupt_5fenable_425',['dump_interrupt_enable',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#a11848c1cdf730ee718c96b54722b7f62',1,'router_control_t']]],

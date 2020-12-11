@@ -71,7 +71,7 @@ var searchData=
   ['n_5fwords_5fneeded_1074',['n_words_needed',['../neuron__impl__external__devices_8h.html#a712ac031031f4c6e8e7979936f32a783',1,'n_words_needed(size_t size):&#160;neuron_impl_external_devices.h'],['../neuron__impl__standard_8h.html#a712ac031031f4c6e8e7979936f32a783',1,'n_words_needed(size_t size):&#160;neuron_impl_standard.h']]],
   ['nearest_5fneighbour_1075',['nearest_neighbour',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#a020dc4bcefb492d1a26936a93d6f97d5',1,'comms_rx_status_t']]],
   ['nearest_5fneighbour_5fflag_1076',['nearest_neighbour_flag',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/extra__monitor__support_8c.html#a1a21ed20bd505bac7fa471622e04a3a5',1,'reinject_config_t']]],
-  ['neg_5fmachine_5ftime_5fstep_5fms_5fdiv_5f10_1077',['neg_machine_time_step_ms_div_10',['../threshold__type__static_8h.html#ad4d04f4117f32c07cd86ee51cdc9eb74',1,'threshold_type_t']]],
+  ['neg_5fmachine_5ftime_5fstep_5fms_5fdiv_5f10_1077',['neg_machine_time_step_ms_div_10',['../threshold__type__static__conv_8h.html#ad4d04f4117f32c07cd86ee51cdc9eb74',1,'threshold_type_t']]],
   ['net_5fmask_1078',['net_mask',['http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#a951d08455c888d902dab39f71eaf6294',1,'srom_data_t']]],
   ['netinit_5fbc_5fwait_1079',['netinit_bc_wait',['http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#ad9269a0b20db33667a9a297ec262d019',1,'sv_t']]],
   ['netinit_5fphase_1080',['netinit_phase',['http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#a26a2b7412f8489ce0ae8b4ff9179c0c8',1,'sv_t']]],
