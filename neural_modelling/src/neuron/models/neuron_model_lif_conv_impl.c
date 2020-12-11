@@ -21,7 +21,7 @@
 
 #include <debug.h>
 
-global_neuron_params_t global_params;
+global_neuron_params_t *global_params;
 
 //! \brief simple Leaky I&F ODE
 //! \param[in,out] neuron: The neuron to update
@@ -29,16 +29,16 @@ global_neuron_params_t global_params;
 //! \param[in] input_this_timestep: The input to apply
 static inline void lif_neuron_closed_form(
         neuron_t *neuron, REAL V_prev, input_t input_this_timestep) {
-    REAL alpha = input_this_timestep * global_params.R_membrane + \
-                 global_params.V_rest;
+    REAL alpha = input_this_timestep * global_params->R_membrane + \
+                 global_params->V_rest;
 
     // update membrane voltage
-    neuron->V_membrane = alpha - (global_params.exp_TC * (alpha - V_prev));
+    neuron->V_membrane = alpha - (global_params->exp_TC * (alpha - V_prev));
 }
 
 void neuron_model_set_global_neuron_params(
         const global_neuron_params_t *params) {
-    global_params = *params;
+    global_params = params;
 }
 
 state_t neuron_model_state_update(
@@ -61,7 +61,7 @@ state_t neuron_model_state_update(
 		}
         // Get the input in nA
         input_t input_this_timestep =
-                total_exc - total_inh + external_bias + global_params.I_offset;
+                total_exc - total_inh + external_bias + global_params->I_offset;
 
         lif_neuron_closed_form(
                 neuron, neuron->V_membrane, input_this_timestep);
@@ -74,10 +74,10 @@ state_t neuron_model_state_update(
 
 void neuron_model_has_spiked(neuron_t *restrict neuron) {
     // reset membrane voltage
-    neuron->V_membrane = global_params.V_reset;
+    neuron->V_membrane = global_params->V_reset;
 
     // reset refractory timer
-    neuron->refract_timer  = global_params.T_refract;
+    neuron->refract_timer  = global_params->T_refract;
 }
 
 state_t neuron_model_get_membrane_voltage(const neuron_t *neuron) {
@@ -89,13 +89,13 @@ void neuron_model_print_state_variables(const neuron_t *neuron) {
 }
 
 void neuron_model_print_parameters(const neuron_t *neuron) {
-    log_info("V reset       = %11.4k mv", global_params.V_reset);
-    log_info("V rest        = %11.4k mv", global_params.V_rest);
+    log_info("V reset       = %11.4k mv", global_params->V_reset);
+    log_info("V rest        = %11.4k mv", global_params->V_rest);
 
-    log_info("I offset      = %11.4k nA", global_params.I_offset);
-    log_info("R membrane    = %11.4k Mohm", global_params.R_membrane);
+    log_info("I offset      = %11.4k nA", global_params->I_offset);
+    log_info("R membrane    = %11.4k Mohm", global_params->R_membrane);
 
-    log_info("exp(-ms/(RC)) = %11.4k [.]", global_params.exp_TC);
+    log_info("exp(-ms/(RC)) = %11.4k [.]", global_params->exp_TC);
 
-    log_info("T refract     = %u timesteps", global_params.T_refract);
+    log_info("T refract     = %u timesteps", global_params->T_refract);
 }

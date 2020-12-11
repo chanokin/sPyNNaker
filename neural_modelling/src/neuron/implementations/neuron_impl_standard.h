@@ -270,7 +270,13 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
     input_type_t *input_types = &input_type_array[neuron_index];
 
     // Get threshold and additional input parameters for this neuron
-    threshold_type_t *the_threshold_type = &threshold_type_array[neuron_index];
+    // TODO: threshold here is shared, how to extend to all components?
+    index_t thresh_index = neuron_index;
+    if(local_only_is_compatible()){
+        thresh_index = 1;
+    }
+    threshold_type_t *the_threshold_type = &threshold_type_array[thresh_index];
+
     additional_input_t *additional_inputs =
             &additional_input_array[neuron_index];
     synapse_param_t *the_synapse_type =
@@ -358,9 +364,9 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
         neuron_recording_record_bit(SPIKE_RECORDING_BITFIELD, neuron_index);
     }
 
-#if LOG_LEVEL >= LOG_DEBUG
+//#if LOG_LEVEL >= LOG_DEBUG
     neuron_model_print_state_variables(this_neuron);
-#endif // LOG_LEVEL >= LOG_DEBUG
+//#endif // LOG_LEVEL >= LOG_DEBUG
 
     // Return the boolean to the model timestep update
     return has_spiked;

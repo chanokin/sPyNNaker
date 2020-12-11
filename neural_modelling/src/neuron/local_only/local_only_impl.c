@@ -39,11 +39,11 @@ bool local_only_initialise(address_t sdram_address){
     shapes.kernel.width = *((lc_dim_t*)(p++));
     shapes.kernel.height = *((lc_dim_t*)(p));
 
-//    log_info("shape pre %d, %d", shapes.pre.width, shapes.pre.height);
-//    log_info("shape post %d, %d", shapes.post.width, shapes.post.height);
-//    log_info("shape padding %d, %d", shapes.padding.width, shapes.padding.height);
-//    log_info("shape strides %d, %d", shapes.strides.width, shapes.strides.height);
-//    log_info("shape kernel %d, %d", shapes.kernel.width, shapes.kernel.height);
+    log_info("shape pre %d, %d", shapes.pre.width, shapes.pre.height);
+    log_info("shape post %d, %d", shapes.post.width, shapes.post.height);
+    log_info("shape padding %d, %d", shapes.padding.width, shapes.padding.height);
+    log_info("shape strides %d, %d", shapes.strides.width, shapes.strides.height);
+    log_info("shape kernel %d, %d", shapes.kernel.width, shapes.kernel.height);
 
 
     // weight kernel data is also 16-bit
@@ -80,19 +80,13 @@ bool local_only_initialise(address_t sdram_address){
             }
 
 
-//            log_info("w(%d, %d) = 32 %u signed %d fixed-point %d.%u",
-//            r, c,
-//            p32[idx/2],
-//            conv_kernel[idx],
-//            conv_kernel[idx] >> 7,
-//            conv_kernel[idx] & ((1 << 7) - 1));
+            log_info("w(%d, %d) = fixed-point %d.%u",
+            r, c,
+            conv_kernel[idx] >> 7,
+            conv_kernel[idx] & ((1 << 7) - 1));
         }
     }
 
-//    *p32 = sdram_address;
-//    for(uint32_t i = 0; i  < n_elem; i++){
-//        log_info("%u", *p32++);
-//    }
     return true;
 }
 
@@ -100,7 +94,8 @@ bool local_only_is_compatible(void){
     return (n_bytes > 0);
 }
 
-void local_only_process_spike(lc_neuron_id_t key){
+void local_only_process_spike(uint32_t key, uint32_t payload){
+    log_info("key %d\tpayload %d", key, payload);
 }
 
 void local_only_coord_to_id(

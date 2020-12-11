@@ -60,7 +60,7 @@ enum spike_processing_dma_tags {
 //! The current timer tick value
 extern uint32_t time;
 
-extern bool local_only;
+//extern bool local_only;
 
 //! True if the DMA "loop" is currently running
 static volatile bool dma_busy;
@@ -308,16 +308,17 @@ static void multicast_packet_received_callback(uint key, uint payload) {
             key, payload, time, dma_busy);
     }
 
+    if(local_only_is_compatible()){
+        local_only_process_spike(key, payload);
+        return;
+    }
+
+
     // cycle through the packet insertion
     for (uint count = payload; count > 0; count--) {
-        if(local_only){
-            local_only_process_spike(key);
-            continue;
-        }
-
         in_spikes_add_spike(key);
-
     }
+
 
     // If we're not already processing synaptic DMAs,
     // flag pipeline as busy and trigger a feed event
@@ -371,11 +372,6 @@ static void dma_complete_callback(UNUSED uint unused, uint tag) {
 
     // Process synaptic row repeatedly for any upcoming spikes
     while (n_spikes > 0) {
-
-        if(local_only){
-            n_spikes--;
-            continue;
-        }
         // Process synaptic row, writing it back if it's the last time
         // it's going to be processed
         bool write_back_now = false;

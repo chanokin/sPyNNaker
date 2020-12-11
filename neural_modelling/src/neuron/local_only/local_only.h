@@ -3,14 +3,14 @@
 
 #define N_FROM_SHAPE(s) (s.width * s.height;)
 #define LEN_SHAPE_DATA 5
-
+#include <common/neuron-typedefs.h>
 #include "local_only_typedefs.h"
 
 bool local_only_initialise(address_t sdram_address);
 
 bool local_only_is_compatible(void);
 
-void local_only_process_spike(lc_neuron_id_t key);
+void local_only_process_spike(uint32_t key, uint32_t payload);
 
 void local_only_coord_to_id(
     lc_coord_t coord, lc_shapes_t shapes, bool is_post,

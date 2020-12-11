@@ -17,7 +17,7 @@ bool local_only_is_compatible(void){
     return false;
 }
 
-void local_only_process_spike(UNUSED lc_neuron_id_t key){
+void local_only_process_spike(uint32_t key, uint32_t payload){
 }
 
 void local_only_coord_to_id(
