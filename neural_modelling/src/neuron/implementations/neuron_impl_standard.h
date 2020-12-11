@@ -28,6 +28,7 @@
 #include <neuron/additional_inputs/additional_input.h>
 #include <neuron/threshold_types/threshold_type.h>
 #include <neuron/synapse_types/synapse_types.h>
+#include <neuron/local_only/local_only.h>
 
 // Further includes
 #include <debug.h>
@@ -85,6 +86,8 @@ SOMETIMES_UNUSED // Marked unused as only used sometimes
 //! \param[in] n_neurons: The number of neurons
 //! \return True if successful
 static bool neuron_impl_initialise(uint32_t n_neurons) {
+    // TODO: HOW DO WE EXTEND THIS GLOBAL PARAMS TO EACH COMPONENT?
+    // TODO: WE COULD ADD A FLAG TO EACH COMPONENT AND DEFINE 'SHARED' STRUCTURES
     // allocate DTCM for the global parameter details
     if (sizeof(global_neuron_params_t)) {
         global_parameters = spin1_malloc(sizeof(global_neuron_params_t));
@@ -126,8 +129,15 @@ static bool neuron_impl_initialise(uint32_t n_neurons) {
 
     // Allocate DTCM for threshold type array and copy block of data
     if (sizeof(threshold_type_t)) {
+        // TODO: WE ARE SHARING AND THE THRESHOLD HAS NO STATE VARIABLES
+        // TODO: HOW TO EXTEND SHARED PARAMETERS TO EACH COMPONENT?
+        uint32_t local_n_neurons = n_neurons;
+        if(local_only_is_compatible()){
+            local_n_neurons = 1;
+        }
+
         threshold_type_array =
-                spin1_malloc(n_neurons * sizeof(threshold_type_t));
+            spin1_malloc(local_n_neurons * sizeof(threshold_type_t));
         if (threshold_type_array == NULL) {
             log_error("Unable to allocate threshold type array - Out of DTCM");
             return false;
@@ -177,7 +187,7 @@ SOMETIMES_UNUSED // Marked unused as only used sometimes
 //! \param[in] n_neurons: number of neurons
 static void neuron_impl_load_neuron_parameters(
         address_t address, uint32_t next, uint32_t n_neurons) {
-    log_debug("reading parameters, next is %u, n_neurons is %u ",
+    log_info("reading parameters, next is %u, n_neurons is %u ",
             next, n_neurons);
 
     // Read the number of steps per timestep
@@ -212,9 +222,13 @@ static void neuron_impl_load_neuron_parameters(
 
     if (sizeof(threshold_type_t)) {
         log_debug("reading threshold type parameters");
+        uint32_t local_n_neurons = n_neurons;
+        if(local_only_is_compatible()){
+            local_n_neurons = 1;
+        }
         spin1_memcpy(threshold_type_array, &address[next],
-                n_neurons * sizeof(threshold_type_t));
-        next += n_words_needed(n_neurons * sizeof(threshold_type_t));
+                local_n_neurons * sizeof(threshold_type_t));
+        next += n_words_needed(local_n_neurons * sizeof(threshold_type_t));
     }
 
     if (sizeof(synapse_param_t)) {
@@ -233,13 +247,13 @@ static void neuron_impl_load_neuron_parameters(
 
     neuron_model_set_global_neuron_params(global_parameters);
 
-#if LOG_LEVEL >= LOG_DEBUG
+//#if LOG_LEVEL >= LOG_DEBUG
     log_debug("-------------------------------------\n");
     for (index_t n = 0; n < n_neurons; n++) {
         neuron_model_print_parameters(&neuron_array[n]);
     }
     log_debug("-------------------------------------\n");
-#endif // LOG_LEVEL >= LOG_DEBUG
+//#endif // LOG_LEVEL >= LOG_DEBUG
 }
 
 SOMETIMES_UNUSED // Marked unused as only used sometimes

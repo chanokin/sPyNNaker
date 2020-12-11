@@ -66,15 +66,16 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
         :param float v_reset: :math:`V_{reset}`
         :param float tau_refrac: :math:`\tau_{refrac}`
         """
-        super(NeuronModelLeakyIntegrateAndFireConv, self).__init__(
-            [DataType.S1615,   # v
-             DataType.INT32,  # count_refrac
-             DataType.S1615,   # v_rest
-             DataType.S1615,   # r_membrane (= tau_m / cm)
-             DataType.S1615,   # exp_tc (= e^(-ts / tau_m))
-             DataType.S1615,   # i_offset
-             DataType.S1615,   # v_reset
-             DataType.INT32])  # tau_refrac
+        super(NeuronModelLeakyIntegrateAndFireConv, self).__init__([
+            DataType.S1615,   # v_rest
+            DataType.S1615,   # r_membrane (= tau_m / cm)
+            DataType.S1615,   # exp_tc (= e^(-ts / tau_m))
+            DataType.S1615,   # i_offset
+            DataType.S1615,   # v_reset
+            DataType.INT32,   # tau_refrac
+            DataType.S1615,  # v
+            DataType.INT32,  # count_refrac
+        ])
 
         if v_init is None:
             v_init = v_rest
@@ -126,20 +127,21 @@ class NeuronModelLeakyIntegrateAndFireConv(AbstractNeuronModel):
         """
         # pylint: disable=arguments-differ
 
-        state_variables_indices.extend([0, 1])
+        state_variables_indices.extend([6, 7])
 
         # Add the rest of the data
         d = [
-            state_variables[V],
-            state_variables[COUNT_REFRAC],
-            parameters[V_REST],
-            parameters[TAU_M] / parameters[CM],
+            parameters[V_REST],  # 0
+            parameters[TAU_M] / parameters[CM],  # 1
             parameters[TAU_M].apply_operation(
-                    operation=lambda x: numpy.exp(float(-ts) / (1000.0 * x))),
-            parameters[I_OFFSET],
-            parameters[V_RESET],
+                operation=lambda x: numpy.exp(float(-ts) / (1000.0 * x))),  # 2
+            parameters[I_OFFSET],  # 3
+            parameters[V_RESET],  # 4
             parameters[TAU_REFRAC].apply_operation(
-                    operation=lambda x: int(numpy.ceil(x / (ts / 1000.0))))]
+                operation=lambda x: int(numpy.ceil(x / (ts / 1000.0)))),  # 5
+            state_variables[V],  # 6
+            state_variables[COUNT_REFRAC],  # 7
+        ]
         # d = numpy.concatenate([d[0], d[1:]])
         return d
 

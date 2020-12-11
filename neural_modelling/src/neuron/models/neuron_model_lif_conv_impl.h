@@ -30,7 +30,10 @@ typedef struct neuron_t {
 
     //! countdown to end of next refractory period [timesteps]
     int32_t  refract_timer;
+} neuron_t;
 
+//! LIF global parameters
+typedef struct global_neuron_params_t {
     //! membrane resting voltage [mV]
     REAL     V_rest;
 
@@ -51,10 +54,7 @@ typedef struct neuron_t {
 
     //! refractory time of neuron [timesteps]
     int32_t  T_refract;
-} neuron_t;
 
-//! LIF global parameters
-typedef struct global_neuron_params_t {
 } global_neuron_params_t;
 
 #endif // _NEURON_MODEL_LIF_CURR_IMPL_H_
