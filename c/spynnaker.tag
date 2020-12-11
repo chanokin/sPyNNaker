@@ -3097,7 +3097,7 @@
     <name>neuron_model_lif_conv_impl.c</name>
     <path>/github/workspace/neural_modelling/src/neuron/models/</path>
     <filename>neuron__model__lif__conv__impl_8c.html</filename>
-    <includes id="neuron__model__lif__impl_8h" name="neuron_model_lif_impl.h" local="yes" imported="no">neuron_model_lif_impl.h</includes>
+    <includes id="neuron__model__lif__conv__impl_8h" name="neuron_model_lif_conv_impl.h" local="yes" imported="no">neuron_model_lif_conv_impl.h</includes>
     <member kind="function" static="yes">
       <type>static void</type>
       <name>lif_neuron_closed_form</name>
@@ -11280,6 +11280,48 @@
     <name>global_neuron_params_t</name>
     <filename>neuron__model__lif__impl_8h.html</filename>
     <anchor>structglobal__neuron__params__t</anchor>
+    <member kind="variable">
+      <type>REAL</type>
+      <name>V_rest</name>
+      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
+      <anchor>a823c527fda315e4acc960859b9377f58</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>REAL</type>
+      <name>R_membrane</name>
+      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
+      <anchor>ae85556ced3613a9573145ceec9c22477</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>REAL</type>
+      <name>exp_TC</name>
+      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
+      <anchor>a3665b623d7f8bc2b1d54d9eb6879a7dd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>REAL</type>
+      <name>I_offset</name>
+      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
+      <anchor>a6e92ef53372dd5d53fa29792fbe105d4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>REAL</type>
+      <name>V_reset</name>
+      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
+      <anchor>a56305a9b32146a02d20783615d6d48a2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int32_t</type>
+      <name>T_refract</name>
+      <anchorfile>neuron__model__lif__impl_8h.html</anchorfile>
+      <anchor>acf45b8e748efb1a90895c0421303a552</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="struct">
     <name>global_parameters</name>

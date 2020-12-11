@@ -6,7 +6,7 @@ var searchData=
   ['t_5fras_4255',['t_ras',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#a58931731824c28f6e54e9ca7fb7710d7',1,'sdram_timing_config_t']]],
   ['t_5frc_4256',['t_rc',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#a6440b99eb3a7ec5914a9c26c03877c09',1,'sdram_timing_config_t']]],
   ['t_5frcd_4257',['t_rcd',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#a9fd9166de2c21d95b57201dcdec788d7',1,'sdram_timing_config_t']]],
-  ['t_5frefract_4258',['T_refract',['../neuron__model__lif__impl_8h.html#a960606546b094d62a8509eea60bd3dc2',1,'neuron_t']]],
+  ['t_5frefract_4258',['T_refract',['../neuron__model__lif__impl_8h.html#acf45b8e748efb1a90895c0421303a552',1,'global_neuron_params_t::T_refract()'],['../neuron__model__lif__impl_8h.html#a960606546b094d62a8509eea60bd3dc2',1,'neuron_t::T_refract()']]],
   ['t_5frfc_4259',['t_rfc',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#a68a988ab82b4f52551cf98d0b52869d4',1,'sdram_timing_config_t']]],
   ['t_5frp_4260',['t_rp',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#afd82b80fd727b64f11c9d2abb34edde7',1,'sdram_timing_config_t']]],
   ['t_5frrd_4261',['t_rrd',['http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/spinn__extra_8h.html#a8315044cc79f82c8e713449d37c52d67',1,'sdram_timing_config_t']]],

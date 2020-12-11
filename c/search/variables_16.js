@@ -2,8 +2,8 @@ var searchData=
 [
   ['v2p_5fmap_4374',['v2p_map',['http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#ae0a27a1ee4002f31209f160871cc496c',1,'sv_t']]],
   ['v_5fmembrane_4375',['V_membrane',['../neuron__model__lif__impl_8h.html#a86bb63a4a0e56518c44af0beefe8ac31',1,'neuron_t']]],
-  ['v_5freset_4376',['V_reset',['../neuron__model__lif__impl_8h.html#ad64e3dbdebb524738dac569369fcb146',1,'neuron_t']]],
-  ['v_5frest_4377',['V_rest',['../neuron__model__lif__impl_8h.html#a0448414012bd86a39307aa97378ca8f2',1,'neuron_t']]],
+  ['v_5freset_4376',['V_reset',['../neuron__model__lif__impl_8h.html#a56305a9b32146a02d20783615d6d48a2',1,'global_neuron_params_t::V_reset()'],['../neuron__model__lif__impl_8h.html#ad64e3dbdebb524738dac569369fcb146',1,'neuron_t::V_reset()']]],
+  ['v_5frest_4377',['V_rest',['../neuron__model__lif__impl_8h.html#a823c527fda315e4acc960859b9377f58',1,'global_neuron_params_t::V_rest()'],['../neuron__model__lif__impl_8h.html#a0448414012bd86a39307aa97378ca8f2',1,'neuron_t::V_rest()']]],
   ['v_5frev_5fe_4378',['V_rev_E',['../input__type__none_8h.html#ace17cbedca27bd81e3e9d7fd6c6fe774',1,'input_type_t']]],
   ['v_5frev_5fi_4379',['V_rev_I',['../input__type__none_8h.html#aab156892eda9d422b7d1dd8dfc7b979e',1,'input_type_t']]],
   ['v_5fthresh_4380',['v_thresh',['../threshold__type__static_8h.html#ab45ec840ac2e212feee7e2b5782a8ed0',1,'threshold_type_t']]],

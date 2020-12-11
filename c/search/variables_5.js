@@ -42,6 +42,6 @@ var searchData=
   ['exp_5fbuff_3542',['exp_buff',['../synapse__types__alpha__impl_8h.html#a21fdb5217753bcf2c3d00f3c8d691189',1,'alpha_params_t']]],
   ['exp_5fminus_5flambda_3543',['exp_minus_lambda',['../spike__source__poisson_8c.html#ad312952bbda1eb46855036a9ec72c738',1,'spike_source_t']]],
   ['exp_5ftauca_3544',['exp_TauCa',['../additional__input__none__impl_8h.html#a0c1f083f2abaa9a200f9bc6e26ccbb92',1,'additional_input_t']]],
-  ['exp_5ftc_3545',['exp_TC',['../neuron__model__lif__impl_8h.html#ae86326c508ef052f75103f8fec5dff82',1,'neuron_t']]],
+  ['exp_5ftc_3545',['exp_TC',['../neuron__model__lif__impl_8h.html#a3665b623d7f8bc2b1d54d9eb6879a7dd',1,'global_neuron_params_t::exp_TC()'],['../neuron__model__lif__impl_8h.html#ae86326c508ef052f75103f8fec5dff82',1,'neuron_t::exp_TC()']]],
   ['extra_5finfo_5fflag_3546',['extra_info_flag',['../population__table__binary__search__impl_8c.html#a12b8d8e12253bc56e1bbd8581ad3da81',1,'master_population_table_entry']]]
 ];

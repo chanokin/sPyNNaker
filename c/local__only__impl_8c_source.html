@@ -95,7 +95,7 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// how many elements are in a single connector data</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    uint32_t n_elem = *((uint32_t*)sdram_address);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Num elem %d&quot;</span>, n_elem);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">//    log_info(&quot;Num elem %d&quot;, n_elem);</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">// shapes are 16-bit uints, hopefully enough for future too?</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    uint16_t *p = ((uint16_t*)(++sdram_address));</div>
@@ -112,11 +112,11 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    shapes.kernel.width = *((lc_dim_t*)(p++));</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    shapes.kernel.height = *((lc_dim_t*)(p));</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape pre %d, %d&quot;</span>, shapes.pre.width, shapes.pre.height);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape post %d, %d&quot;</span>, shapes.post.width, shapes.post.height);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape padding %d, %d&quot;</span>, shapes.padding.width, shapes.padding.height);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape strides %d, %d&quot;</span>, shapes.strides.width, shapes.strides.height);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape kernel %d, %d&quot;</span>, shapes.kernel.width, shapes.kernel.height);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//    log_info(&quot;shape pre %d, %d&quot;, shapes.pre.width, shapes.pre.height);</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//    log_info(&quot;shape post %d, %d&quot;, shapes.post.width, shapes.post.height);</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//    log_info(&quot;shape padding %d, %d&quot;, shapes.padding.width, shapes.padding.height);</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//    log_info(&quot;shape strides %d, %d&quot;, shapes.strides.width, shapes.strides.height);</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">//    log_info(&quot;shape kernel %d, %d&quot;, shapes.kernel.width, shapes.kernel.height);</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// weight kernel data is also 16-bit</span></div>
@@ -153,19 +153,19 @@ $(function() {
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;w(%d, %d) = 32 %u signed %d fixed-point %d.%u&quot;</span>,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            r, c,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            p32[idx/2],</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            conv_kernel[idx],</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            conv_kernel[idx] &gt;&gt; 7,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            conv_kernel[idx] &amp; ((1 &lt;&lt; 7) - 1));</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//            log_info(&quot;w(%d, %d) = 32 %u signed %d fixed-point %d.%u&quot;,</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//            r, c,</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">//            p32[idx/2],</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">//            conv_kernel[idx],</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//            conv_kernel[idx] &gt;&gt; 7,</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">//            conv_kernel[idx] &amp; ((1 &lt;&lt; 7) - 1));</span></div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    *p32 = sdram_address;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">for</span>(uint32_t i = 0; i  &lt; n_elem; i++){</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;%u&quot;</span>, *p32++);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">//    *p32 = sdram_address;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">//    for(uint32_t i = 0; i  &lt; n_elem; i++){</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">//        log_info(&quot;%u&quot;, *p32++);</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">//    }</span></div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
@@ -263,7 +263,7 @@ $(function() {
 <div class="ttc" id="adebug_8h_html_a0327644dae0a0a5d4bdc8f7b6f54e31e"><div class="ttname"><a href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a></div><div class="ttdeci">void log_error(const char *message,...)</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 10 2020 12:53:56 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+Generated on Fri Dec 11 2020 11:00:22 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
 </small></address>
 </body>
 </html>
