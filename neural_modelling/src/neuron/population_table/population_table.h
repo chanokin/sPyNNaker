@@ -30,6 +30,7 @@
 #define POP_TABLE_SDRAM_ADDRESS 0
 #define POP_TABLE_DIRECT_ADDRESS 1
 #define POP_TABLE_LOCAL_ADDRESS 2
+
 // How many bits needed for address types
 #define POP_TABLE_ADDRESS_TYPE_BITS 2
 

@@ -35,12 +35,12 @@
 #define SYNAPSE_TYPE_BITS 1
 //! \brief Number of synapse types
 //! \details <tt>#NUM_EXCITATORY_RECEPTORS + #NUM_INHIBITORY_RECEPTORS</tt>
-#define SYNAPSE_TYPE_COUNT 2
+#define SYNAPSE_TYPE_COUNT 1
 
 //! Number of excitatory receptors
 #define NUM_EXCITATORY_RECEPTORS 1
-//! Number of inhibitory receptors
-#define NUM_INHIBITORY_RECEPTORS 1
+
+#define NUM_INHIBITORY_RECEPTORS 0
 
 #include <debug.h>
 #include <common/neuron-typedefs.h>
@@ -51,8 +51,6 @@
 //---------------------------------------
 //! Buffer used for result of synapse_types_get_excitatory_input()
 input_t excitatory_response[NUM_EXCITATORY_RECEPTORS];
-//! Buffer used for result of synapse_types_get_inhibitory_input()
-input_t inhibitory_response[NUM_INHIBITORY_RECEPTORS];
 
 //! A synaptic input shaped as a Dirac delta
 typedef struct delta_params_t {
@@ -63,13 +61,11 @@ typedef struct delta_params_t {
 //! Delta synapses support just a single excitatory and inhibitory input each
 struct synapse_param_t {
     delta_params_t exc; //!< Excitatory synaptic input
-    delta_params_t inh; //!< Inhibitory synaptic input
 };
 
 //! The supported synapse type indices
 typedef enum {
     EXCITATORY, //!< Excitatory synaptic input
-    INHIBITORY, //!< Inhibitory synaptic input
 } synapse_delta_input_buffer_regions;
 
 //---------------------------------------
@@ -96,7 +92,6 @@ static inline void delta_shaping(delta_params_t *delta_param) {
 static inline void synapse_types_shape_input(
         synapse_param_t *parameters) {
 	delta_shaping(&parameters->exc);
-	delta_shaping(&parameters->inh);
 }
 
 //! \brief helper function to add input for a given timer period to a given
@@ -121,9 +116,6 @@ static inline void synapse_types_add_neuron_input(
     case EXCITATORY:
     	add_input_delta(&parameters->exc, input);
     	break;
-    case INHIBITORY:
-    	add_input_delta(&parameters->inh, input);
-    	break;
     }
 }
 
@@ -143,8 +135,7 @@ static inline input_t *synapse_types_get_excitatory_input(
 //! \return the inhibitory input buffers for a given neuron ID.
 static inline input_t *synapse_types_get_inhibitory_input(
         synapse_param_t *parameters) {
-    inhibitory_response[0] = parameters->inh.synaptic_input_value;
-    return &inhibitory_response[0];
+    return 0;
 }
 
 //! \brief returns a human readable character for the type of synapse.
@@ -157,8 +148,6 @@ static inline const char *synapse_types_get_type_char(
     switch (synapse_type_index) {
     case EXCITATORY:
         return "X";
-    case INHIBITORY:
-        return "I";
     default:
         log_debug("did not recognise synapse type %i", synapse_type_index);
         return "?";
@@ -171,9 +160,8 @@ static inline const char *synapse_types_get_type_char(
 //! \param[in] parameters: the pointer to the parameters to use
 static inline void synapse_types_print_input(
         synapse_param_t *parameters) {
-    io_printf(IO_BUF, "%12.6k - %12.6k",
-            parameters->exc.synaptic_input_value,
-            parameters->inh.synaptic_input_value);
+    io_printf(IO_BUF, "%12.6k",
+            parameters->exc.synaptic_input_value);
 }
 
 //! \brief printer call

@@ -2,6 +2,7 @@
 #include "local_only_typedefs.h"
 #include <common/neuron-typedefs.h>
 #include <debug.h>
+#include "../population_table/population_table.h"
 
 
 static lc_weight_t* conv_kernel = NULL;
@@ -95,7 +96,23 @@ bool local_only_is_compatible(void){
 }
 
 void local_only_process_spike(uint32_t key, uint32_t payload){
-    log_info("key %d\tpayload %d", key, payload);
+
+    address_t row_address = 0;
+    size_t n_bytes_to_transfer = 0;
+    bool success = false;
+    success = population_table_get_first_address(
+        key, &row_address, &n_bytes_to_transfer);
+    log_info("key %u\tpayload %d\taddress %u\tn_bytes %u\tsuccess = %u",
+        key, payload, row_address, n_bytes_to_transfer, success);
+
+    if(success){
+        uint32_t local_spike_id;
+        bool get_next = population_table_get_next_address(
+            &local_spike_id, row_address, n_bytes_to_transfer);
+            log_info("key %u\taddress %u\tn_bytes %u\tsuccess = %u",
+                local_spike_id, row_address, n_bytes_to_transfer, get_next);
+
+    }
 }
 
 void local_only_coord_to_id(
