@@ -100,7 +100,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a6a9484756434bfd11111a5187ac8f4bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="synapse__types__delta__conv__impl_8h.html#a6a9484756434bfd11111a5187ac8f4bb">SYNAPSE_TYPE_BITS</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:a6a9484756434bfd11111a5187ac8f4bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits to encode the synapse type.  <a href="synapse__types__delta__conv__impl_8h.html#a6a9484756434bfd11111a5187ac8f4bb">More...</a><br /></td></tr>
 <tr class="separator:a6a9484756434bfd11111a5187ac8f4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5be51be8977cd8a1209495229df7c491"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="synapse__types__delta__conv__impl_8h.html#a5be51be8977cd8a1209495229df7c491">SYNAPSE_TYPE_COUNT</a>&#160;&#160;&#160;2</td></tr>
+<tr class="memitem:a5be51be8977cd8a1209495229df7c491"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="synapse__types__delta__conv__impl_8h.html#a5be51be8977cd8a1209495229df7c491">SYNAPSE_TYPE_COUNT</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:a5be51be8977cd8a1209495229df7c491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of synapse types.  <a href="synapse__types__delta__conv__impl_8h.html#a5be51be8977cd8a1209495229df7c491">More...</a><br /></td></tr>
 <tr class="separator:a5be51be8977cd8a1209495229df7c491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad780fbb2c43b8bbf0f73ff0561061174"><td class="memItemLeft" align="right" valign="top"><a id="ad780fbb2c43b8bbf0f73ff0561061174"></a>
@@ -108,14 +108,12 @@ Macros</h2></td></tr>
 <tr class="memdesc:ad780fbb2c43b8bbf0f73ff0561061174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of excitatory receptors. <br /></td></tr>
 <tr class="separator:ad780fbb2c43b8bbf0f73ff0561061174"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dd746ed60f4dc54e7e604f239843aa6"><td class="memItemLeft" align="right" valign="top"><a id="a6dd746ed60f4dc54e7e604f239843aa6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="synapse__types__delta__conv__impl_8h.html#a6dd746ed60f4dc54e7e604f239843aa6">NUM_INHIBITORY_RECEPTORS</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memdesc:a6dd746ed60f4dc54e7e604f239843aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of inhibitory receptors. <br /></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUM_INHIBITORY_RECEPTORS</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:a6dd746ed60f4dc54e7e604f239843aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:afcd85a8de2d9bb81e9a220ddf1427841"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="synapse__types__delta__conv__impl_8h.html#afcd85a8de2d9bb81e9a220ddf1427841">synapse_delta_input_buffer_regions</a> { <a class="el" href="synapse__types__delta__conv__impl_8h.html#afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129">EXCITATORY</a>, 
-<a class="el" href="synapse__types__delta__conv__impl_8h.html#afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d">INHIBITORY</a>, 
 <a class="el" href="synapse__types__delta__impl_8h.html#afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129">EXCITATORY</a>, 
 <a class="el" href="synapse__types__delta__impl_8h.html#afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d">INHIBITORY</a>
  }</td></tr>
@@ -158,10 +156,6 @@ Variables</h2></td></tr>
 <a class="el" href="neuron-typedefs_8h.html#ac412098e688b864e8f4e2f3c0ed86591">input_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="synapse__types__delta__conv__impl_8h.html#ae1f301d101d1e4954564a57317649d50">excitatory_response</a> [<a class="el" href="synapse__types__semd__impl_8h.html#ad780fbb2c43b8bbf0f73ff0561061174">NUM_EXCITATORY_RECEPTORS</a>]</td></tr>
 <tr class="memdesc:ae1f301d101d1e4954564a57317649d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer used for result of <a class="el" href="synapse__types__delta__conv__impl_8h.html#a9fd01e5900cf9b627c21265d1a295602" title="extracts the excitatory input buffers from the buffers available for a given parameter set">synapse_types_get_excitatory_input()</a> <br /></td></tr>
 <tr class="separator:ae1f301d101d1e4954564a57317649d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ef64fabd445e3721d6d59a083793b97"><td class="memItemLeft" align="right" valign="top"><a id="a5ef64fabd445e3721d6d59a083793b97"></a>
-<a class="el" href="neuron-typedefs_8h.html#ac412098e688b864e8f4e2f3c0ed86591">input_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="synapse__types__delta__conv__impl_8h.html#a5ef64fabd445e3721d6d59a083793b97">inhibitory_response</a> [<a class="el" href="synapse__types__semd__impl_8h.html#a6dd746ed60f4dc54e7e604f239843aa6">NUM_INHIBITORY_RECEPTORS</a>]</td></tr>
-<tr class="memdesc:a5ef64fabd445e3721d6d59a083793b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer used for result of <a class="el" href="synapse__types__delta__conv__impl_8h.html#ae75a451bed82759a5aaf19b930688771" title="extracts the inhibitory input buffers from the buffers available for a given parameter set">synapse_types_get_inhibitory_input()</a> <br /></td></tr>
-<tr class="separator:a5ef64fabd445e3721d6d59a083793b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implementation of <a class="el" href="synapse__types_8h.html" title="API for synaptic behaviour types (see also src/neuron/input_types)">synapse_types.h</a> for a delta decay to synapses. </p>
@@ -182,7 +176,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <div class="textblock"><p>A synaptic input shaped as a Dirac delta. </p>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00058">58</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00056">56</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -300,13 +294,13 @@ History storage used to reset synaptic state. </td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SYNAPSE_TYPE_COUNT&#160;&#160;&#160;2</td>
+          <td class="memname">#define SYNAPSE_TYPE_COUNT&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Number of synapse types. </p>
-<p><code><a class="el" href="synapse__types__delta__conv__impl_8h.html#ad780fbb2c43b8bbf0f73ff0561061174" title="Number of excitatory receptors.">NUM_EXCITATORY_RECEPTORS</a> + <a class="el" href="synapse__types__delta__conv__impl_8h.html#a6dd746ed60f4dc54e7e604f239843aa6" title="Number of inhibitory receptors.">NUM_INHIBITORY_RECEPTORS</a></code> </p>
+<p><code><a class="el" href="synapse__types__delta__conv__impl_8h.html#ad780fbb2c43b8bbf0f73ff0561061174" title="Number of excitatory receptors.">NUM_EXCITATORY_RECEPTORS</a> + <a class="el" href="synapse__types__semd__impl_8h.html#a6dd746ed60f4dc54e7e604f239843aa6" title="Number of inhibitory receptors.">NUM_INHIBITORY_RECEPTORS</a></code> </p>
 
 <p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00038">38</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
@@ -329,15 +323,13 @@ History storage used to reset synaptic state. </td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129"></a>EXCITATORY&#160;</td><td class="fielddoc"><p>Excitatory synaptic input. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d"></a>INHIBITORY&#160;</td><td class="fielddoc"><p>Inhibitory synaptic input. </p>
-</td></tr>
 <tr><td class="fieldname"><a id="afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129"></a>EXCITATORY&#160;</td><td class="fielddoc"><p>Excitatory synaptic input. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d"></a>INHIBITORY&#160;</td><td class="fielddoc"><p>Inhibitory synaptic input. </p>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00070">70</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00067">67</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -374,7 +366,7 @@ History storage used to reset synaptic state. </td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00084">84</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00080">80</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -411,7 +403,7 @@ History storage used to reset synaptic state. </td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00096">96</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00092">92</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -458,7 +450,7 @@ History storage used to reset synaptic state. </td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00106">106</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00101">101</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -512,7 +504,7 @@ History storage used to reset synaptic state. </td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00117">117</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00112">112</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -549,7 +541,7 @@ History storage used to reset synaptic state. </td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the excitatory input buffers for a given neuron ID. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00134">134</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00126">126</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -586,7 +578,7 @@ History storage used to reset synaptic state. </td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the inhibitory input buffers for a given neuron ID. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00144">144</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00136">136</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -623,7 +615,7 @@ History storage used to reset synaptic state. </td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a human readable character representing the synapse type. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00155">155</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00146">146</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -659,7 +651,7 @@ History storage used to reset synaptic state. </td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00172">172</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00161">161</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
@@ -695,14 +687,14 @@ History storage used to reset synaptic state. </td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00181">181</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="synapse__types__delta__conv__impl_8h_source.html#l00169">169</a> of file <a class="el" href="synapse__types__delta__conv__impl_8h_source.html">synapse_types_delta_conv_impl.h</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 11 2020 12:39:37 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+Generated on Wed Dec 16 2020 12:45:03 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
 </small></address>
 </body>
 </html>

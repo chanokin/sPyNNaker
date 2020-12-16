@@ -5577,6 +5577,13 @@
     </member>
     <member kind="function" static="yes">
       <type>static uint32_t</type>
+      <name>get_local_address</name>
+      <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
+      <anchor>a66221680d771eeeac4ae82b4b174596c</anchor>
+      <arglist>(address_and_row_length entry)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static uint32_t</type>
       <name>get_offset</name>
       <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
       <anchor>a30c2c744e7524091a4a2b64d231fdf4f</anchor>
@@ -5723,6 +5730,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
+      <type>static uint32_t</type>
+      <name>local_rows_base_address</name>
+      <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
+      <anchor>aeaab28b2d4703b9e13003070207855f6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
       <type>static spike_t</type>
       <name>last_spike</name>
       <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
@@ -5790,6 +5804,13 @@
       <name>get_direct_address</name>
       <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
       <anchor>a0f6729803ce65a621db8be58bfa1d972</anchor>
+      <arglist>(address_and_row_length entry)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static uint32_t</type>
+      <name>get_local_address</name>
+      <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
+      <anchor>a66221680d771eeeac4ae82b4b174596c</anchor>
       <arglist>(address_and_row_length entry)</arglist>
     </member>
     <member kind="function" static="yes">
@@ -7283,13 +7304,6 @@
       <anchor>ad780fbb2c43b8bbf0f73ff0561061174</anchor>
       <arglist></arglist>
     </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NUM_INHIBITORY_RECEPTORS</name>
-      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
-      <anchor>a6dd746ed60f4dc54e7e604f239843aa6</anchor>
-      <arglist></arglist>
-    </member>
     <member kind="enumeration">
       <type></type>
       <name>synapse_delta_input_buffer_regions</name>
@@ -7301,12 +7315,6 @@
       <name>EXCITATORY</name>
       <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
       <anchor>afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>INHIBITORY</name>
-      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
-      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -7391,13 +7399,6 @@
       <anchor>ae1f301d101d1e4954564a57317649d50</anchor>
       <arglist>[NUM_EXCITATORY_RECEPTORS]</arglist>
     </member>
-    <member kind="variable">
-      <type>input_t</type>
-      <name>inhibitory_response</name>
-      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
-      <anchor>a5ef64fabd445e3721d6d59a083793b97</anchor>
-      <arglist>[NUM_INHIBITORY_RECEPTORS]</arglist>
-    </member>
   </compound>
   <compound kind="file">
     <name>synapse_types_delta_impl.h</name>
@@ -7446,12 +7447,6 @@
       <name>EXCITATORY</name>
       <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
       <anchor>afcd85a8de2d9bb81e9a220ddf1427841a5e0e3eedcc62dc4db0c7e2af83703129</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>INHIBITORY</name>
-      <anchorfile>synapse__types__delta__conv__impl_8h.html</anchorfile>
-      <anchor>afcd85a8de2d9bb81e9a220ddf1427841a175c96e554c8359207394ef1e677b70d</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -10557,9 +10552,9 @@
     </member>
     <member kind="variable">
       <type>uint32_t</type>
-      <name>is_single</name>
+      <name>address_type</name>
       <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
-      <anchor>abf7a35a5644b46e2db354540b8190f33</anchor>
+      <anchor>ab89ac25822e075e7e299d925da48c1fe</anchor>
       <arglist></arglist>
     </member>
   </compound>

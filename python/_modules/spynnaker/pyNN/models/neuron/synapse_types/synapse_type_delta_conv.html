@@ -86,11 +86,9 @@
 <span class="kn">from</span> <span class="nn">spinn_front_end_common.utilities.constants</span> <span class="kn">import</span> <span class="n">BYTES_PER_WORD</span>
 
 <span class="n">ISYN_EXC</span> <span class="o">=</span> <span class="s2">&quot;isyn_exc&quot;</span>
-<span class="n">ISYN_INH</span> <span class="o">=</span> <span class="s2">&quot;isyn_inh&quot;</span>
 
 <span class="n">UNITS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">ISYN_EXC</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="n">ISYN_EXC</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
 <span class="p">}</span>
 
 
@@ -99,18 +97,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;__isyn_exc&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;__isyn_inh&quot;</span><span class="p">]</span>
+        <span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">isyn_exc</span><span class="p">,</span> <span class="n">isyn_inh</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">isyn_exc</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param float isyn_exc: :math:`I^{syn}_e`</span>
-<span class="sd">        :param float isyn_inh: :math:`I^{syn}_i`</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SynapseTypeDeltaConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([</span>
             <span class="n">DataType</span><span class="o">.</span><span class="n">S1615</span><span class="p">,</span>   <span class="c1"># isyn_exc</span>
-            <span class="n">DataType</span><span class="o">.</span><span class="n">S1615</span><span class="p">])</span>  <span class="c1"># isyn_inh</span>
+            <span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_exc</span> <span class="o">=</span> <span class="n">isyn_exc</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_inh</span> <span class="o">=</span> <span class="n">isyn_inh</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">extend_state_variables</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_dma_weights</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">requires_spike_mapping</span> <span class="o">=</span> <span class="kc">True</span>
@@ -126,8 +124,7 @@
 
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractSynapseType</span><span class="o">.</span><span class="n">add_state_variables</span><span class="p">)</span>
 <div class="viewcode-block" id="SynapseTypeDeltaConv.add_state_variables"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.add_state_variables">[docs]</a>    <span class="k">def</span> <span class="nf">add_state_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_variables</span><span class="p">):</span>
-        <span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_EXC</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_exc</span>
-        <span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_INH</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_inh</span></div>
+        <span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_EXC</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_exc</span></div>
 
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractSynapseType</span><span class="o">.</span><span class="n">get_units</span><span class="p">)</span>
 <div class="viewcode-block" id="SynapseTypeDeltaConv.get_units"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.get_units">[docs]</a>    <span class="k">def</span> <span class="nf">get_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
@@ -141,34 +138,31 @@
 <div class="viewcode-block" id="SynapseTypeDeltaConv.get_values"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.get_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">state_variables</span><span class="p">,</span> <span class="n">vertex_slice</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span>
                    <span class="n">state_variables_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-        <span class="n">state_variables_indices</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">state_variables_indices</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
         <span class="c1"># Add the rest of the data</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_EXC</span><span class="p">],</span> <span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_INH</span><span class="p">]]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_EXC</span><span class="p">]]</span></div>
 
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractSynapseType</span><span class="o">.</span><span class="n">update_values</span><span class="p">)</span>
 <div class="viewcode-block" id="SynapseTypeDeltaConv.update_values"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.update_values">[docs]</a>    <span class="k">def</span> <span class="nf">update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">state_variables</span><span class="p">):</span>
 
         <span class="c1"># Read the data</span>
-        <span class="p">(</span><span class="n">isyn_exc</span><span class="p">,</span> <span class="n">isyn_inh</span><span class="p">)</span> <span class="o">=</span> <span class="n">values</span>
+        <span class="p">(</span><span class="n">isyn_exc</span><span class="p">,</span> <span class="p">)</span> <span class="o">=</span> <span class="n">values</span>
 
-        <span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_EXC</span><span class="p">]</span> <span class="o">=</span> <span class="n">isyn_exc</span>
-        <span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_INH</span><span class="p">]</span> <span class="o">=</span> <span class="n">isyn_inh</span></div>
+        <span class="n">state_variables</span><span class="p">[</span><span class="n">ISYN_EXC</span><span class="p">]</span> <span class="o">=</span> <span class="n">isyn_exc</span></div>
 
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractSynapseType</span><span class="o">.</span><span class="n">get_n_synapse_types</span><span class="p">)</span>
 <div class="viewcode-block" id="SynapseTypeDeltaConv.get_n_synapse_types"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.get_n_synapse_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_synapse_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mi">2</span></div>
+        <span class="k">return</span> <span class="mi">1</span></div>
 
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractSynapseType</span><span class="o">.</span><span class="n">get_synapse_id_by_target</span><span class="p">)</span>
 <div class="viewcode-block" id="SynapseTypeDeltaConv.get_synapse_id_by_target"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.get_synapse_id_by_target">[docs]</a>    <span class="k">def</span> <span class="nf">get_synapse_id_by_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;excitatory&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">elif</span> <span class="n">target</span> <span class="o">==</span> <span class="s2">&quot;inhibitory&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractSynapseType</span><span class="o">.</span><span class="n">get_synapse_targets</span><span class="p">)</span>
 <div class="viewcode-block" id="SynapseTypeDeltaConv.get_synapse_targets"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.get_synapse_targets">[docs]</a>    <span class="k">def</span> <span class="nf">get_synapse_targets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;excitatory&quot;</span><span class="p">,</span> <span class="s2">&quot;inhibitory&quot;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;excitatory&quot;</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">isyn_exc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -177,14 +171,6 @@
     <span class="nd">@isyn_exc</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">isyn_exc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">isyn_exc</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_exc</span> <span class="o">=</span> <span class="n">isyn_exc</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">isyn_inh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_inh</span>
-
-    <span class="nd">@isyn_inh</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">isyn_inh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">isyn_inh</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__isyn_inh</span> <span class="o">=</span> <span class="n">isyn_inh</span>
 
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractStandardNeuronComponent</span><span class="o">.</span><span class="n">get_sdram_usage_in_bytes</span><span class="p">)</span>
 <div class="viewcode-block" id="SynapseTypeDeltaConv.get_sdram_usage_in_bytes"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.synapse_types.html#spynnaker.pyNN.models.neuron.synapse_types.SynapseTypeDeltaConv.get_sdram_usage_in_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">get_sdram_usage_in_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_neurons</span><span class="p">):</span>
