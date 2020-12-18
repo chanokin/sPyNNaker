@@ -59,7 +59,8 @@ extern uint32_t bit_field_filtered_packets;
 //! \return True if the table was initialised successfully, False otherwise
 bool population_table_initialise(
         address_t table_address, address_t synapse_rows_address,
-        address_t direct_rows_address, uint32_t *row_max_n_words);
+        address_t direct_rows_address, address_t local_only_rows_address,
+        uint32_t *row_max_n_words);
 
 //! \brief Initialise the bitfield filtering system.
 //! \param[in] filter_region: Where the bitfield configuration is

@@ -22,8 +22,10 @@
 #include <spin1_api.h>
 #include <data_specification.h>
 #include <debug.h>
+#include <neuron/regions.h>
 #include <neuron/synapse_row.h>
 #include <neuron/direct_synapses.h>
+#include <neuron/local_only/local_only.h>
 #include <neuron/population_table/population_table.h>
 
 // stuff needed for the structural stuff to work
@@ -62,6 +64,9 @@ address_t structural_matrix_region_base_address = NULL;
 //! \brief Stores the DMA based master pop entries.
 //! \details Used during pop table init, and reading back synaptic rows.
 address_t direct_synapses_address;
+
+
+address_t local_only_address;
 
 //! \brief Stores the max row size for DMA reads (used when extracting a
 //!     synapse row from sdram.
@@ -217,11 +222,23 @@ bool initialise(void) {
         return false;
     }
 
+//    data_specification_metadata_t *ds_regions =
+//                            data_specification_get_data_address();
+//    local_only_address = data_specification_get_region(
+//                                    LOCAL_ONLY_REGION, ds_regions);
+//
+//    if (!local_only_initialise(local_only_address)){
+//        log_error("Failed to init local_only processing.");
+//        return false;
+//    }
+//    local_only = local_only_is_compatible();
+
     // init the master pop table
     log_info("Pop table init");
     if (!population_table_initialise(
             master_pop_base_address, synaptic_matrix_base_address,
-            direct_synapses_address, &row_max_n_words)) {
+            direct_synapses_address, local_only_address,
+            &row_max_n_words)) {
         log_error("Failed to init the master pop table. failing");
         return false;
     }

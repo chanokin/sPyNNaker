@@ -362,7 +362,9 @@ class SynapticMatrix(object):
         """
 
         # single_rows = row_data.reshape(-1, 4)[:, 3]
-        local_data = self.__synapse_info.connector.get_local_only_data(None)
+        local_data = self.__synapse_info.connector.get_local_only_data(
+                        self.__machine_edge.pre_vertex.vertex_slice)
+
         data_size = len(local_data) * BYTES_PER_WORD
         if data_size != self.__local_only_matrix_size:
             raise Exception("Row data incorrect size: {} instead of {}".format(

@@ -18,6 +18,7 @@ typedef struct {
 } lc_shape_t;
 
 typedef struct {
+    lc_neuron_id_t start;
     lc_shape_t pre;
     lc_shape_t post;
     lc_shape_t padding;

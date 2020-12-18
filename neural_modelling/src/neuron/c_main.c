@@ -186,8 +186,10 @@ static bool initialise(void) {
             c_main_store_provenance_data,
             data_specification_get_region(PROVENANCE_DATA_REGION, ds_regions));
 
-    if (!local_only_initialise(data_specification_get_region(
-            LOCAL_ONLY_REGION, ds_regions))){
+    address_t local_only_address = data_specification_get_region(
+                                    LOCAL_ONLY_REGION, ds_regions);
+    if (!local_only_initialise(local_only_address)){
+        log_error("Failed to init local_only processing.");
         return false;
     }
     local_only = local_only_is_compatible();
@@ -228,7 +230,7 @@ static bool initialise(void) {
     if (!population_table_initialise(
             data_specification_get_region(POPULATION_TABLE_REGION, ds_regions),
             data_specification_get_region(SYNAPTIC_MATRIX_REGION, ds_regions),
-            direct_synapses_address, &row_max_n_words)) {
+            direct_synapses_address, local_only_address, &row_max_n_words)) {
         return false;
     }
     // Set up the synapse dynamics

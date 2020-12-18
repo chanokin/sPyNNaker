@@ -104,7 +104,7 @@ static uint32_t synaptic_rows_base_address;
 static uint32_t direct_rows_base_address;
 
 //! Base address for the synaptic matrix's local rows
-static uint32_t local_rows_base_address;
+static uint32_t local_only_rows_base_address;
 
 //! \brief The last spike received
 static spike_t last_spike = 0;
@@ -149,7 +149,7 @@ static inline uint32_t get_direct_address(address_and_row_length entry) {
 //! \param[in] entry: the table entry
 //! \return a local row address
 static inline uint32_t get_local_address(address_and_row_length entry) {
-    return entry.address + local_rows_base_address;
+    return entry.address + local_only_rows_base_address;
 }
 
 //! \brief Get the standard address offset out of an entry
@@ -430,7 +430,8 @@ static inline bool population_table_position_in_the_master_pop_array(
 
 bool population_table_initialise(
         address_t table_address, address_t synapse_rows_address,
-        address_t direct_rows_address, uint32_t *row_max_n_words) {
+        address_t direct_rows_address, address_t local_only_rows_address,
+        uint32_t *row_max_n_words) {
     log_info("Population_table_initialise: starting");
 
     master_population_table_length = table_address[0];
@@ -480,8 +481,12 @@ bool population_table_initialise(
             synapse_rows_address);
     log_info("The direct synaptic matrix base address is located at: 0x%08x",
             direct_rows_address);
+    log_info("The local-only synaptic matrix base address is located at: 0x%08x",
+            local_only_rows_address);
+
     synaptic_rows_base_address = (uint32_t) synapse_rows_address;
     direct_rows_base_address = (uint32_t) direct_rows_address;
+    local_only_rows_base_address = (uint32_t) local_only_rows_address;
 
     *row_max_n_words = 0xFF + N_SYNAPSE_ROW_HEADER_WORDS;
 

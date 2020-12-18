@@ -434,11 +434,12 @@ class ConvolutionConnector(AbstractConnector):
         return pack
 
 
-    def get_local_only_data(self, synapse_matrix_app):
+    def get_local_only_data(self, conn_slice=None):
         # s411 = DataType()
         # dtp = DataType.S1615
         # I think we don't need a big range for weights (16-bit only)
-        dtp = DataType.S87
+        start = numpy.uint32(0 if conn_slice is None else conn_slice.lo_atom)
+
         klist = self.pack_kernel(self.kernel.flatten()).tolist()
 
         shapes = [
@@ -452,7 +453,8 @@ class ConvolutionConnector(AbstractConnector):
         print(self.kernel.flatten())
         print(klist)
 
-        data = [numpy.uint32(len(klist) + len(shapes))]
+        data = [numpy.uint32(len(klist) + len(shapes) + 1),
+                start]
         data.extend(shapes)
         data.extend(klist)
         print(data)

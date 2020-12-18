@@ -4,9 +4,12 @@
 #include <debug.h>
 #include "../population_table/population_table.h"
 
+#define LEN_SHAPE_DATA 6
 
-static lc_weight_t* conv_kernel = NULL;
-static lc_shapes_t shapes = {0};
+static uint32_t num_connectors = 0;
+static uint32_t *jumps = NULL;
+static lc_weight_t** conv_kernel = NULL;
+static lc_shapes_t *shapes = NULL;
 static uint32_t n_bytes = 0;
 static lc_weight_t* mapped_weights = NULL;
 static lc_neuron_id_t* mapped_post_ids = NULL;
@@ -21,72 +24,129 @@ bool local_only_initialise(address_t sdram_address){
         return true;
     }
 
-    // how many elements are in a single connector data
-    uint32_t n_elem = *((uint32_t*)sdram_address);
-//    log_info("Num elem %d", n_elem);
-
-    // shapes are 16-bit uints, hopefully enough for future too?
-    uint16_t *p = ((uint16_t*)(++sdram_address));
-    // todo: can this be done with just a single memset?
-    // todo: does it matter?
-    shapes.pre.width = *((lc_dim_t*)(p++));
-    shapes.pre.height = *((lc_dim_t*)(p++));
-    shapes.post.width = *((lc_dim_t*)(p++));
-    shapes.post.height = *((lc_dim_t*)(p++));
-    shapes.padding.width = *((lc_dim_t*)(p++));
-    shapes.padding.height = *((lc_dim_t*)(p++));
-    shapes.strides.width = *((lc_dim_t*)(p++));
-    shapes.strides.height = *((lc_dim_t*)(p++));
-    shapes.kernel.width = *((lc_dim_t*)(p++));
-    shapes.kernel.height = *((lc_dim_t*)(p));
-
-    log_info("shape pre %d, %d", shapes.pre.width, shapes.pre.height);
-    log_info("shape post %d, %d", shapes.post.width, shapes.post.height);
-    log_info("shape padding %d, %d", shapes.padding.width, shapes.padding.height);
-    log_info("shape strides %d, %d", shapes.strides.width, shapes.strides.height);
-    log_info("shape kernel %d, %d", shapes.kernel.width, shapes.kernel.height);
-
-
-    // weight kernel data is also 16-bit
-    lc_dim_t n_weights = shapes.kernel.width * shapes.kernel.height;
-    conv_kernel = (lc_weight_t*)spin1_malloc(n_weights * 2);
-    if(conv_kernel == NULL){
-        log_error("Could not initialise convolution kernel weights");
-        rt_error(RTE_SWERR);
+    num_connectors = *((uint32_t*)sdram_address++);
+    if(num_connectors == 0 && n_bytes > 0){
+        return false;
     }
 
-    mapped_weights = (lc_weight_t*)spin1_malloc(n_weights * 2);
+    conv_kernel = (lc_weight_t**)spin1_malloc(num_connectors * sizeof(lc_weight_t*));
+    if(conv_kernel == NULL){
+        log_error("Can't allocate memory for convolution kernel pointers.");
+        return false;
+    }
+
+    jumps = (uint32_t*)spin1_malloc(num_connectors * 4);
+    if(jumps == NULL){
+        log_error("Can't allocate memory for address jumps.");
+        return false;
+    }
+
+    shapes = (lc_shapes_t*)spin1_malloc(n_bytes);
+    if(shapes == NULL){
+        log_error("Can't allocate memory for shape's information.");
+        return false;
+    }
+
+    address_t _address = sdram_address;
+
+    uint32_t remaining_bytes = n_bytes;
+    uint32_t idx = 0;
+    uint32_t max_n_weights = 0;
+    uint32_t mem_size = 0;
+    for(idx = 0; idx < num_connectors; idx++){
+        _address = sdram_address + mem_size;
+        // how many elements are in a single connector data
+        uint32_t n_elem = *((uint32_t*)_address++);
+        log_info("Num elem %d", n_elem);
+
+        uint32_t start = *((uint32_t*)_address++);
+        log_info("Slice start %d", start);
+        shapes[idx].start = start;
+
+        // shapes are 16-bit uints, hopefully enough for future too?
+        uint16_t *p = ((uint16_t*)(_address));
+        // todo: can this be done with just a single memset?
+        // todo: does it matter?
+        shapes[idx].pre.width = *((lc_dim_t*)(p++));
+        shapes[idx].pre.height = *((lc_dim_t*)(p++));
+        shapes[idx].post.width = *((lc_dim_t*)(p++));
+        shapes[idx].post.height = *((lc_dim_t*)(p++));
+        shapes[idx].padding.width = *((lc_dim_t*)(p++));
+        shapes[idx].padding.height = *((lc_dim_t*)(p++));
+        shapes[idx].strides.width = *((lc_dim_t*)(p++));
+        shapes[idx].strides.height = *((lc_dim_t*)(p++));
+        shapes[idx].kernel.width = *((lc_dim_t*)(p++));
+        shapes[idx].kernel.height = *((lc_dim_t*)(p));
+
+        log_info("shape pre %d, %d",
+                 shapes[idx].pre.width, shapes[idx].pre.height);
+        log_info("shape post %d, %d",
+                 shapes[idx].post.width, shapes[idx].post.height);
+        log_info("shape padding %d, %d",
+                 shapes[idx].padding.width, shapes[idx].padding.height);
+        log_info("shape strides %d, %d",
+                 shapes[idx].strides.width, shapes[idx].strides.height);
+        log_info("shape kernel %d, %d",
+                 shapes[idx].kernel.width, shapes[idx].kernel.height);
+
+
+        // weight kernel data is also 16-bit
+        lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;
+        if(max_n_weights < n_weights){
+            max_n_weights = n_weights;
+        }
+
+        log_info("n_elem = %u\t")
+        jumps[idx] = mem_size;
+        mem_size += n_elem + n_weights / 2 + (n_weights % 2 > 0);
+
+    }
+
+    for(idx = 0; idx < num_connectors; idx++){
+        lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;
+        _address = sdram_address + jumps[idx];
+
+        conv_kernel[idx] = (lc_weight_t*)spin1_malloc(n_weights * 2);
+        if(conv_kernel[idx] == NULL){
+            log_error(
+                "Could not initialise convolution kernel weights (size = %u)",
+                n_weights);
+            rt_error(RTE_SWERR);
+        }
+
+        n_mapped = 0;
+
+        uint32_t *p32 = _address + LEN_SHAPE_DATA;
+        for(lc_dim_t r=0; r < shapes[idx].kernel.height; r++){
+            for(lc_dim_t c=0; c < shapes[idx].kernel.width; c++){
+                uint32_t w_idx = r * shapes[idx].kernel.width + c;
+                if((w_idx%2) == 0){
+                    conv_kernel[idx][w_idx] = (lc_weight_t)(p32[w_idx/2] >> 16);
+                } else {
+                    conv_kernel[idx][w_idx] = (lc_weight_t)(p32[w_idx/2] & ((1 << 16) - 1));
+                }
+
+                log_info("w(%d, %d) = fixed-point %d.%u",
+                r, c,
+                conv_kernel[idx][w_idx] >> 7,
+                conv_kernel[idx][w_idx] & ((1 << 7) - 1));
+            }
+        }
+
+    }
+
+    mapped_weights = (lc_weight_t*)spin1_malloc(max_n_weights * 2);
     if(mapped_weights == NULL){
         log_error("Could not initialise weights buffer");
         rt_error(RTE_SWERR);
     }
 
-    mapped_post_ids = (lc_neuron_id_t*)spin1_malloc(n_weights * 2);
+    mapped_post_ids = (lc_neuron_id_t*)spin1_malloc(max_n_weights * 2);
     if(mapped_post_ids == NULL){
         log_error("Could not initialise post IDs buffer");
         rt_error(RTE_SWERR);
     }
 
-    n_mapped = 0;
-
-    p = (lc_weight_t *)(sdram_address + LEN_SHAPE_DATA);
-    uint32_t *p32 = sdram_address + LEN_SHAPE_DATA;
-    for(lc_dim_t r=0; r < shapes.kernel.height; r++){
-        for(lc_dim_t c=0; c < shapes.kernel.width; c++){
-            uint32_t idx = r * shapes.kernel.width + c;
-            if((idx%2) == 0){
-                conv_kernel[idx] = (lc_weight_t)(p32[idx/2] >> 16);
-            } else {
-                conv_kernel[idx] = (lc_weight_t)(p32[idx/2] & ((1 << 16) - 1));
-            }
-
-
-            log_info("w(%d, %d) = fixed-point %d.%u",
-            r, c,
-            conv_kernel[idx] >> 7,
-            conv_kernel[idx] & ((1 << 7) - 1));
-        }
-    }
 
     return true;
 }
