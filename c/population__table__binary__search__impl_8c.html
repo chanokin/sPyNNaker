@@ -175,9 +175,9 @@ Functions</h2></td></tr>
 <tr class="memdesc:ab4759e505b101d5eb919685e2bfb55b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position in the master population table.  <a href="population__table__binary__search__impl_8c.html#ab4759e505b101d5eb919685e2bfb55b0">More...</a><br /></td></tr>
 <tr class="separator:ab4759e505b101d5eb919685e2bfb55b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">API functions</div></td></tr>
-<tr class="memitem:a5f92af4dd47e65504cbbbcb265083196"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="population__table__binary__search__impl_8c.html#a5f92af4dd47e65504cbbbcb265083196">population_table_initialise</a> (<a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> table_address, <a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> synapse_rows_address, <a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> direct_rows_address, uint32_t *<a class="el" href="bit__field__expander_8c.html#af9b6824a750777e79471f086307d51b9">row_max_n_words</a>)</td></tr>
-<tr class="memdesc:a5f92af4dd47e65504cbbbcb265083196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the table.  <a href="population__table__binary__search__impl_8c.html#a5f92af4dd47e65504cbbbcb265083196">More...</a><br /></td></tr>
-<tr class="separator:a5f92af4dd47e65504cbbbcb265083196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70d042b7d78743387353d19617fbaba7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="population__table__binary__search__impl_8c.html#a70d042b7d78743387353d19617fbaba7">population_table_initialise</a> (<a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> table_address, <a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> synapse_rows_address, <a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> direct_rows_address, <a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> local_only_rows_address, uint32_t *<a class="el" href="bit__field__expander_8c.html#af9b6824a750777e79471f086307d51b9">row_max_n_words</a>)</td></tr>
+<tr class="memdesc:a70d042b7d78743387353d19617fbaba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the table.  <a href="population__table__binary__search__impl_8c.html#a70d042b7d78743387353d19617fbaba7">More...</a><br /></td></tr>
+<tr class="separator:a70d042b7d78743387353d19617fbaba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bda7c27a3c9d52a2f95c4b6edd58944"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="population__table__binary__search__impl_8c.html#a8bda7c27a3c9d52a2f95c4b6edd58944">population_table_get_first_address</a> (<a class="el" href="neuron-typedefs_8h.html#a6f8f96f76107734fe756b67227742b32">spike_t</a> spike, <a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> *row_address, <a class="elRef" href="http://spinnakermanchester.github.io/spinn_common/bit__field_8h.html#a29d85914ddff32967d85ada69854206d">size_t</a> *n_bytes_to_transfer)</td></tr>
 <tr class="memdesc:a8bda7c27a3c9d52a2f95c4b6edd58944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the first row data for the given input spike.  <a href="population__table__binary__search__impl_8c.html#a8bda7c27a3c9d52a2f95c4b6edd58944">More...</a><br /></td></tr>
 <tr class="separator:a8bda7c27a3c9d52a2f95c4b6edd58944"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,10 +207,10 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="population__table__binary__search__impl_8c.html#a53f683b47d1883d1fe9dc988c1b6a101">direct_rows_base_address</a></td></tr>
 <tr class="memdesc:a53f683b47d1883d1fe9dc988c1b6a101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base address for the synaptic matrix's direct rows. <br /></td></tr>
 <tr class="separator:a53f683b47d1883d1fe9dc988c1b6a101"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaab28b2d4703b9e13003070207855f6"><td class="memItemLeft" align="right" valign="top"><a id="aeaab28b2d4703b9e13003070207855f6"></a>
-static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="population__table__binary__search__impl_8c.html#aeaab28b2d4703b9e13003070207855f6">local_rows_base_address</a></td></tr>
-<tr class="memdesc:aeaab28b2d4703b9e13003070207855f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base address for the synaptic matrix's local rows. <br /></td></tr>
-<tr class="separator:aeaab28b2d4703b9e13003070207855f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d8da08c41a8adc825e152642346b7f3"><td class="memItemLeft" align="right" valign="top"><a id="a0d8da08c41a8adc825e152642346b7f3"></a>
+static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="population__table__binary__search__impl_8c.html#a0d8da08c41a8adc825e152642346b7f3">local_only_rows_base_address</a></td></tr>
+<tr class="memdesc:a0d8da08c41a8adc825e152642346b7f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base address for the synaptic matrix's local rows. <br /></td></tr>
+<tr class="separator:a0d8da08c41a8adc825e152642346b7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5f8c1b781901d417e09126b75d60140"><td class="memItemLeft" align="right" valign="top"><a id="af5f8c1b781901d417e09126b75d60140"></a>
 static <a class="el" href="neuron-typedefs_8h.html#a6f8f96f76107734fe756b67227742b32">spike_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="population__table__binary__search__impl_8c.html#af5f8c1b781901d417e09126b75d60140">last_spike</a> = 0</td></tr>
 <tr class="memdesc:af5f8c1b781901d417e09126b75d60140"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last spike received. <br /></td></tr>
@@ -1074,8 +1074,8 @@ extra</td>
 
 </div>
 </div>
-<a id="a5f92af4dd47e65504cbbbcb265083196"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f92af4dd47e65504cbbbcb265083196">&#9670;&nbsp;</a></span>population_table_initialise()</h2>
+<a id="a70d042b7d78743387353d19617fbaba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70d042b7d78743387353d19617fbaba7">&#9670;&nbsp;</a></span>population_table_initialise()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1097,6 +1097,12 @@ extra</td>
           <td></td>
           <td class="paramtype"><a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a>&#160;</td>
           <td class="paramname"><em>direct_rows_address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a>&#160;</td>
+          <td class="paramname"><em>local_only_rows_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1171,7 +1177,7 @@ extra</td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if there is a row to read, False if not </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="population__table__binary__search__impl_8c_source.html#l00492">492</a> of file <a class="el" href="population__table__binary__search__impl_8c_source.html">population_table_binary_search_impl.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population__table__binary__search__impl_8c_source.html#l00497">497</a> of file <a class="el" href="population__table__binary__search__impl_8c_source.html">population_table_binary_search_impl.c</a>.</p>
 
 </div>
 </div>
@@ -1218,7 +1224,7 @@ extra</td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if there is a row to read, False if not </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="population__table__binary__search__impl_8c_source.html#l00565">565</a> of file <a class="el" href="population__table__binary__search__impl_8c_source.html">population_table_binary_search_impl.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="population__table__binary__search__impl_8c_source.html#l00570">570</a> of file <a class="el" href="population__table__binary__search__impl_8c_source.html">population_table_binary_search_impl.c</a>.</p>
 
 </div>
 </div>
@@ -1245,7 +1251,7 @@ extra</td>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 16 2020 12:45:03 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+Generated on Fri Dec 18 2020 12:43:54 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
 </small></address>
 </body>
 </html>

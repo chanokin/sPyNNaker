@@ -4,6 +4,7 @@
     <name>bit_field_expander.c</name>
     <path>/github/workspace/neural_modelling/src/bit_field_expander/</path>
     <filename>bit__field__expander_8c.html</filename>
+    <includes id="regions_8h" name="regions.h" local="no" imported="no">neuron/regions.h</includes>
     <includes id="synapse__row_8h" name="synapse_row.h" local="no" imported="no">neuron/synapse_row.h</includes>
     <includes id="direct__synapses_8h" name="direct_synapses.h" local="no" imported="no">neuron/direct_synapses.h</includes>
     <includes id="population__table_8h" name="population_table.h" local="no" imported="no">neuron/population_table/population_table.h</includes>
@@ -5470,8 +5471,8 @@
       <type>bool</type>
       <name>population_table_initialise</name>
       <anchorfile>population__table_8h.html</anchorfile>
-      <anchor>a5f92af4dd47e65504cbbbcb265083196</anchor>
-      <arglist>(address_t table_address, address_t synapse_rows_address, address_t direct_rows_address, uint32_t *row_max_n_words)</arglist>
+      <anchor>a70d042b7d78743387353d19617fbaba7</anchor>
+      <arglist>(address_t table_address, address_t synapse_rows_address, address_t direct_rows_address, address_t local_only_rows_address, uint32_t *row_max_n_words)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -5677,8 +5678,8 @@
       <type>bool</type>
       <name>population_table_initialise</name>
       <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
-      <anchor>a5f92af4dd47e65504cbbbcb265083196</anchor>
-      <arglist>(address_t table_address, address_t synapse_rows_address, address_t direct_rows_address, uint32_t *row_max_n_words)</arglist>
+      <anchor>a70d042b7d78743387353d19617fbaba7</anchor>
+      <arglist>(address_t table_address, address_t synapse_rows_address, address_t direct_rows_address, address_t local_only_rows_address, uint32_t *row_max_n_words)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -5731,9 +5732,9 @@
     </member>
     <member kind="variable" static="yes">
       <type>static uint32_t</type>
-      <name>local_rows_base_address</name>
+      <name>local_only_rows_base_address</name>
       <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
-      <anchor>aeaab28b2d4703b9e13003070207855f6</anchor>
+      <anchor>a0d8da08c41a8adc825e152642346b7f3</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
@@ -5908,8 +5909,8 @@
       <type>bool</type>
       <name>population_table_initialise</name>
       <anchorfile>population__table__binary__search__impl_8c.html</anchorfile>
-      <anchor>a5f92af4dd47e65504cbbbcb265083196</anchor>
-      <arglist>(address_t table_address, address_t synapse_rows_address, address_t direct_rows_address, uint32_t *row_max_n_words)</arglist>
+      <anchor>a70d042b7d78743387353d19617fbaba7</anchor>
+      <arglist>(address_t table_address, address_t synapse_rows_address, address_t direct_rows_address, address_t local_only_rows_address, uint32_t *row_max_n_words)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>

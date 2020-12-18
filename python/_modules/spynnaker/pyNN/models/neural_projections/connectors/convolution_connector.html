@@ -499,11 +499,12 @@
         <span class="k">return</span> <span class="n">pack</span></div>
 
 
-<div class="viewcode-block" id="ConvolutionConnector.get_local_only_data"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neural_projections.connectors.html#spynnaker.pyNN.models.neural_projections.connectors.ConvolutionConnector.get_local_only_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_only_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">synapse_matrix_app</span><span class="p">):</span>
+<div class="viewcode-block" id="ConvolutionConnector.get_local_only_data"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neural_projections.connectors.html#spynnaker.pyNN.models.neural_projections.connectors.ConvolutionConnector.get_local_only_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_only_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn_slice</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1"># s411 = DataType()</span>
         <span class="c1"># dtp = DataType.S1615</span>
         <span class="c1"># I think we don&#39;t need a big range for weights (16-bit only)</span>
-        <span class="n">dtp</span> <span class="o">=</span> <span class="n">DataType</span><span class="o">.</span><span class="n">S87</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span><span class="p">(</span><span class="mi">0</span> <span class="k">if</span> <span class="n">conn_slice</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">conn_slice</span><span class="o">.</span><span class="n">lo_atom</span><span class="p">)</span>
+
         <span class="n">klist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pack_kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span>
@@ -517,7 +518,8 @@
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">klist</span><span class="p">)</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">klist</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">shapes</span><span class="p">))]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">klist</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">start</span><span class="p">]</span>
         <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
         <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">klist</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>

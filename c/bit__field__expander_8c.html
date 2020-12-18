@@ -84,8 +84,10 @@ $(function() {
 <code>#include &lt;<a class="elRef" href="http://spinnakermanchester.github.io/spinnaker_tools/spin1__api_8h.html">spin1_api.h</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/data__specification_8h.html">data_specification.h</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html">debug.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="regions_8h_source.html">neuron/regions.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="synapse__row_8h_source.html">neuron/synapse_row.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="direct__synapses_8h_source.html">neuron/direct_synapses.h</a>&gt;</code><br />
+<code>#include &lt;neuron/local_only/local_only.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="population__table_8h_source.html">neuron/population_table/population_table.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="sp__structs_8h_source.html">neuron/structural_plasticity/synaptogenesis/sp_structs.h</a>&gt;</code><br />
 <code>#include &lt;<a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/filter__info_8h.html">filter_info.h</a>&gt;</code><br />
@@ -185,6 +187,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bit__
 <tr class="memitem:a7e8f73474622d82215423413dec84223"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bit__field__expander_8c.html#a7e8f73474622d82215423413dec84223">direct_synapses_address</a></td></tr>
 <tr class="memdesc:a7e8f73474622d82215423413dec84223"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the DMA based master pop entries.  <a href="bit__field__expander_8c.html#a7e8f73474622d82215423413dec84223">More...</a><br /></td></tr>
 <tr class="separator:a7e8f73474622d82215423413dec84223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f6dc20d05cbfd094c2d34f5d849e247"><td class="memItemLeft" align="right" valign="top"><a id="a3f6dc20d05cbfd094c2d34f5d849e247"></a>
+<a class="elRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>local_only_address</b></td></tr>
+<tr class="separator:a3f6dc20d05cbfd094c2d34f5d849e247"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9b6824a750777e79471f086307d51b9"><td class="memItemLeft" align="right" valign="top"><a id="af9b6824a750777e79471f086307d51b9"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bit__field__expander_8c.html#af9b6824a750777e79471f086307d51b9">row_max_n_words</a></td></tr>
 <tr class="memdesc:af9b6824a750777e79471f086307d51b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the max row size for DMA reads (used when extracting a synapse row from sdram. <br /></td></tr>
@@ -243,7 +248,7 @@ static <a class="el" href="sp__structs_8h.html#structpost__to__pre__entry">post_
 </div><div class="memdoc">
 <div class="textblock"><p>Format of the builder region in SDRAM. </p>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00105">105</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00110">110</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -314,7 +319,7 @@ What region to find structural plasticity information in. </td></tr>
 <p>Get this processor's virtual CPU control table in SRAM. </p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the virtual control table </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00124">124</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00129">129</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 
 </div>
 </div>
@@ -337,7 +342,7 @@ What region to find structural plasticity information in. </td></tr>
 <p>Set up the master pop table and synaptic matrix for the bit field processing. </p>
 <dl class="section return"><dt>Returns</dt><dd>whether the init was successful. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00211">211</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00216">216</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 
 </div>
 </div>
@@ -366,7 +371,7 @@ What region to find structural plasticity information in. </td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether there is target. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00266">266</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00283">283</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 
 </div>
 </div>
@@ -414,7 +419,7 @@ What region to find structural plasticity information in. </td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether there is target </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00291">291</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00308">308</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 
 </div>
 </div>
@@ -437,7 +442,7 @@ What region to find structural plasticity information in. </td></tr>
 <p>Create the bitfield for this master pop table and synaptic matrix. </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether it was successful at generating the bitfield </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00337">337</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00354">354</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 
 </div>
 </div>
@@ -457,7 +462,7 @@ What region to find structural plasticity information in. </td></tr>
 <p>Stores the DMA based master pop entries. </p>
 <p>Used during pop table init, and reading back synaptic rows. </p>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00064">64</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00066">66</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 
 </div>
 </div>
@@ -476,14 +481,14 @@ What region to find structural plasticity information in. </td></tr>
 <p>Fake bitfield holder. </p>
 <p>This is used to circumvent the need for a bitfield in the master pop table, which we are trying to generate with the use of the master pop table. chicken vs egg. </p>
 
-<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00083">83</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bit__field__expander_8c_source.html#l00088">88</a> of file <a class="el" href="bit__field__expander_8c_source.html">bit_field_expander.c</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Dec 16 2020 12:45:02 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+Generated on Fri Dec 18 2020 12:43:54 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
 </small></address>
 </body>
 </html>

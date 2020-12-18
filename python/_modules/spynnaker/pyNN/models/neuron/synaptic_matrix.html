@@ -427,7 +427,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># single_rows = row_data.reshape(-1, 4)[:, 3]</span>
-        <span class="n">local_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">get_local_only_data</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">local_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">get_local_only_data</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__machine_edge</span><span class="o">.</span><span class="n">pre_vertex</span><span class="o">.</span><span class="n">vertex_slice</span><span class="p">)</span>
+
         <span class="n">data_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_data</span><span class="p">)</span> <span class="o">*</span> <span class="n">BYTES_PER_WORD</span>
         <span class="k">if</span> <span class="n">data_size</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_matrix_size</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Row data incorrect size: </span><span class="si">{}</span><span class="s2"> instead of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
