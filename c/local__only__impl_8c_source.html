@@ -77,7 +77,7 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html">debug.h</a>&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../population_table/population_table.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#define LEN_SHAPE_DATA 6</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#define LEN_SHAPE_DATA 7</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">static</span> uint32_t num_connectors = 0;</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">static</span> uint32_t *jumps = <a class="codeRef" href="http://spinnakermanchester.github.io/spinnaker_tools/spin1__api_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>;</div>
@@ -101,95 +101,95 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">if</span>(num_connectors == 0 &amp;&amp; n_bytes &gt; 0){</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    conv_kernel = (lc_weight_t**)spin1_malloc(num_connectors * <span class="keyword">sizeof</span>(lc_weight_t*));</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">if</span>(conv_kernel == NULL){</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Can&#39;t allocate memory for convolution kernel pointers.&quot;</span>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    jumps = (uint32_t*)spin1_malloc(num_connectors * 4);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">if</span>(jumps == NULL){</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Can&#39;t allocate memory for address jumps.&quot;</span>);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    shapes = (<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a>*)spin1_malloc(n_bytes);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span>(shapes == NULL){</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Can&#39;t allocate memory for shape&#39;s information.&quot;</span>);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> _address = sdram_address;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    uint32_t remaining_bytes = n_bytes;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    uint32_t idx = 0;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    uint32_t max_n_weights = 0;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    uint32_t mem_size = 0;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">for</span>(idx = 0; idx &lt; num_connectors; idx++){</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        _address = sdram_address + mem_size;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="comment">// how many elements are in a single connector data</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        uint32_t n_elem = *((uint32_t*)_address++);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Num elem %d&quot;</span>, n_elem);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        uint32_t start = *((uint32_t*)_address++);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Slice start %d&quot;</span>, start);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        shapes[idx].start = start;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">// shapes are 16-bit uints, hopefully enough for future too?</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        uint16_t *p = ((uint16_t*)(_address));</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">// todo: can this be done with just a single memset?</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// todo: does it matter?</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        shapes[idx].pre.width = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        shapes[idx].pre.height = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        shapes[idx].post.width = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        shapes[idx].post.height = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        shapes[idx].padding.width = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        shapes[idx].padding.height = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        shapes[idx].strides.width = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        shapes[idx].strides.height = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        shapes[idx].kernel.width = *((lc_dim_t*)(p++));</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        shapes[idx].kernel.height = *((lc_dim_t*)(p));</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape pre %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                 shapes[idx].pre.width, shapes[idx].pre.height);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape post %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                 shapes[idx].post.width, shapes[idx].post.height);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape padding %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                 shapes[idx].padding.width, shapes[idx].padding.height);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape strides %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                 shapes[idx].strides.width, shapes[idx].strides.height);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape kernel %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                 shapes[idx].<a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>.width, shapes[idx].kernel.height);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;num connectors = %u&quot;</span>, num_connectors);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    conv_kernel = (lc_weight_t**)spin1_malloc(num_connectors * <span class="keyword">sizeof</span>(lc_weight_t*));</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span>(conv_kernel == NULL){</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Can&#39;t allocate memory for convolution kernel pointers.&quot;</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    jumps = (uint32_t*)spin1_malloc(num_connectors * 4);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">if</span>(jumps == NULL){</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Can&#39;t allocate memory for address jumps.&quot;</span>);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    shapes = (<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a>*)spin1_malloc(n_bytes);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">if</span>(shapes == NULL){</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Can&#39;t allocate memory for shape&#39;s information.&quot;</span>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> _address = sdram_address;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    uint32_t remaining_bytes = n_bytes;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    uint32_t idx = 0;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    uint32_t max_n_weights = 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    uint32_t mem_size = 0;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">for</span>(idx = 0; idx &lt; num_connectors; idx++){</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        _address = sdram_address + mem_size;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="comment">// how many elements are in a single connector data</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        uint32_t n_elem = *((uint32_t*)_address++);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Num elem %d&quot;</span>, n_elem);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        uint32_t start = *((uint32_t*)_address++);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Slice start %d&quot;</span>, start);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        shapes[idx].start = start;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="comment">// shapes are 16-bit uints, hopefully enough for future too?</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        uint16_t *p = ((uint16_t*)(_address));</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// todo: can this be done with just a single memset?</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// todo: does it matter?</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        shapes[idx].pre.width = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        shapes[idx].pre.height = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        shapes[idx].post.width = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        shapes[idx].post.height = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        shapes[idx].padding.width = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        shapes[idx].padding.height = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        shapes[idx].strides.width = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        shapes[idx].strides.height = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        shapes[idx].kernel.width = *((lc_dim_t*)(p++));</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        shapes[idx].kernel.height = *((lc_dim_t*)(p));</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape pre %d, %d&quot;</span>,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                 shapes[idx].pre.width, shapes[idx].pre.height);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape post %d, %d&quot;</span>,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                 shapes[idx].post.width, shapes[idx].post.height);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape padding %d, %d&quot;</span>,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                 shapes[idx].padding.width, shapes[idx].padding.height);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape strides %d, %d&quot;</span>,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                 shapes[idx].strides.width, shapes[idx].strides.height);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape kernel %d, %d&quot;</span>,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                 shapes[idx].<a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>.width, shapes[idx].kernel.height);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="comment">// weight kernel data is also 16-bit</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">if</span>(max_n_weights &lt; n_weights){</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            max_n_weights = n_weights;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;n_elem = %u\t&quot;</span>)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        jumps[idx] = mem_size;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        mem_size += n_elem + n_weights / 2 + (n_weights % 2 &gt; 0);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="comment">// weight kernel data is also 16-bit</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">if</span>(max_n_weights &lt; n_weights){</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            max_n_weights = n_weights;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;n_elem = %u\tn_weights = %u\tmem_size = %u&quot;</span>,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            n_elem, n_weights, mem_size);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        jumps[idx] = mem_size;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        mem_size += n_elem;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    for(idx = 0; idx &lt; num_connectors; idx++){</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        _address = sdram_address + jumps[idx];</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        conv_kernel[idx] = (lc_weight_t*)spin1_malloc(n_weights * 2);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">if</span>(conv_kernel[idx] == NULL){</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                <span class="stringliteral">&quot;Could not initialise convolution kernel weights (size = %u)&quot;</span>,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                n_weights);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#abe2018e60bb35fb629cdbb057368a2f4">rt_error</a>(RTE_SWERR);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        n_mapped = 0;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordflow">for</span>(idx = 0; idx &lt; num_connectors; idx++){</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        conv_kernel[idx] = (lc_weight_t*)spin1_malloc(n_weights * 2);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">if</span>(conv_kernel[idx] == NULL){</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="stringliteral">&quot;Could not initialise convolution kernel weights (size = %u)&quot;</span>,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                n_weights);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#abe2018e60bb35fb629cdbb057368a2f4">rt_error</a>(RTE_SWERR);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        uint32_t *p32 = _address + LEN_SHAPE_DATA;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        uint32_t *p32 = sdram_address + jumps[idx] + LEN_SHAPE_DATA;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">for</span>(lc_dim_t r=0; r &lt; shapes[idx].kernel.height; r++){</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="keywordflow">for</span>(lc_dim_t c=0; c &lt; shapes[idx].kernel.width; c++){</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                uint32_t w_idx = r * shapes[idx].kernel.width + c;</div>
@@ -337,7 +337,7 @@ $(function() {
 <div class="ttc" id="apopulation__table_8h_html_a8bda7c27a3c9d52a2f95c4b6edd58944"><div class="ttname"><a href="population__table_8h.html#a8bda7c27a3c9d52a2f95c4b6edd58944">population_table_get_first_address</a></div><div class="ttdeci">bool population_table_get_first_address(spike_t spike, address_t *row_address, size_t *n_bytes_to_transfer)</div><div class="ttdoc">Get the first row data for the given input spike.</div><div class="ttdef"><b>Definition:</b> <a href="population__table__binary__search__impl_8c_source.html#l00497">population_table_binary_search_impl.c:497</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 18 2020 12:43:53 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
+Generated on Fri Dec 18 2020 17:38:27 for sPyNNaker neural_modelling by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20
 </small></address>
 </body>
 </html>

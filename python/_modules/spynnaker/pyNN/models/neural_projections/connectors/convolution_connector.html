@@ -514,15 +514,14 @@
             <span class="n">shape2word</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="n">WIDTH</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="n">HEIGHT</span><span class="p">]),</span>
             <span class="n">shape2word</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_shape</span><span class="p">[</span><span class="n">WIDTH</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel_shape</span><span class="p">[</span><span class="n">HEIGHT</span><span class="p">])]</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">klist</span><span class="p">)</span>
+        <span class="c1"># print(shapes)</span>
+        <span class="c1"># # print(self.kernel.flatten())</span>
+        <span class="c1"># print(klist)</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">klist</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-                <span class="n">start</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">start</span><span class="p">]</span>
         <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
         <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">klist</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span></div>
 
     <span class="nd">@property</span>
