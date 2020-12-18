@@ -281,7 +281,7 @@ class SynapticMatrices(object):
         single_synapses = [numpy.array([], dtype="uint32")]
         single_addr = 0
 
-        local_only_synapses = [numpy.array([], dtype="uint32")]
+        local_only_synapses = []
         local_only_addr = 0
 
         # Lets write some synapses
@@ -347,18 +347,18 @@ class SynapticMatrices(object):
 
         # Write size and data for local-only (conv) synapses
         local_only_n_conns = len(local_only_synapses)
-        local_only_data = numpy.concatenate(local_only_synapses)
-        local_only_n_words = len(local_only_data)
+        if local_only_n_conns:
+            local_only_data = numpy.concatenate(local_only_synapses)
+            local_only_n_words = len(local_only_data)
 
-        spec.reserve_memory_region(
-            region=self.__local_only_region,
-            size=(local_only_n_words + 2) * BYTES_PER_WORD,
-            label='LocalOnlyMatrix')
+            spec.reserve_memory_region(
+                region=self.__local_only_region,
+                size=(local_only_n_words + 2) * BYTES_PER_WORD,
+                label='LocalOnlyMatrix')
 
-        spec.switch_write_focus(self.__local_only_region)
-        spec.write_value(local_only_n_words * BYTES_PER_WORD)
-        spec.write_value(local_only_n_conns)
-        if local_only_n_words:
+            spec.switch_write_focus(self.__local_only_region)
+            spec.write_value(local_only_n_words * BYTES_PER_WORD)
+            spec.write_value(local_only_n_conns)
             spec.write_array(local_only_data)
 
         return generator_data

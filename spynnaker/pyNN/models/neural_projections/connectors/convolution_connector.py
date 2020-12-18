@@ -449,15 +449,14 @@ class ConvolutionConnector(AbstractConnector):
             shape2word(self.strides[WIDTH], self.strides[HEIGHT]),
             shape2word(self.kernel_shape[WIDTH], self.kernel_shape[HEIGHT])]
 
-        print(shapes)
-        print(self.kernel.flatten())
-        print(klist)
+        # print(shapes)
+        # # print(self.kernel.flatten())
+        # print(klist)
 
-        data = [numpy.uint32(len(klist) + len(shapes) + 1),
-                start]
+        data = [0, start]
         data.extend(shapes)
         data.extend(klist)
-        print(data)
+        data[0] = len(data)
         return data
 
     @property

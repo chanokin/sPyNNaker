@@ -4,7 +4,7 @@
 #include <debug.h>
 #include "../population_table/population_table.h"
 
-#define LEN_SHAPE_DATA 6
+#define LEN_SHAPE_DATA 7
 
 static uint32_t num_connectors = 0;
 static uint32_t *jumps = NULL;
@@ -28,6 +28,7 @@ bool local_only_initialise(address_t sdram_address){
     if(num_connectors == 0 && n_bytes > 0){
         return false;
     }
+    log_info("num connectors = %u", num_connectors);
 
     conv_kernel = (lc_weight_t**)spin1_malloc(num_connectors * sizeof(lc_weight_t*));
     if(conv_kernel == NULL){
@@ -96,15 +97,16 @@ bool local_only_initialise(address_t sdram_address){
             max_n_weights = n_weights;
         }
 
-        log_info("n_elem = %u\t")
+        log_info("n_elem = %u\tn_weights = %u\tmem_size = %u",
+            n_elem, n_weights, mem_size);
         jumps[idx] = mem_size;
-        mem_size += n_elem + n_weights / 2 + (n_weights % 2 > 0);
+        mem_size += n_elem;
 
     }
 
     for(idx = 0; idx < num_connectors; idx++){
         lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;
-        _address = sdram_address + jumps[idx];
+
 
         conv_kernel[idx] = (lc_weight_t*)spin1_malloc(n_weights * 2);
         if(conv_kernel[idx] == NULL){
@@ -114,9 +116,7 @@ bool local_only_initialise(address_t sdram_address){
             rt_error(RTE_SWERR);
         }
 
-        n_mapped = 0;
-
-        uint32_t *p32 = _address + LEN_SHAPE_DATA;
+        uint32_t *p32 = sdram_address + jumps[idx] + LEN_SHAPE_DATA;
         for(lc_dim_t r=0; r < shapes[idx].kernel.height; r++){
             for(lc_dim_t c=0; c < shapes[idx].kernel.width; c++){
                 uint32_t w_idx = r * shapes[idx].kernel.width + c;
