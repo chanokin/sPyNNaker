@@ -267,7 +267,7 @@ static inline void print_master_population_table(void) {
             }
             else if (addr.address_type == POP_TABLE_LOCAL_ADDRESS) {
                 log_info("    index %d: offset: %u, address: 0x%08x, local",
-                    j, addr.address, get_direct_address(addr));
+                    j, addr.address, get_local_address(addr));
             }
         }
     }
@@ -558,6 +558,11 @@ bool population_table_get_first_address(
     uint32_t local_spike_id;
     bool get_next = population_table_get_next_address(
             &local_spike_id, row_address, n_bytes_to_transfer);
+
+    if(address_list[next_item].addr.address_type == POP_TABLE_LOCAL_ADDRESS){
+        *row_address = position;
+    }
+//	log_info("local_spike_id = %u", local_spike_id);
 
     // tracks surplus DMAs
     if (!get_next) {

@@ -14,12 +14,15 @@ static uint32_t n_bytes = 0;
 static lc_weight_t* mapped_weights = NULL;
 static lc_neuron_id_t* mapped_post_ids = NULL;
 static uint32_t n_mapped = 0;
+extern address_t local_address_start = NULL;
 
 bool local_only_initialise(address_t sdram_address){
     log_info("+++++++++++++++++ CONV init ++++++++++++++++++++");
+    log_info("SDRAM address is 0x%08x", sdram_address);
+
     // total incoming local-only connections data size
     n_bytes = *((uint32_t*)sdram_address++);
-    log_info("num bytes %d", n_bytes);
+//    log_info("num bytes %d", n_bytes);
     if(n_bytes == 0){
         return true;
     }
@@ -162,15 +165,11 @@ void local_only_process_spike(uint32_t key, uint32_t payload){
     bool success = false;
     success = population_table_get_first_address(
         key, &row_address, &n_bytes_to_transfer);
-    log_info("key %u\tpayload %d\taddress %u\tn_bytes %u\tsuccess = %u",
+    log_info("key %u\tpayload %d\taddress %u\tn_bytes %u\tsuccess = %u\n\n",
         key, payload, row_address, n_bytes_to_transfer, success);
 
     if(success){
         uint32_t local_spike_id;
-        bool get_next = population_table_get_next_address(
-            &local_spike_id, row_address, n_bytes_to_transfer);
-            log_info("key %u\taddress %u\tn_bytes %u\tsuccess = %u",
-                local_spike_id, row_address, n_bytes_to_transfer, get_next);
 
     }
 }
