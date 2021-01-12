@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<tagfile doxygen_version="1.8.20">
+<tagfile doxygen_version="1.9.0">
   <compound kind="file">
     <name>bit_field_expander.c</name>
     <path>/github/workspace/neural_modelling/src/bit_field_expander/</path>
@@ -556,120 +556,6 @@
       <name>OFFSET_TO_D</name>
       <anchorfile>munich__protocol_8h.html</anchorfile>
       <anchor>a06fc87d81c62e9abb8790b6e5713c55baad87c155efc7814564f9b47dfb651b3f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>ONE_TO_ONE</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55badaccc17f840cc67d0e9c1a9a331b2fb4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>ALL_TO_ALL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba403e4025d2925f132293a50eae7381fe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_PROBABILITY</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f6a6db47b5476cf11f24317f14ee4a7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_TOTAL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8338dcf5840ce1a01a4c26d9c49dc560</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_PRE</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa667dfec30c43a0320c7bd76b99bd4c7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_POST</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa130e7b038fc0ede3b0203931063b116</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>KERNEL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_CONNECTION_GENERATORS</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab1144285d7382feeb4687af0263e2467</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>STATIC_MATRIX_GENERATOR</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baf14f18f5ed2665f8cb095c1363fc9848</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>PLASTIC_MATRIX_GENERATOR</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba08b27fbab7a770bae071d9defb278782</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_MATRIX_GENERATORS</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baba9a03e4fd023b2837469ea1ff6225a3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>CONSTANT</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba83972670b57415508523b5641bb46116</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>UNIFORM</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f44784d154005a214e0fe94119d28ef</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba50d1448013c6f17125caee18aa418af7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL_CLIPPED</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bac40cefd2a096660da3f41d6ee6352889</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL_CLIPPED_BOUNDARY</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baca06c44d4221f47f9d61534ca1e35752</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>EXPONENTIAL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa6055a3a8ab1aed0594419b51d9ec15e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>KERNEL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_PARAM_GENERATORS</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab8047ff7dfdb2c76ef1e78a7e6347777</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -6332,10 +6218,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
-      <type>static struct @0</type>
+      <type>static struct @7</type>
       <name>p_per_ts_struct</name>
       <anchorfile>spike__processing_8c.html</anchorfile>
-      <anchor>ad01efea30fbccd550ba6608ec41ee61e</anchor>
+      <anchor>a72e1a0b25adf0ccbc7bc9d9f8ac69570</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" static="yes">
@@ -9067,135 +8953,51 @@
     <class kind="struct">connection_generator_info</class>
     <class kind="struct">connection_generator</class>
     <member kind="enumvalue">
-      <name>OFFSET_TO_I</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa890a0ce75c6dee9ecbac3a2c87220cc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>OFFSET_TO_F</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba964ef105cedcef1b651c6a4e58e33302</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>OFFSET_TO_D</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baad87c155efc7814564f9b47dfb651b3f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>ONE_TO_ONE</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55badaccc17f840cc67d0e9c1a9a331b2fb4</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600adaccc17f840cc67d0e9c1a9a331b2fb4</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>ALL_TO_ALL</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba403e4025d2925f132293a50eae7381fe</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600a403e4025d2925f132293a50eae7381fe</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>FIXED_PROBABILITY</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f6a6db47b5476cf11f24317f14ee4a7</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600a8f6a6db47b5476cf11f24317f14ee4a7</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>FIXED_TOTAL</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8338dcf5840ce1a01a4c26d9c49dc560</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600a8338dcf5840ce1a01a4c26d9c49dc560</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>FIXED_PRE</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa667dfec30c43a0320c7bd76b99bd4c7</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600aa667dfec30c43a0320c7bd76b99bd4c7</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>FIXED_POST</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa130e7b038fc0ede3b0203931063b116</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600aa130e7b038fc0ede3b0203931063b116</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>KERNEL</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600a53c6e691e7db9eceefc0fb37cb724cd2</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>N_CONNECTION_GENERATORS</name>
       <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab1144285d7382feeb4687af0263e2467</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>STATIC_MATRIX_GENERATOR</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baf14f18f5ed2665f8cb095c1363fc9848</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>PLASTIC_MATRIX_GENERATOR</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba08b27fbab7a770bae071d9defb278782</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_MATRIX_GENERATORS</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baba9a03e4fd023b2837469ea1ff6225a3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>CONSTANT</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba83972670b57415508523b5641bb46116</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>UNIFORM</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f44784d154005a214e0fe94119d28ef</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba50d1448013c6f17125caee18aa418af7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL_CLIPPED</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bac40cefd2a096660da3f41d6ee6352889</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL_CLIPPED_BOUNDARY</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baca06c44d4221f47f9d61534ca1e35752</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>EXPONENTIAL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa6055a3a8ab1aed0594419b51d9ec15e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>KERNEL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_PARAM_GENERATORS</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab8047ff7dfdb2c76ef1e78a7e6347777</anchor>
+      <anchor>abed82baf7f470b522273a3e37c24c600ab1144285d7382feeb4687af0263e2467</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -9584,135 +9386,21 @@
     <class kind="struct">matrix_generator_info</class>
     <class kind="struct">matrix_generator</class>
     <member kind="enumvalue">
-      <name>OFFSET_TO_I</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa890a0ce75c6dee9ecbac3a2c87220cc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>OFFSET_TO_F</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba964ef105cedcef1b651c6a4e58e33302</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>OFFSET_TO_D</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baad87c155efc7814564f9b47dfb651b3f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>ONE_TO_ONE</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55badaccc17f840cc67d0e9c1a9a331b2fb4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>ALL_TO_ALL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba403e4025d2925f132293a50eae7381fe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_PROBABILITY</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f6a6db47b5476cf11f24317f14ee4a7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_TOTAL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8338dcf5840ce1a01a4c26d9c49dc560</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_PRE</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa667dfec30c43a0320c7bd76b99bd4c7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_POST</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa130e7b038fc0ede3b0203931063b116</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>KERNEL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_CONNECTION_GENERATORS</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab1144285d7382feeb4687af0263e2467</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>STATIC_MATRIX_GENERATOR</name>
       <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baf14f18f5ed2665f8cb095c1363fc9848</anchor>
+      <anchor>ab04a0655cd1e3bcac5e8f48c18df1a57af14f18f5ed2665f8cb095c1363fc9848</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>PLASTIC_MATRIX_GENERATOR</name>
       <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba08b27fbab7a770bae071d9defb278782</anchor>
+      <anchor>ab04a0655cd1e3bcac5e8f48c18df1a57a08b27fbab7a770bae071d9defb278782</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>N_MATRIX_GENERATORS</name>
       <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baba9a03e4fd023b2837469ea1ff6225a3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>CONSTANT</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba83972670b57415508523b5641bb46116</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>UNIFORM</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f44784d154005a214e0fe94119d28ef</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba50d1448013c6f17125caee18aa418af7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL_CLIPPED</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bac40cefd2a096660da3f41d6ee6352889</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>NORMAL_CLIPPED_BOUNDARY</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baca06c44d4221f47f9d61534ca1e35752</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>EXPONENTIAL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa6055a3a8ab1aed0594419b51d9ec15e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>KERNEL</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_PARAM_GENERATORS</name>
-      <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab8047ff7dfdb2c76ef1e78a7e6347777</anchor>
+      <anchor>ab04a0655cd1e3bcac5e8f48c18df1a57aba9a03e4fd023b2837469ea1ff6225a3</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -9986,135 +9674,51 @@
     <class kind="struct">param_generator_info</class>
     <class kind="struct">param_generator</class>
     <member kind="enumvalue">
-      <name>OFFSET_TO_I</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa890a0ce75c6dee9ecbac3a2c87220cc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>OFFSET_TO_F</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba964ef105cedcef1b651c6a4e58e33302</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>OFFSET_TO_D</name>
-      <anchorfile>munich__protocol_8h.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baad87c155efc7814564f9b47dfb651b3f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>ONE_TO_ONE</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55badaccc17f840cc67d0e9c1a9a331b2fb4</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>ALL_TO_ALL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba403e4025d2925f132293a50eae7381fe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_PROBABILITY</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f6a6db47b5476cf11f24317f14ee4a7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_TOTAL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8338dcf5840ce1a01a4c26d9c49dc560</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_PRE</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa667dfec30c43a0320c7bd76b99bd4c7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>FIXED_POST</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa130e7b038fc0ede3b0203931063b116</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>KERNEL</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_CONNECTION_GENERATORS</name>
-      <anchorfile>connection__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab1144285d7382feeb4687af0263e2467</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>STATIC_MATRIX_GENERATOR</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baf14f18f5ed2665f8cb095c1363fc9848</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>PLASTIC_MATRIX_GENERATOR</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba08b27fbab7a770bae071d9defb278782</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
-      <name>N_MATRIX_GENERATORS</name>
-      <anchorfile>matrix__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baba9a03e4fd023b2837469ea1ff6225a3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="enumvalue">
       <name>CONSTANT</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba83972670b57415508523b5641bb46116</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388a83972670b57415508523b5641bb46116</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>UNIFORM</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba8f44784d154005a214e0fe94119d28ef</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388a8f44784d154005a214e0fe94119d28ef</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>NORMAL</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba50d1448013c6f17125caee18aa418af7</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388a50d1448013c6f17125caee18aa418af7</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>NORMAL_CLIPPED</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bac40cefd2a096660da3f41d6ee6352889</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388ac40cefd2a096660da3f41d6ee6352889</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>NORMAL_CLIPPED_BOUNDARY</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baca06c44d4221f47f9d61534ca1e35752</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388aca06c44d4221f47f9d61534ca1e35752</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>EXPONENTIAL</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55baa6055a3a8ab1aed0594419b51d9ec15e</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388aa6055a3a8ab1aed0594419b51d9ec15e</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>KERNEL</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55ba53c6e691e7db9eceefc0fb37cb724cd2</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388a53c6e691e7db9eceefc0fb37cb724cd2</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
       <name>N_PARAM_GENERATORS</name>
       <anchorfile>param__generator_8c.html</anchorfile>
-      <anchor>a06fc87d81c62e9abb8790b6e5713c55bab8047ff7dfdb2c76ef1e78a7e6347777</anchor>
+      <anchor>a385c44f6fb256e5716a2302a5b940388ab8047ff7dfdb2c76ef1e78a7e6347777</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
