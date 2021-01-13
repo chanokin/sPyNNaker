@@ -160,16 +160,21 @@ bool local_only_is_compatible(void){
 
 void local_only_process_spike(uint32_t key, uint32_t payload){
 
-    address_t row_address = 0;
-    size_t n_bytes_to_transfer = 0;
+    uint32_t conn_jump = 0;
+    size_t pre_id_relative = 0;
     bool success = false;
     success = population_table_get_first_address(
-        key, &row_address, &n_bytes_to_transfer);
-    log_info("key %u\tpayload %d\taddress %u\tn_bytes %u\tsuccess = %u\n\n",
-        key, payload, row_address, n_bytes_to_transfer, success);
+        key, &conn_jump, &pre_id_relative);
+    // TODO: I don't know why I'm getting weird numbers back
+    if(conn_jump >= num_connectors){
+        conn_jump = num_connectors - 1;
+    }
+    log_info("key %u\tpayload %d\tjump %u\tpre_rel %u\tsuccess = %u",
+        key, payload, conn_jump, pre_id_relative, success);
 
     if(success){
-        uint32_t local_spike_id;
+        uint32_t pre_id = pre_id_relative + shapes[conn_jump].start;
+        log_info("real pre id %u\n", pre_id);
 
     }
 }

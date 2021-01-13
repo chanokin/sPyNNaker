@@ -239,7 +239,7 @@ static inline uint32_t get_extended_neuron_id(
 //!
 //! For debugging
 static inline void print_master_population_table(void) {
-//#if log_level >= LOG_DEBUG
+#if log_level >= LOG_DEBUG
     log_info("Master_population\n");
     for (uint32_t i = 0; i < master_population_table_length; i++) {
         master_population_table_entry entry = master_population_table[i];
@@ -272,7 +272,7 @@ static inline void print_master_population_table(void) {
         }
     }
     log_info("Population table has %u entries", master_population_table_length);
-//#endif
+#endif
 }
 
 //! \brief Check if the entry is a match for the given key
@@ -432,16 +432,16 @@ bool population_table_initialise(
         address_t table_address, address_t synapse_rows_address,
         address_t direct_rows_address, address_t local_only_rows_address,
         uint32_t *row_max_n_words) {
-    log_info("Population_table_initialise: starting");
+    log_debug("Population_table_initialise: starting");
 
     master_population_table_length = table_address[0];
-    log_info("Master pop table length is %d\n", master_population_table_length);
-    log_info("Master pop table entry size is %d\n",
+    log_debug("Master pop table length is %d\n", master_population_table_length);
+    log_debug("Master pop table entry size is %d\n",
             sizeof(master_population_table_entry));
     uint32_t n_master_pop_bytes =
             master_population_table_length * sizeof(master_population_table_entry);
     uint32_t n_master_pop_words = n_master_pop_bytes >> 2;
-    log_info("Pop table size is %d\n", n_master_pop_bytes);
+    log_debug("Pop table size is %d\n", n_master_pop_bytes);
 
     // only try to malloc if there's stuff to malloc.
     if (n_master_pop_bytes != 0) {
@@ -465,9 +465,9 @@ bool population_table_initialise(
         }
     }
 
-    log_info("Pop table size: %u (%u bytes)",
+    log_debug("Pop table size: %u (%u bytes)",
             master_population_table_length, n_master_pop_bytes);
-    log_info("Address list size: %u (%u bytes)",
+    log_debug("Address list size: %u (%u bytes)",
             address_list_length, n_address_list_bytes);
 
     // Copy the master population table
@@ -497,23 +497,23 @@ bool population_table_initialise(
 bool population_table_get_first_address(
         spike_t spike, address_t* row_address, size_t* n_bytes_to_transfer) {
     // locate the position in the binary search / array
-    log_info("Searching for key %d", spike);
+    log_debug("Searching for key %d", spike);
 
     // check we don't have a complete miss
     uint32_t position;
     if (!population_table_position_in_the_master_pop_array(spike, &position)) {
         invalid_master_pop_hits++;
-        log_info("Ghost searches: %u\n", ghost_pop_table_searches);
-        log_info("Spike %u (= %x): "
+        log_debug("Ghost searches: %u\n", ghost_pop_table_searches);
+        log_debug("Spike %u (= %x): "
                 "Population not found in master population table",
                 spike, spike);
         return false;
     }
-    log_info("position = %d", position);
+    log_debug("position = %d", position);
 
     master_population_table_entry entry = master_population_table[position];
     if (entry.count == 0) {
-        log_info("Spike %u (= %x): Population found in master population"
+        log_debug("Spike %u (= %x): Population found in master population"
                 "table but count is 0", spike, spike);
     }
 
@@ -531,21 +531,21 @@ bool population_table_get_first_address(
 
     // check we have a entry in the bit field for this (possible not to due to
     // DTCM limitations or router table compression). If not, go to DMA check.
-    log_info("Checking bit field");
+    log_debug("Checking bit field");
     if (connectivity_bit_field != NULL &&
             connectivity_bit_field[position] != NULL) {
-        log_info("Can be checked, bitfield is allocated");
+        log_debug("Can be checked, bitfield is allocated");
         // check that the bit flagged for this neuron id does hit a
         // neuron here. If not return false and avoid the DMA check.
         if (!bit_field_test(
                 &connectivity_bit_field[position][bits_offset], last_neuron_id)) {
-            log_info("Tested and was not set");
+            log_debug("Tested and was not set");
             bit_field_filtered_packets += 1;
             return false;
         }
-        log_info("Was set, carrying on");
+        log_debug("Was set, carrying on");
     } else {
-        log_info("Bit field was not set up. "
+        log_debug("Bit field was not set up. "
                 "either its due to a lack of DTCM, or because the "
                 "bit field was merged into the routing table");
     }
@@ -561,12 +561,13 @@ bool population_table_get_first_address(
 
     if(address_list[next_item].addr.address_type == POP_TABLE_LOCAL_ADDRESS){
         *row_address = position;
+        *n_bytes_to_transfer = last_neuron_id;
     }
 //	log_info("local_spike_id = %u", local_spike_id);
 
     // tracks surplus DMAs
     if (!get_next) {
-        log_info("Found a entry which has a ghost entry for key %d", spike);
+        log_debug("Found a entry which has a ghost entry for key %d", spike);
         ghost_pop_table_searches++;
     }
     return get_next;
