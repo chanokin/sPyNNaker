@@ -17,11 +17,13 @@ bool local_only_is_compatible(void){
     return false;
 }
 
-void local_only_process_spike(uint32_t key, uint32_t payload){
+void local_only_process_spike(
+    UNUSED uint32_t key, UNUSED uint32_t payload){
 }
 
 void local_only_coord_to_id(
-    UNUSED lc_coord_t coord,
+    UNUSED int32_t row,
+    UNUSED int32_t col,
     UNUSED lc_shapes_t _shapes,
     UNUSED bool is_post,
     UNUSED lc_neuron_id_t *output){
