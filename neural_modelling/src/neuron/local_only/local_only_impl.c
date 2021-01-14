@@ -165,10 +165,7 @@ void local_only_process_spike(uint32_t key, uint32_t payload){
     bool success = false;
     success = population_table_get_first_address(
         key, &conn_jump, &pre_id_relative);
-    // TODO: I don't know why I'm getting weird numbers back
-    if(conn_jump >= num_connectors){
-        conn_jump = num_connectors - 1;
-    }
+
     log_info("key %u\tpayload %d\tjump %u\tpre_rel %u\tsuccess = %u",
         key, payload, conn_jump, pre_id_relative, success);
 

@@ -559,10 +559,14 @@ bool population_table_get_first_address(
     bool get_next = population_table_get_next_address(
             &local_spike_id, row_address, n_bytes_to_transfer);
 
-    if(address_list[next_item].addr.address_type == POP_TABLE_LOCAL_ADDRESS){
+    if(address_list[position].addr.address_type == POP_TABLE_LOCAL_ADDRESS){
+        // awful hack!
+        // use row_address as the return for the row/jump position
+        // and n_bytes as the neuron id
         *row_address = position;
         *n_bytes_to_transfer = last_neuron_id;
     }
+
 //	log_info("local_spike_id = %u", local_spike_id);
 
     // tracks surplus DMAs
