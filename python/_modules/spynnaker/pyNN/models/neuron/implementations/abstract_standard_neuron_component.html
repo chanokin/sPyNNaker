@@ -196,27 +196,34 @@
                                  <span class="n">state_var_indices</span><span class="p">)</span>
         <span class="n">array_size</span> <span class="o">=</span> <span class="n">vertex_slice</span><span class="o">.</span><span class="n">n_atoms</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="n">vertex_slice</span><span class="o">.</span><span class="n">lo_atom</span>
-        <span class="n">new_field_types</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">fts</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># this is more like can share parameters</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_only_compatible</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">extend_state_variables</span><span class="p">:</span>
             <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">array_size</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">field_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">field_types</span>
-            <span class="n">new_field_types</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">new_values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">new_field_types</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">new_values</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">state_var_indices</span><span class="p">:</span>
-                    <span class="c1"># state variables are explicit, not shared</span>
-                    <span class="n">new_field_types</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">field_types</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                    <span class="n">new_values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># everything else are shared parameters, so only pass 1 copy</span>
-                    <span class="n">new_field_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                    <span class="n">new_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-            <span class="n">values</span> <span class="o">=</span> <span class="n">new_values</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="n">state_var_indices</span><span class="p">):</span>
+                    <span class="c1"># shared parameters, so only pass 1 copy</span>
+                    <span class="n">new_field_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">new_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+            <span class="n">nshared</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_values</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">nidx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sv_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">state_var_indices</span><span class="p">):</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">nshared</span> <span class="o">+</span> <span class="n">nidx</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">state_var_indices</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span>
+                    <span class="n">new_field_types</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_types</span><span class="p">[</span><span class="n">sv_idx</span><span class="p">]</span>
+                    <span class="n">new_values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">sv_idx</span><span class="p">][</span><span class="n">nidx</span><span class="p">]</span>
+
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new_values</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+            <span class="n">fts</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_field_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new_field_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+
+
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">array_size</span><span class="p">,</span>
-                                    <span class="n">override_field_types</span><span class="o">=</span><span class="n">new_field_types</span><span class="p">)</span></div>
+                                    <span class="n">override_field_types</span><span class="o">=</span><span class="n">fts</span><span class="p">)</span></div>
 
     <span class="nd">@abstractmethod</span>
 <div class="viewcode-block" id="AbstractStandardNeuronComponent.update_values"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.implementations.html#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent.update_values">[docs]</a>    <span class="k">def</span> <span class="nf">update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">state_variables</span><span class="p">):</span>
