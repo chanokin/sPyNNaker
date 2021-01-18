@@ -226,12 +226,12 @@ endif
 
 LOCAL_ONLY_ENABLED = 0
 ifndef LOCAL_ONLY
-	LOCAL_ONLY := neuron/local_only/local_only_dummy_impl.c
-	LOCAL_ONLY_C := $(MODIFIED_DIR)$(LOCAL_ONLY)
+    LOCAL_ONLY := neuron/local_only/local_only_dummy_impl.c
+    LOCAL_ONLY_C := $(MODIFIED_DIR)$(LOCAL_ONLY)
 else
-	LOCAL_ONLY_C := $(call replace_source_dirs,$(LOCAL_ONLY))
+    LOCAL_ONLY_C := $(call replace_source_dirs,$(LOCAL_ONLY))
     LOCAL_ONLY := $(call strip_source_dirs,$(LOCAL_ONLY))
-	LOCAL_ONLY_ENABLED = 1
+    LOCAL_ONLY_ENABLED = 1
 endif
 LOCAL_ONLY_O := $(BUILD_DIR)$(LOCAL_ONLY_C:%.c=%.o)
 

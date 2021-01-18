@@ -3,6 +3,7 @@
 #include <common/neuron-typedefs.h>
 #include <debug.h>
 #include "../population_table/population_table.h"
+#include "../neuron.h"
 
 #define LEN_SHAPE_DATA 7
 
@@ -15,6 +16,12 @@ static lc_weight_t* mapped_weights = NULL;
 static lc_neuron_id_t* mapped_post_ids = NULL;
 static uint32_t n_mapped = 0;
 extern address_t local_address_start = NULL;
+
+inline input_t to_s1615(lc_weight_t w){
+    // conv weights are stored as s87 so we need to shift them
+    // so we end up with s1615
+    return (((input_t)w) >> 7);
+}
 
 bool local_only_initialise(address_t sdram_address){
     log_info("+++++++++++++++++ CONV init ++++++++++++++++++++");
@@ -174,17 +181,24 @@ void local_only_process_spike(uint32_t key, uint32_t payload){
     if(success){
         lc_neuron_id_t pre_id = pre_id_relative + shapes[conn_jump].start;
         log_info("real pre id %u\n", pre_id);
-		lc_dim_t n_out = local_only_get_ids_and_weights(
+        lc_dim_t n_out = local_only_get_ids_and_weights(
             pre_id, shapes[conn_jump], conv_kernel[conn_jump],
             mapped_post_ids, mapped_weights);
         for(uint32_t i=0; i<n_out; i++){
-            log_info("post %u, weight fixed-point %d.%u",
+            log_info("post %u, weight fixed-point %d.%u s1615 %k",
                 mapped_post_ids[i],
                 mapped_weights[i] >> 7,
-                mapped_weights[i] & ((1 << 7) - 1));
+                mapped_weights[i] & ((1 << 7) - 1),
+                to_s1615(mapped_weights[i]));
+            neuron_add_inputs(
+                0, // only one synapse type to save space
+                mapped_post_ids[i],
+                to_s1615(mapped_weights[i]));
+
         }
     }
 }
+
 
 void local_only_coord_to_id(
     int32_t row, int32_t col, lc_shapes_t _shapes, bool is_post,

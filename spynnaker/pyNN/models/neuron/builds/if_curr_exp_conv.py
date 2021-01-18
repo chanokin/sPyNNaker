@@ -38,7 +38,7 @@ class IFCurrExpConv(AbstractPyNNNeuronModelStandard):
     :param float isyn_inh: :math:`I^{syn}_i`
     """
 
-    @default_initial_values({"v", "isyn_exc", "isyn_inh"})
+    @default_initial_values({"v", "isyn_exc"})
     def __init__(
             self, tau_m=20.0, cm=1.0, v_rest=-65.0, v_reset=-65.0,
             v_thresh=-50.0, tau_refrac=0.1,

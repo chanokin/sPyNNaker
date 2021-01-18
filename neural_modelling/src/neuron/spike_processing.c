@@ -309,7 +309,9 @@ static void multicast_packet_received_callback(uint key, uint payload) {
     }
 
     if(local_only_is_compatible()){
+        uint cpsr = spin1_int_disable();
         local_only_process_spike(key, payload);
+        spin1_mode_restore(cpsr);
         return;
     }
 
