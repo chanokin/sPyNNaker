@@ -131,27 +131,34 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
                                  state_var_indices)
         array_size = vertex_slice.n_atoms
         offset = vertex_slice.lo_atom
-        new_field_types = None
+        fts = None
         # this is more like can share parameters
         if self.local_only_compatible and self.extend_state_variables:
             offset = 1
             array_size = 1
             field_types = self.struct.field_types
-            new_field_types = []
-            new_values = []
+            new_field_types = {}
+            new_values = {}
             for i, v in enumerate(values):
-                if i in state_var_indices:
-                    # state variables are explicit, not shared
-                    new_field_types.extend([field_types[i]] * len(v))
-                    new_values.extend(v)
-                else:
-                    # everything else are shared parameters, so only pass 1 copy
-                    new_field_types.append(field_types[i])
-                    new_values.append(numpy.mean(v))
-            values = new_values
+                if not (i in state_var_indices):
+                    # shared parameters, so only pass 1 copy
+                    new_field_types[i] = field_types[i]
+                    new_values[i] = numpy.mean(v)
+
+            nshared = len(new_values)
+            for nidx in range(len(values[0])):
+                for i, sv_idx in enumerate(state_var_indices):
+                    idx = nshared + nidx * len(state_var_indices) + i
+                    new_field_types[idx] = field_types[sv_idx]
+                    new_values[idx] = values[sv_idx][nidx]
+
+            values = [new_values[i] for i in sorted(new_values.keys())]
+            fts = [new_field_types[i] for i in sorted(new_field_types.keys())]
+
+
 
         return self.struct.get_data(values, offset, array_size,
-                                    override_field_types=new_field_types)
+                                    override_field_types=fts)
 
     @abstractmethod
     def update_values(self, values, parameters, state_variables):

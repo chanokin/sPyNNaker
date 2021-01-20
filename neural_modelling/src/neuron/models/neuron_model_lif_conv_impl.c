@@ -45,8 +45,9 @@ state_t neuron_model_state_update(
 		uint16_t num_excitatory_inputs, const input_t *exc_input,
 		uint16_t num_inhibitory_inputs, const input_t *inh_input,
 		input_t external_bias, neuron_t *restrict neuron) {
-	log_debug("Exc 1: %12.6k, Exc 2: %12.6k", exc_input[0], exc_input[1]);
-	log_debug("Inh 1: %12.6k, Inh 2: %12.6k", inh_input[0], inh_input[1]);
+
+//	log_debug("Exc 1: %12.6k, Exc 2: %12.6k", exc_input[0], exc_input[1]);
+//	log_debug("Inh 1: %12.6k, Inh 2: %12.6k", inh_input[0], inh_input[1]);
 
     // If outside of the refractory period
     if (neuron->refract_timer <= 0) {
@@ -55,9 +56,11 @@ state_t neuron_model_state_update(
 
 		for (int i=0; i < num_excitatory_inputs; i++) {
 			total_exc += exc_input[i];
+            log_info("Exc %d: %12.6k", i, exc_input[i]);
 		}
 		for (int i=0; i< num_inhibitory_inputs; i++) {
 			total_inh += inh_input[i];
+            log_info("Inh %d: %12.6k", i, inh_input[i]);
 		}
         // Get the input in nA
         input_t input_this_timestep =
@@ -85,7 +88,8 @@ state_t neuron_model_get_membrane_voltage(const neuron_t *neuron) {
 }
 
 void neuron_model_print_state_variables(const neuron_t *neuron) {
-    log_debug("V membrane    = %11.4k mv", neuron->V_membrane);
+    log_info("V membrane    = %11.4k mv", neuron->V_membrane);
+    log_info("Refract time    = %u", neuron->refract_timer);
 }
 
 void neuron_model_print_parameters(const neuron_t *neuron) {

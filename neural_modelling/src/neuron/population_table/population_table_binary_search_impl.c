@@ -560,7 +560,7 @@ bool population_table_get_first_address(
             &local_spike_id, row_address, n_bytes_to_transfer);
 
     if(address_list[position].addr.address_type == POP_TABLE_LOCAL_ADDRESS){
-        // awful hack!
+        // TODO: fix this awful hack?
         // use row_address as the return for the row/jump position
         // and n_bytes... as the neuron id
         *row_address = position;
