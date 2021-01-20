@@ -562,7 +562,7 @@ bool population_table_get_first_address(
     if(address_list[position].addr.address_type == POP_TABLE_LOCAL_ADDRESS){
         // awful hack!
         // use row_address as the return for the row/jump position
-        // and n_bytes as the neuron id
+        // and n_bytes... as the neuron id
         *row_address = position;
         *n_bytes_to_transfer = last_neuron_id;
     }
