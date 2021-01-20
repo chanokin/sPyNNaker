@@ -276,7 +276,7 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
     // TODO: threshold here is shared, how to extend to all components?
     index_t thresh_index = neuron_index;
     if(local_only_is_compatible()){
-        thresh_index = 1;
+        thresh_index = 0;
     }
     threshold_type_t *the_threshold_type = &threshold_type_array[thresh_index];
 

@@ -175,21 +175,21 @@ void local_only_process_spike(uint32_t key, uint32_t payload){
     success = population_table_get_first_address(
         key, &conn_jump, &pre_id_relative);
 
-    log_info("key %u\tpayload %d\tjump %u\tpre_rel %u\tsuccess = %u",
-        key, payload, conn_jump, pre_id_relative, success);
+//    log_info("key %u\tpayload %d\tjump %u\tpre_rel %u\tsuccess = %u",
+//        key, payload, conn_jump, pre_id_relative, success);
 
     if(success){
         lc_neuron_id_t pre_id = pre_id_relative + shapes[conn_jump].start;
-        log_info("real pre id %u\n", pre_id);
+//        log_info("real pre id %u\n", pre_id);
         lc_dim_t n_out = local_only_get_ids_and_weights(
             pre_id, shapes[conn_jump], conv_kernel[conn_jump],
             mapped_post_ids, mapped_weights);
         for(uint32_t i=0; i<n_out; i++){
-            log_info("post %u, weight fixed-point %d.%u s1615 %k",
-                mapped_post_ids[i],
-                mapped_weights[i] >> 7,
-                mapped_weights[i] & ((1 << 7) - 1),
-                to_s1615(mapped_weights[i]));
+//            log_info("post %u, weight fixed-point %d.%u s1615 %k",
+//                mapped_post_ids[i],
+//                mapped_weights[i] >> 7,
+//                mapped_weights[i] & ((1 << 7) - 1),
+//                to_s1615(mapped_weights[i]));
             neuron_add_inputs(
                 0, // only one synapse type to save space
                 mapped_post_ids[i],
@@ -261,13 +261,13 @@ lc_dim_t local_only_get_ids_and_weights(
     int32_t tmp_col = 0;
 
     lc_shape_t half_k = {_shapes.kernel.width/2, _shapes.kernel.height/2};
-	log_info("half k shape width %u, height %u", half_k.width, half_k.height);
+//	log_info("half k shape width %u, height %u", half_k.width, half_k.height);
 
     local_only_id_to_coord(pre_id, _shapes, false, &pre);
-    log_info("pre row %u, col %u", pre.row, pre.col);
+//    log_info("pre row %u, col %u", pre.row, pre.col);
 
     local_only_map_pre_to_post(pre, _shapes, &post);
-    log_info("AS post row %u, col %u", post.row, post.col);
+//    log_info("AS post row %u, col %u", post.row, post.col);
 
     for(int32_t r = -half_k.height; r <= half_k.height; r++){
         tmp_row = post.row + r;
@@ -279,18 +279,18 @@ lc_dim_t local_only_get_ids_and_weights(
             if((tmp_col < 0) || (tmp_row >= _shapes.post.width)){
                 continue;
             }
-            log_info("tmp_row %d, tmp_col %d\tr %d, c %d",
-                tmp_row, tmp_col, r, c);
+//            log_info("tmp_row %d, tmp_col %d\tr %d, c %d",
+//                tmp_row, tmp_col, r, c);
             local_only_coord_to_id(tmp_row, tmp_col, _shapes, true,
                                    &post_ids[n_out]);
 
             weights[n_out] =
                 kernel[(r + half_k.height) * _shapes.kernel.width +
                             (c + half_k.width)];
-            log_info("post %u, weight %d.%u",
-                post_ids[n_out],
-                weights[n_out] >> 7,
-                weights[n_out] & ((1 << 7) - 1));
+//            log_info("post %u, weight %d.%u",
+//                post_ids[n_out],
+//                weights[n_out] >> 7,
+//                weights[n_out] & ((1 << 7) - 1));
             n_out++;
         }
     }

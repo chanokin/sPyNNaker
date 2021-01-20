@@ -56,11 +56,11 @@ state_t neuron_model_state_update(
 
 		for (int i=0; i < num_excitatory_inputs; i++) {
 			total_exc += exc_input[i];
-            log_info("Exc %d: %12.6k", i, exc_input[i]);
+//            log_info("Exc %d: %12.6k", i, exc_input[i]);
 		}
 		for (int i=0; i< num_inhibitory_inputs; i++) {
 			total_inh += inh_input[i];
-            log_info("Inh %d: %12.6k", i, inh_input[i]);
+//            log_info("Inh %d: %12.6k", i, inh_input[i]);
 		}
         // Get the input in nA
         input_t input_this_timestep =
@@ -76,6 +76,7 @@ state_t neuron_model_state_update(
 }
 
 void neuron_model_has_spiked(neuron_t *restrict neuron) {
+//    log_info("Neuron has spiked!!!");
     // reset membrane voltage
     neuron->V_membrane = global_params->V_reset;
 
@@ -88,18 +89,18 @@ state_t neuron_model_get_membrane_voltage(const neuron_t *neuron) {
 }
 
 void neuron_model_print_state_variables(const neuron_t *neuron) {
-    log_info("V membrane    = %11.4k mv", neuron->V_membrane);
-    log_info("Refract time    = %u", neuron->refract_timer);
+//    log_info("V membrane    = %11.4k mv", neuron->V_membrane);
+//    log_info("Refract time    = %u", neuron->refract_timer);
 }
 
 void neuron_model_print_parameters(const neuron_t *neuron) {
-    log_info("V reset       = %11.4k mv", global_params->V_reset);
-    log_info("V rest        = %11.4k mv", global_params->V_rest);
-
-    log_info("I offset      = %11.4k nA", global_params->I_offset);
-    log_info("R membrane    = %11.4k Mohm", global_params->R_membrane);
-
-    log_info("exp(-ms/(RC)) = %11.4k [.]", global_params->exp_TC);
-
-    log_info("T refract     = %u timesteps", global_params->T_refract);
+//    log_info("V reset       = %11.4k mv", global_params->V_reset);
+//    log_info("V rest        = %11.4k mv", global_params->V_rest);
+//
+//    log_info("I offset      = %11.4k nA", global_params->I_offset);
+//    log_info("R membrane    = %11.4k Mohm", global_params->R_membrane);
+//
+//    log_info("exp(-ms/(RC)) = %11.4k [.]", global_params->exp_TC);
+//
+//    log_info("T refract     = %u timesteps", global_params->T_refract);
 }
