@@ -350,8 +350,8 @@ $(function() {
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="input__type_8h.html#ad780fbb2c43b8bbf0f73ff0561061174">NUM_EXCITATORY_RECEPTORS</a>; i++) {</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;            total_exc += exc_input_values[i];</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;neuron %u: excitatory input %u = %k\ttotal = %k&quot;</span>,</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                neuron_index, i, exc_input_values[i], total_exc);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">//            log_info(&quot;neuron %u: excitatory input %u = %k\ttotal = %k&quot;,</span></div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">//                neuron_index, i, exc_input_values[i], total_exc);</span></div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        }</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="input__type_8h.html#a6dd746ed60f4dc54e7e604f239843aa6">NUM_INHIBITORY_RECEPTORS</a>; i++) {</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;            total_inh += inh_input_values[i];</div>
@@ -587,7 +587,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 21 2021 17:38:37 for sPyNNaker neural_modelling by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Thu Jan 21 2021 18:09:34 for sPyNNaker neural_modelling by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
