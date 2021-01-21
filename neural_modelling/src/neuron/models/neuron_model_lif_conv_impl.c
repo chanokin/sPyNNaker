@@ -88,12 +88,14 @@ state_t neuron_model_get_membrane_voltage(const neuron_t *neuron) {
     return neuron->V_membrane;
 }
 
-void neuron_model_print_state_variables(const neuron_t *neuron) {
+void neuron_model_print_state_variables(
+    UNUSED const neuron_t *neuron) {
 //    log_info("V membrane    = %11.4k mv", neuron->V_membrane);
 //    log_info("Refract time    = %u", neuron->refract_timer);
 }
 
-void neuron_model_print_parameters(const neuron_t *neuron) {
+void neuron_model_print_parameters(
+    UNUSED const neuron_t *neuron) {
 //    log_info("V reset       = %11.4k mv", global_params->V_reset);
 //    log_info("V rest        = %11.4k mv", global_params->V_rest);
 //

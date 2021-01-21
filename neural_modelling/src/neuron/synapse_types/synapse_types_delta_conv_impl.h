@@ -134,7 +134,7 @@ static inline input_t *synapse_types_get_excitatory_input(
 //! \param[in] parameters: the pointer to the parameters to use
 //! \return the inhibitory input buffers for a given neuron ID.
 static inline input_t *synapse_types_get_inhibitory_input(
-        synapse_param_t *parameters) {
+        UNUSED synapse_param_t *parameters) {
     return 0;
 }
 

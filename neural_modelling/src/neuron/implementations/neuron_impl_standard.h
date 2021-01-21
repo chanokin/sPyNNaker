@@ -210,7 +210,7 @@ static void neuron_impl_load_neuron_parameters(
         log_debug("reading neuron local parameters");
         spin1_memcpy(neuron_array, &address[next],
                 n_neurons * sizeof(neuron_t));
-        for(int j = 0; j < n_neurons; j++){
+        for(uint32_t j = 0; j < n_neurons; j++){
             neuron_model_print_state_variables(&neuron_array[j]);
         }
         next += n_words_needed(n_neurons * sizeof(neuron_t));

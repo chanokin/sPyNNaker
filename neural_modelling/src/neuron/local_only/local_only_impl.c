@@ -14,8 +14,7 @@ static lc_shapes_t *shapes = NULL;
 static uint32_t n_bytes = 0;
 static lc_weight_t* mapped_weights = NULL;
 static lc_neuron_id_t* mapped_post_ids = NULL;
-static uint32_t n_mapped = 0;
-extern address_t local_address_start = NULL;
+//static uint32_t n_mapped = 0;
 
 inline input_t to_s1615(lc_weight_t w){
     // conv weights are stored as s87 so we need to shift them
@@ -60,7 +59,7 @@ bool local_only_initialise(address_t sdram_address){
 
     address_t _address = sdram_address;
 
-    uint32_t remaining_bytes = n_bytes;
+//    uint32_t remaining_bytes = n_bytes;
     uint32_t idx = 0;
     uint32_t max_n_weights = 0;
     uint32_t mem_size = 0;
@@ -102,7 +101,7 @@ bool local_only_initialise(address_t sdram_address){
 
 
         // weight kernel data is also 16-bit
-        lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;
+        uint32_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;
         if(max_n_weights < n_weights){
             max_n_weights = n_weights;
         }
@@ -184,7 +183,7 @@ void local_only_process_spike(uint32_t key, uint32_t payload){
         lc_dim_t n_out = local_only_get_ids_and_weights(
             pre_id, shapes[conn_jump], conv_kernel[conn_jump],
             mapped_post_ids, mapped_weights);
-        for(uint32_t i=0; i<n_out; i++){
+        for(lc_dim_t i=0; i<n_out; i++){
 //            log_info("post %u, weight fixed-point %d.%u s1615 %k",
 //                mapped_post_ids[i],
 //                mapped_weights[i] >> 7,
