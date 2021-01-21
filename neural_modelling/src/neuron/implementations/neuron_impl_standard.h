@@ -312,8 +312,8 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
 
         for (int i = 0; i < NUM_EXCITATORY_RECEPTORS; i++) {
             total_exc += exc_input_values[i];
-            log_info("neuron %u: excitatory input %u = %k\ttotal = %k",
-                neuron_index, i, exc_input_values[i], total_exc);
+//            log_info("neuron %u: excitatory input %u = %k\ttotal = %k",
+//                neuron_index, i, exc_input_values[i], total_exc);
         }
         for (int i = 0; i < NUM_INHIBITORY_RECEPTORS; i++) {
             total_inh += inh_input_values[i];
