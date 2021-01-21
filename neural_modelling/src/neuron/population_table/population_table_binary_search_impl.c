@@ -550,8 +550,8 @@ bool population_table_get_first_address(
                 "bit field was merged into the routing table");
     }
 
-    log_info("spike = %08x, entry_index = %u, start = %u, count = %u",
-            spike, position, next_item, items_to_go);
+//    log_debug("spike = %08x, entry_index = %u, start = %u, count = %u",
+//            spike, position, next_item, items_to_go);
 
     // A local address is used here as the interface requires something
     // to be passed in but using the address of an argument is odd!

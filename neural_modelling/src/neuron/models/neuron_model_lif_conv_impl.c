@@ -56,7 +56,7 @@ state_t neuron_model_state_update(
 
 		for (int i=0; i < num_excitatory_inputs; i++) {
 			total_exc += exc_input[i];
-//            log_info("Exc %d: %12.6k", i, exc_input[i]);
+            log_info("Exc %d: %12.6k\ttotal: %k", i, exc_input[i], total_exc);
 		}
 		for (int i=0; i< num_inhibitory_inputs; i++) {
 			total_inh += inh_input[i];
@@ -65,7 +65,7 @@ state_t neuron_model_state_update(
         // Get the input in nA
         input_t input_this_timestep =
                 total_exc - total_inh + external_bias + global_params->I_offset;
-
+        log_info("total_input %k", input_this_timestep);
         lif_neuron_closed_form(
                 neuron, neuron->V_membrane, input_this_timestep);
     } else {

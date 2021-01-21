@@ -290,7 +290,7 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
 
     // Loop however many times requested; do this in reverse for efficiency,
     // and because the index doesn't actually matter
-    for (uint32_t i = n_steps_per_timestep; i > 0; i--) {
+    for (uint32_t sim_step = n_steps_per_timestep; sim_step > 0; sim_step--) {
         // Get the voltage
         state_t soma_voltage = neuron_model_get_membrane_voltage(this_neuron);
 
@@ -312,13 +312,15 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
 
         for (int i = 0; i < NUM_EXCITATORY_RECEPTORS; i++) {
             total_exc += exc_input_values[i];
+            log_info("neuron %u: excitatory input %u = %k\ttotal = %k",
+                neuron_index, i, exc_input_values[i], total_exc);
         }
         for (int i = 0; i < NUM_INHIBITORY_RECEPTORS; i++) {
             total_inh += inh_input_values[i];
         }
 
         // Do recording if on the first step
-        if (i == n_steps_per_timestep) {
+        if (sim_step == n_steps_per_timestep) {
             neuron_recording_record_accum(
                     V_RECORDING_INDEX, neuron_index, soma_voltage);
             neuron_recording_record_accum(
@@ -367,9 +369,9 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
         neuron_recording_record_bit(SPIKE_RECORDING_BITFIELD, neuron_index);
     }
 
-//#if LOG_LEVEL >= LOG_DEBUG
+#if LOG_LEVEL >= LOG_DEBUG
     neuron_model_print_state_variables(this_neuron);
-//#endif // LOG_LEVEL >= LOG_DEBUG
+#endif // LOG_LEVEL >= LOG_DEBUG
 
     // Return the boolean to the model timestep update
     return has_spiked;

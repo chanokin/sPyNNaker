@@ -203,7 +203,7 @@ void local_only_coord_to_id(
     int32_t row, int32_t col, lc_shapes_t _shapes, bool is_post,
     lc_neuron_id_t *id){
     if (is_post){
-        log_info("id = %d", row * _shapes.post.width + col);
+//        log_info("id = %d", row * _shapes.post.width + col);
         *id = row * _shapes.post.width + col;
     } else {
         *id = row * _shapes.pre.width + col;
