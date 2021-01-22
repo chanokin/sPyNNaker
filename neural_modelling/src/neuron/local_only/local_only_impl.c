@@ -273,20 +273,21 @@ lc_dim_t local_only_get_ids_and_weights(
 //	log_info("half k shape width %u, height %u", half_k.width, half_k.height);
 
     local_only_id_to_coord(pre_id, _shapes, false, &pre);
-    log_info("pre %u row %d, col %d", pre_id, pre.row, pre.col);
+//    log_info("pre %u row %d, col %d", pre_id, pre.row, pre.col);
 
     local_only_map_pre_to_post(pre, _shapes, &post);
-    log_info("AS post row %d, col %d", post.row, post.col);
+//    log_info("AS post row %d, col %d", post.row, post.col);
 
     for(int32_t r = -half_k.height; r <= half_k.height; r++){
         tmp_row = post.row + r;
-        log_info("r %d : tmp row %d", r, tmp_row);
+//        log_info("r %d : tmp row %d", r, tmp_row);
         if((tmp_row < 0) || (tmp_row >= _shapes.post.height)){
+//            log_info("escape row");
             continue;
         }
         for(int32_t c = -half_k.width; c <= half_k.width; c++){
             tmp_col = post.col + c;
-            log_info("c %d : tmp col %d", c, tmp_col);
+//            log_info("c %d : tmp col %d", c, tmp_col);
             if((tmp_col < 0) || (tmp_row >= _shapes.post.width)){
                 continue;
             }
@@ -298,10 +299,10 @@ lc_dim_t local_only_get_ids_and_weights(
             weights[n_out] =
                 kernel[(r + half_k.height) * _shapes.kernel.width +
                             (c + half_k.width)];
-            log_info("pre %u, post r %d, c %d, i %u, weight %k",
-                pre_id, tmp_row, tmp_col,
-                post_ids[n_out],
-                to_s1615(weights[n_out]));
+//            log_info("pre %u, post r %d, c %d, i %u, weight %k",
+//                pre_id, tmp_row, tmp_col,
+//                post_ids[n_out],
+//                to_s1615(weights[n_out]));
             n_out++;
         }
     }

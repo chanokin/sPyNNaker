@@ -429,20 +429,19 @@ class ConvolutionConnector(AbstractConnector):
             v1 = numpy.int16(numpy.round(scale * vr))
             vir = numpy.uint32(0) | numpy.uint16(v1)
 
-            print("\n")
-            print(vl, vr)
-            print(v0 & 0xFFFF, v1 & 0xFFFF)
-            print(vil & 0xFFFF, vir & 0xFFFF)
-            print(numpy.binary_repr(v0 & 0xFFFF, 16),
-                  numpy.binary_repr(vil & 0xFFFF, 32))
-            print(numpy.binary_repr(v1 & 0xFFFF, 16),
-                  numpy.binary_repr(vir & 0xFFFF, 32))
+            # print("\n")
+            # print(vl, vr)
+            # print(v0 & 0xFFFF, v1 & 0xFFFF)
+            # print(vil & 0xFFFF, vir & 0xFFFF)
+            # print(numpy.binary_repr(v0 & 0xFFFF, 16),
+            #       numpy.binary_repr(vil & 0xFFFF, 32))
+            # print(numpy.binary_repr(v1 & 0xFFFF, 16),
+            #       numpy.binary_repr(vir & 0xFFFF, 32))
 
             x = ((vil & 0xFFFF) << 16) | (vir & 0xFFFF)
-            print(numpy.binary_repr(x, 32))
-
-            print(float(numpy.int16(x >> 16)) / scale)
-            print(float(numpy.int16(x & 0xFFFF)) / scale)
+            # print(numpy.binary_repr(x, 32))
+            # print(float(numpy.int16(x >> 16)) / scale)
+            # print(float(numpy.int16(x & 0xFFFF)) / scale)
 
             pack[i] = x
 
