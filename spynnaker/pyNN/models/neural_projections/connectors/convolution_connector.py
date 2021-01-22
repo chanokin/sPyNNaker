@@ -205,7 +205,7 @@ class ConvolutionConnector(AbstractConnector):
                 pre_has_structure and post_has_structure)
 
     def get_post_shape(self):
-        return self.__pre_as_post(self.pre_shape[HEIGHT], self.pre_shape[WIDTH])
+        return self.pre_as_post(self.pre_shape[HEIGHT], self.pre_shape[WIDTH])
 
     def __to_post_coords(self, post_vertex_slice):
         """ Get a list of possible post-slice coordinates.
@@ -241,7 +241,7 @@ class ConvolutionConnector(AbstractConnector):
                 self.__map_to_pre_coords(post_r, post_c)
         return self._post_as_pre[str(post_vertex_slice)]
 
-    def __pre_as_post(self, pre_r, pre_c):
+    def pre_as_post(self, pre_r, pre_c):
         """ Write pre coords as post coords.
 
         :param int pre_r: row
@@ -250,7 +250,7 @@ class ConvolutionConnector(AbstractConnector):
         """
         s = (numpy.asarray([pre_r, pre_c]) -
              self.kernel_shape - 1 + 2*self.padding)
-        return numpy.floor(s // self.strides) + 1
+        return (s // self.strides) + 1
 
     def __get_kernel_vals(self, vals):
         """ Convert kernel values given into the correct format.
@@ -330,7 +330,7 @@ class ConvolutionConnector(AbstractConnector):
                 pac_c = post_as_pre_c[post_idx - post_lo]
 
                 # now convert common to pre coords
-                pap_r, pap_c = self.__pre_as_post(pac_r, pac_c)
+                pap_r, pap_c = self.pre_as_post(pac_r, pac_c)
 
                 # Obtain coordinates to test against kernel sizes
                 dr = pap_r - pre_r
@@ -418,18 +418,34 @@ class ConvolutionConnector(AbstractConnector):
         n = n // 2 + int(n % 2 > 0)
         # print(len(kernel), n)
         pack = numpy.zeros(n, dtype='uint32')
-
+        scale = float(1 << 7)
         for i in range(n):
             vl = kernel[i*2]
             vr = kernel[i*2 + 1] if (i*2 + 1) < len(kernel) else 0
 
-            v0 = numpy.int16(numpy.round(float(1 << 7) * vl))
-            vil = numpy.uint32(numpy.uint16(v0))
+            v0 = numpy.int16(numpy.round(scale * vl))
+            vil = numpy.uint32(0) | numpy.uint16(v0)
 
-            v1 = numpy.int16(numpy.round(float(1 << 7) * vr))
-            vir = numpy.uint32(numpy.uint16(v1))
+            v1 = numpy.int16(numpy.round(scale * vr))
+            vir = numpy.uint32(0) | numpy.uint16(v1)
 
-            pack[i] = (vil << 16) | vir
+            print("\n")
+            print(vl, vr)
+            print(v0 & 0xFFFF, v1 & 0xFFFF)
+            print(vil & 0xFFFF, vir & 0xFFFF)
+            print(numpy.binary_repr(v0 & 0xFFFF, 16),
+                  numpy.binary_repr(vil & 0xFFFF, 32))
+            print(numpy.binary_repr(v1 & 0xFFFF, 16),
+                  numpy.binary_repr(vir & 0xFFFF, 32))
+
+            x = ((vil & 0xFFFF) << 16) | (vir & 0xFFFF)
+            print(numpy.binary_repr(x, 32))
+
+            print(float(numpy.int16(x >> 16)) / scale)
+            print(float(numpy.int16(x & 0xFFFF)) / scale)
+
+            pack[i] = x
+
 
         return pack
 
