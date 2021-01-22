@@ -494,20 +494,19 @@
             <span class="n">v1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">vr</span><span class="p">))</span>
             <span class="n">vir</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint16</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">vr</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">v0</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">,</span> <span class="n">v1</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">vil</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">,</span> <span class="n">vir</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="n">v0</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
-                  <span class="n">numpy</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="n">vil</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="n">v1</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
-                  <span class="n">numpy</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="n">vir</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span>
+            <span class="c1"># print(&quot;\n&quot;)</span>
+            <span class="c1"># print(vl, vr)</span>
+            <span class="c1"># print(v0 &amp; 0xFFFF, v1 &amp; 0xFFFF)</span>
+            <span class="c1"># print(vil &amp; 0xFFFF, vir &amp; 0xFFFF)</span>
+            <span class="c1"># print(numpy.binary_repr(v0 &amp; 0xFFFF, 16),</span>
+            <span class="c1">#       numpy.binary_repr(vil &amp; 0xFFFF, 32))</span>
+            <span class="c1"># print(numpy.binary_repr(v1 &amp; 0xFFFF, 16),</span>
+            <span class="c1">#       numpy.binary_repr(vir &amp; 0xFFFF, 32))</span>
 
             <span class="n">x</span> <span class="o">=</span> <span class="p">((</span><span class="n">vil</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">vir</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">binary_repr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">))</span>
-
-            <span class="nb">print</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">))</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">))</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span>
+            <span class="c1"># print(numpy.binary_repr(x, 32))</span>
+            <span class="c1"># print(float(numpy.int16(x &gt;&gt; 16)) / scale)</span>
+            <span class="c1"># print(float(numpy.int16(x &amp; 0xFFFF)) / scale)</span>
 
             <span class="n">pack</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
 

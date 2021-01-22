@@ -346,44 +346,45 @@ $(function() {
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">//  log_info(&quot;half k shape width %u, height %u&quot;, half_k.width, half_k.height);</span></div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    local_only_id_to_coord(pre_id, _shapes, <span class="keyword">false</span>, &amp;pre);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;pre %u row %d, col %d&quot;</span>, pre_id, pre.row, pre.col);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">//    log_info(&quot;pre %u row %d, col %d&quot;, pre_id, pre.row, pre.col);</span></div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    local_only_map_pre_to_post(pre, _shapes, &amp;post);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;AS post row %d, col %d&quot;</span>, post.row, post.col);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">//    log_info(&quot;AS post row %d, col %d&quot;, post.row, post.col);</span></div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordflow">for</span>(int32_t r = -half_k.height; r &lt;= half_k.height; r++){</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        tmp_row = post.row + r;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;r %d : tmp row %d&quot;</span>, r, tmp_row);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">//        log_info(&quot;r %d : tmp row %d&quot;, r, tmp_row);</span></div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordflow">if</span>((tmp_row &lt; 0) || (tmp_row &gt;= _shapes.post.height)){</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        }</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordflow">for</span>(int32_t c = -half_k.width; c &lt;= half_k.width; c++){</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            tmp_col = post.col + c;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;c %d : tmp col %d&quot;</span>, c, tmp_col);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;            <span class="keywordflow">if</span>((tmp_col &lt; 0) || (tmp_row &gt;= _shapes.post.width)){</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            }</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">//            log_info(&quot;tmp_row %d, tmp_col %d\tr %d, c %d&quot;,</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">//                tmp_row, tmp_col, r, c);</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            local_only_coord_to_id(tmp_row, tmp_col, _shapes, <span class="keyword">true</span>,</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                                   &amp;post_ids[n_out]);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            weights[n_out] =</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>[(r + half_k.height) * _shapes.kernel.width +</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                            (c + half_k.width)];</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;pre %u, post r %d, c %d, i %u, weight %k&quot;</span>,</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                pre_id, tmp_row, tmp_col,</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                post_ids[n_out],</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                to_s1615(weights[n_out]));</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            n_out++;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        }</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    }</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordflow">return</span> n_out;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;}</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;lc_dim_t num_possible_post(<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes){</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keywordflow">return</span> (lc_dim_t)(_shapes.kernel.width * _shapes.kernel.height);</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;}</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">//            log_info(&quot;escape row&quot;);</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordflow">for</span>(int32_t c = -half_k.width; c &lt;= half_k.width; c++){</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            tmp_col = post.col + c;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">//            log_info(&quot;c %d : tmp col %d&quot;, c, tmp_col);</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <span class="keywordflow">if</span>((tmp_col &lt; 0) || (tmp_row &gt;= _shapes.post.width)){</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            }</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">//            log_info(&quot;tmp_row %d, tmp_col %d\tr %d, c %d&quot;,</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">//                tmp_row, tmp_col, r, c);</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            local_only_coord_to_id(tmp_row, tmp_col, _shapes, <span class="keyword">true</span>,</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                                   &amp;post_ids[n_out]);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            weights[n_out] =</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>[(r + half_k.height) * _shapes.kernel.width +</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                            (c + half_k.width)];</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">//            log_info(&quot;pre %u, post r %d, c %d, i %u, weight %k&quot;,</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">//                pre_id, tmp_row, tmp_col,</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">//                post_ids[n_out],</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">//                to_s1615(weights[n_out]));</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            n_out++;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        }</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    }</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordflow">return</span> n_out;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;}</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;lc_dim_t num_possible_post(<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes){</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordflow">return</span> (lc_dim_t)(_shapes.kernel.width * _shapes.kernel.height);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
 <div class="ttc" id="acommon-typedefs_8h_html_ac8dc08dd5f5827994d1b06351f925669"><div class="ttname"><a href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a></div><div class="ttdeci">uint32_t * address_t</div></div>
 <div class="ttc" id="aconnection__generator__kernel_8h_html_structkernel"><div class="ttname"><a href="connection__generator__kernel_8h.html#structkernel">kernel</a></div><div class="ttdoc">The parameters to be passed around for this connector.</div><div class="ttdef"><b>Definition:</b> <a href="connection__generator__kernel_8h_source.html#l00031">connection_generator_kernel.h:31</a></div></div>
 <div class="ttc" id="adebug_8h.html_html"><div class="ttname"><a href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html">debug.h</a></div></div>
@@ -392,7 +393,7 @@ $(function() {
 <div class="ttc" id="adelay__extension_8c_html_a6d4ec8e4f3148d51041635da9986c3fa"><div class="ttname"><a href="delay__extension_8c.html#a6d4ec8e4f3148d51041635da9986c3fa">key</a></div><div class="ttdeci">static uint32_t key</div><div class="ttdoc">Base multicast key for sending messages.</div><div class="ttdef"><b>Definition:</b> <a href="delay__extension_8c_source.html#l00075">delay_extension.c:75</a></div></div>
 <div class="ttc" id="aneuron-typedefs_8h_html"><div class="ttname"><a href="neuron-typedefs_8h.html">neuron-typedefs.h</a></div><div class="ttdoc">Data type definitions for SpiNNaker Neuron-modelling.</div></div>
 <div class="ttc" id="aneuron-typedefs_8h_html_ac412098e688b864e8f4e2f3c0ed86591"><div class="ttname"><a href="neuron-typedefs_8h.html#ac412098e688b864e8f4e2f3c0ed86591">input_t</a></div><div class="ttdeci">REAL input_t</div><div class="ttdoc">The type of an input.</div><div class="ttdef"><b>Definition:</b> <a href="neuron-typedefs_8h_source.html#l00102">neuron-typedefs.h:102</a></div></div>
-<div class="ttc" id="aneuron_8c_html_abad40a95ed27eb262884dfd9f59b78d6"><div class="ttname"><a href="neuron_8c.html#abad40a95ed27eb262884dfd9f59b78d6">neuron_add_inputs</a></div><div class="ttdeci">void neuron_add_inputs(index_t synapse_type_index, index_t neuron_index, input_t weights_this_timestep)</div><div class="ttdoc">Add inputs to the neuron.</div><div class="ttdef"><b>Definition:</b> <a href="neuron_8c_source.html#l00195">neuron.c:195</a></div></div>
+<div class="ttc" id="aneuron_8c_html_abad40a95ed27eb262884dfd9f59b78d6"><div class="ttname"><a href="neuron_8c.html#abad40a95ed27eb262884dfd9f59b78d6">neuron_add_inputs</a></div><div class="ttdeci">void neuron_add_inputs(index_t synapse_type_index, index_t neuron_index, input_t weights_this_timestep)</div><div class="ttdoc">Add inputs to the neuron.</div><div class="ttdef"><b>Definition:</b> <a href="neuron_8c_source.html#l00196">neuron.c:196</a></div></div>
 <div class="ttc" id="apopulation__table_8h_html_a8bda7c27a3c9d52a2f95c4b6edd58944"><div class="ttname"><a href="population__table_8h.html#a8bda7c27a3c9d52a2f95c4b6edd58944">population_table_get_first_address</a></div><div class="ttdeci">bool population_table_get_first_address(spike_t spike, address_t *row_address, size_t *n_bytes_to_transfer)</div><div class="ttdoc">Get the first row data for the given input spike.</div><div class="ttdef"><b>Definition:</b> <a href="population__table__binary__search__impl_8c_source.html#l00497">population_table_binary_search_impl.c:497</a></div></div>
 <div class="ttc" id="asark_8h_html_abe2018e60bb35fb629cdbb057368a2f4"><div class="ttname"><a href="http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#abe2018e60bb35fb629cdbb057368a2f4">rt_error</a></div><div class="ttdeci">void rt_error(uint code,...)</div></div>
 <div class="ttc" id="aspin1__api_8h_html_a070d2ce7b6bb7e5c05602aa8c308d0c4"><div class="ttname"><a href="http://spinnakermanchester.github.io/spinnaker_tools/spin1__api_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a></div><div class="ttdeci">#define NULL</div></div>
@@ -402,7 +403,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 22 2021 12:21:19 for sPyNNaker neural_modelling by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Fri Jan 22 2021 17:24:27 for sPyNNaker neural_modelling by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
