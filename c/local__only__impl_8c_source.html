@@ -97,7 +97,7 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">bool</span> local_only_initialise(<a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a> sdram_address){</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;+++++++++++++++++ CONV init ++++++++++++++++++++&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;SDRAM address is 0x%08x&quot;</span>, sdram_address);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//    log_info(&quot;SDRAM address is 0x%08x&quot;, sdram_address);</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">// total incoming local-only connections data size</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    n_bytes = *((uint32_t*)sdram_address++);</div>
@@ -140,10 +140,10 @@ $(function() {
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        _address = sdram_address + mem_size;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">// how many elements are in a single connector data</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        uint32_t n_elem = *((uint32_t*)_address++);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Num elem %d&quot;</span>, n_elem);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//        log_info(&quot;Num elem %d&quot;, n_elem);</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        uint32_t start = *((uint32_t*)_address++);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;Slice start %d&quot;</span>, start);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//        log_info(&quot;Slice start %d&quot;, start);</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        shapes[idx].start = start;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="comment">// shapes are 16-bit uints, hopefully enough for future too?</span></div>
@@ -161,16 +161,16 @@ $(function() {
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        shapes[idx].kernel.width = *((lc_dim_t*)(p++));</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        shapes[idx].kernel.height = *((lc_dim_t*)(p));</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape pre %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                 shapes[idx].pre.width, shapes[idx].pre.height);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape post %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                 shapes[idx].post.width, shapes[idx].post.height);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape padding %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                 shapes[idx].padding.width, shapes[idx].padding.height);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape strides %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                 shapes[idx].strides.width, shapes[idx].strides.height);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;shape kernel %d, %d&quot;</span>,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                 shapes[idx].<a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>.width, shapes[idx].kernel.height);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">//        log_info(&quot;shape pre %d, %d&quot;,</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">//                 shapes[idx].pre.width, shapes[idx].pre.height);</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">//        log_info(&quot;shape post %d, %d&quot;,</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">//                 shapes[idx].post.width, shapes[idx].post.height);</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">//        log_info(&quot;shape padding %d, %d&quot;,</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">//                 shapes[idx].padding.width, shapes[idx].padding.height);</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">//        log_info(&quot;shape strides %d, %d&quot;,</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">//                 shapes[idx].strides.width, shapes[idx].strides.height);</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">//        log_info(&quot;shape kernel %d, %d&quot;,</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">//                 shapes[idx].kernel.width, shapes[idx].kernel.height);</span></div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="comment">// weight kernel data is also 16-bit</span></div>
@@ -179,8 +179,8 @@ $(function() {
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            max_n_weights = n_weights;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;n_elem = %u\tn_weights = %u\tmem_size = %u&quot;</span>,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            n_elem, n_weights, mem_size);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">//        log_info(&quot;n_elem = %u\tn_weights = %u\tmem_size = %u&quot;,</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">//            n_elem, n_weights, mem_size);</span></div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        jumps[idx] = mem_size;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        mem_size += n_elem;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
@@ -208,9 +208,9 @@ $(function() {
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                    conv_kernel[idx][w_idx] = (lc_weight_t)(p32[w_idx/2] &amp; 0xFFFF);</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                }</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#af4431e39155e80c53e1f9aab22d5a0ef">log_info</a>(<span class="stringliteral">&quot;w(%d, %d) = fixed-point %k&quot;</span>,</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                r, c,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                to_s1615(conv_kernel[idx][w_idx]));</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">//                log_info(&quot;w(%d, %d) = fixed-point %k&quot;,</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">//                r, c,</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">//                to_s1615(conv_kernel[idx][w_idx]));</span></div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            }</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        }</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
@@ -220,171 +220,173 @@ $(function() {
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                                    max_n_weights * <span class="keyword">sizeof</span>(lc_weight_t));</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">if</span>(mapped_weights == NULL){</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Could not initialise weights buffer&quot;</span>);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#abe2018e60bb35fb629cdbb057368a2f4">rt_error</a>(RTE_SWERR);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    mapped_post_ids = (lc_neuron_id_t*)spin1_malloc(</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                                    max_n_weights * <span class="keyword">sizeof</span>(lc_neuron_id_t));</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">if</span>(mapped_post_ids == NULL){</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Could not initialise post IDs buffer&quot;</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/spinnaker_tools/sark_8h.html#abe2018e60bb35fb629cdbb057368a2f4">rt_error</a>(RTE_SWERR);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    }</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="keywordtype">bool</span> local_only_is_compatible(<span class="keywordtype">void</span>){</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">return</span> (n_bytes &gt; 0);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keywordtype">void</span> local_only_process_spike(uint32_t <a class="code" href="delay__extension_8c.html#a6d4ec8e4f3148d51041635da9986c3fa">key</a>, UNUSED uint32_t payload){</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">//        rt_error(RTE_SWERR);</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    mapped_post_ids = (lc_neuron_id_t*)spin1_malloc(</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                                    max_n_weights * <span class="keyword">sizeof</span>(lc_neuron_id_t));</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordflow">if</span>(mapped_post_ids == NULL){</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="codeRef" href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html#a0327644dae0a0a5d4bdc8f7b6f54e31e">log_error</a>(<span class="stringliteral">&quot;Could not initialise post IDs buffer&quot;</span>);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">//        rt_error(RTE_SWERR);</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keywordtype">bool</span> local_only_is_compatible(<span class="keywordtype">void</span>){</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">return</span> (n_bytes &gt; 0);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;}</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    uint32_t conn_jump = 0;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">size_t</span> pre_id_relative = 0;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">bool</span> success = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="comment">// see if spike key can be found in the population table,</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">// get the number of incoming connector (conn_jump) and the</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="comment">// relative (to slice beginning) pre-synaptic neuron id</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    success = <a class="code" href="population__table_8h.html#a8bda7c27a3c9d52a2f95c4b6edd58944">population_table_get_first_address</a>(</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <a class="code" href="delay__extension_8c.html#a6d4ec8e4f3148d51041635da9986c3fa">key</a>, &amp;conn_jump, &amp;pre_id_relative);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">//    log_info(&quot;key %u\tpayload %d\tjump %u\tpre_rel %u\tsuccess = %u&quot;,</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">//        key, payload, conn_jump, pre_id_relative, success);</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">// if the key was found in the pop table, then add current to</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="comment">// post-synaptic neuron</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordflow">if</span>(success){</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="comment">// compute the real pre-syn id (population id)</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        lc_neuron_id_t pre_id = pre_id_relative + shapes[conn_jump].start;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">//        log_info(&quot;real pre id %u\n&quot;, pre_id);</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="comment">// get the post-syn neuron ids (this core ids)</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="comment">// get the weights which will be added to each post-syn neuron</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="comment">// get how many post-syn neurons got hit by the current spike</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        lc_dim_t n_out = local_only_get_ids_and_weights(</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            pre_id, shapes[conn_jump], conv_kernel[conn_jump],</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            mapped_post_ids, mapped_weights);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="comment">// add the weight to each of the post neurons</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordflow">for</span>(lc_dim_t i=0; i&lt;n_out; i++){</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">//            log_info(&quot;post %u, weight fixed-point s1615 %k&quot;,</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">//                mapped_post_ids[i],</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">//                to_s1615(mapped_weights[i]));</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            <a class="code" href="neuron_8c.html#abad40a95ed27eb262884dfd9f59b78d6">neuron_add_inputs</a>(</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                0, <span class="comment">// only one synapse type to save space</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                mapped_post_ids[i],</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                to_s1615(mapped_weights[i]));</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        }</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;}</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="keywordtype">void</span> local_only_coord_to_id(</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    int32_t row, int32_t col, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes, <span class="keywordtype">bool</span> is_post,</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    lc_neuron_id_t *<span class="keywordtype">id</span>){</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordflow">if</span> (is_post){</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">//        log_info(&quot;id = %d&quot;, row * _shapes.post.width + col);</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        *<span class="keywordtype">id</span> = row * _shapes.post.width + col;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        *<span class="keywordtype">id</span> = row * _shapes.pre.width + col;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    }</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="keywordtype">void</span> local_only_id_to_coord(</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    lc_neuron_id_t <span class="keywordtype">id</span>, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, <span class="keywordtype">bool</span> is_post,</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> *coord){</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keywordflow">if</span> (is_post){</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        coord-&gt;row = <span class="keywordtype">id</span> / shapes.post.width;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        coord-&gt;col = <span class="keywordtype">id</span> % shapes.post.width;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        coord-&gt;row = <span class="keywordtype">id</span> / shapes.pre.width;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        coord-&gt;col = <span class="keywordtype">id</span> % shapes.pre.width;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    }</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;}</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="keywordtype">void</span> local_only_map_pre_to_post(</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> pre, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes, <a class="code" href="structlc__coord__t.html">lc_coord_t</a> *post){</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    int32_t _pre = pre.row;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    int32_t _post = post-&gt;row;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    _post = (_pre - _shapes.kernel.height - 1 + 2 * _shapes.padding.height);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    _post /= _shapes.strides.height;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    _post += 1;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">//    if (_post &lt; 0){</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment">//        post-&gt;row = 0;</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">//    }else{</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment">//        post-&gt;row = _post;</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">//    }</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    post-&gt;row = _post;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    _pre = pre.col;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    _post = post-&gt;col;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    _post = (_pre - _shapes.kernel.width - 1 + 2 * _shapes.padding.width);</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    _post /= _shapes.strides.width;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    _post += 1;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">//    if (_post &lt; 0){</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">//        post-&gt;col = 0;</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">//    }else{</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">//        post-&gt;col = _post;</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">//    }</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    post-&gt;col = _post;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;}</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="keywordtype">void</span> local_only_process_spike(uint32_t <a class="code" href="delay__extension_8c.html#a6d4ec8e4f3148d51041635da9986c3fa">key</a>, UNUSED uint32_t payload){</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    uint32_t conn_jump = 0;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordtype">size_t</span> pre_id_relative = 0;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordtype">bool</span> success = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="comment">// see if spike key can be found in the population table,</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">// get the number of incoming connector (conn_jump) and the</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">// relative (to slice beginning) pre-synaptic neuron id</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    success = <a class="code" href="population__table_8h.html#a8bda7c27a3c9d52a2f95c4b6edd58944">population_table_get_first_address</a>(</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <a class="code" href="delay__extension_8c.html#a6d4ec8e4f3148d51041635da9986c3fa">key</a>, &amp;conn_jump, &amp;pre_id_relative);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">//    log_info(&quot;key %u\tpayload %d\tjump %u\tpre_rel %u\tsuccess = %u&quot;,</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">//        key, payload, conn_jump, pre_id_relative, success);</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="comment">// if the key was found in the pop table, then add current to</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="comment">// post-synaptic neuron</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordflow">if</span>(success){</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="comment">// compute the real pre-syn id (population id)</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        lc_neuron_id_t pre_id = pre_id_relative + shapes[conn_jump].start;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">//        log_info(&quot;real pre id %u\n&quot;, pre_id);</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="comment">// get the post-syn neuron ids (this core ids)</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="comment">// get the weights which will be added to each post-syn neuron</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="comment">// get how many post-syn neurons got hit by the current spike</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        lc_dim_t n_out = local_only_get_ids_and_weights(</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            pre_id, shapes[conn_jump], conv_kernel[conn_jump],</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            mapped_post_ids, mapped_weights);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="comment">// add the weight to each of the post neurons</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordflow">for</span>(lc_dim_t i=0; i&lt;n_out; i++){</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">//            log_info(&quot;post %u, weight fixed-point s1615 %k&quot;,</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">//                mapped_post_ids[i],</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">//                to_s1615(mapped_weights[i]));</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <a class="code" href="neuron_8c.html#abad40a95ed27eb262884dfd9f59b78d6">neuron_add_inputs</a>(</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                0, <span class="comment">// only one synapse type to save space</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                mapped_post_ids[i],</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                to_s1615(mapped_weights[i]));</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;}</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="keywordtype">void</span> local_only_coord_to_id(</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    int32_t row, int32_t col, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes, <span class="keywordtype">bool</span> is_post,</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    lc_neuron_id_t *<span class="keywordtype">id</span>){</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordflow">if</span> (is_post){</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">//        log_info(&quot;id = %d&quot;, row * _shapes.post.width + col);</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        *<span class="keywordtype">id</span> = row * _shapes.post.width + col;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        *<span class="keywordtype">id</span> = row * _shapes.pre.width + col;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;}</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="keywordtype">void</span> local_only_id_to_coord(</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    lc_neuron_id_t <span class="keywordtype">id</span>, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> shapes, <span class="keywordtype">bool</span> is_post,</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> *coord){</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">if</span> (is_post){</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        coord-&gt;row = <span class="keywordtype">id</span> / shapes.post.width;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        coord-&gt;col = <span class="keywordtype">id</span> % shapes.post.width;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        coord-&gt;row = <span class="keywordtype">id</span> / shapes.pre.width;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        coord-&gt;col = <span class="keywordtype">id</span> % shapes.pre.width;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;}</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keywordtype">void</span> local_only_map_pre_to_post(</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> pre, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes, <a class="code" href="structlc__coord__t.html">lc_coord_t</a> *post){</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    int32_t _pre = pre.row;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    int32_t _post = post-&gt;row;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    _post = (_pre - _shapes.kernel.height - 1 + 2 * _shapes.padding.height);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    _post /= _shapes.strides.height;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    _post += 1;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="comment">//    if (_post &lt; 0){</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment">//        post-&gt;row = 0;</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">//    }else{</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">//        post-&gt;row = _post;</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">//    }</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    post-&gt;row = _post;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    _pre = pre.col;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    _post = post-&gt;col;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    _post = (_pre - _shapes.kernel.width - 1 + 2 * _shapes.padding.width);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    _post /= _shapes.strides.width;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    _post += 1;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">//    if (_post &lt; 0){</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">//        post-&gt;col = 0;</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">//    }else{</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">//        post-&gt;col = _post;</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">//    }</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    post-&gt;col = _post;</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;lc_dim_t local_only_get_ids_and_weights(</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    lc_neuron_id_t pre_id, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes, lc_weight_t* <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>,</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    lc_neuron_id_t* post_ids, lc_weight_t* weights){</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    lc_dim_t n_out = 0;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> pre = {0, 0};</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> post = {0, 0};</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    int32_t tmp_row = 0;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    int32_t tmp_col = 0;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <a class="code" href="structlc__shape__t.html">lc_shape_t</a> half_k = {_shapes.kernel.width/2, _shapes.kernel.height/2};</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">//  log_info(&quot;half k shape width %u, height %u&quot;, half_k.width, half_k.height);</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    local_only_id_to_coord(pre_id, _shapes, <span class="keyword">false</span>, &amp;pre);</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">//    log_info(&quot;pre %u row %d, col %d&quot;, pre_id, pre.row, pre.col);</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    local_only_map_pre_to_post(pre, _shapes, &amp;post);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">//    log_info(&quot;AS post row %d, col %d&quot;, post.row, post.col);</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordflow">for</span>(int32_t r = -half_k.height; r &lt;= half_k.height; r++){</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        tmp_row = post.row + r;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">//        log_info(&quot;r %d : tmp row %d&quot;, r, tmp_row);</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordflow">if</span>((tmp_row &lt; 0) || (tmp_row &gt;= _shapes.post.height)){</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">//            log_info(&quot;escape row&quot;);</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordflow">for</span>(int32_t c = -half_k.width; c &lt;= half_k.width; c++){</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            tmp_col = post.col + c;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">//            log_info(&quot;c %d : tmp col %d&quot;, c, tmp_col);</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            <span class="keywordflow">if</span>((tmp_col &lt; 0) || (tmp_row &gt;= _shapes.post.width)){</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">//            log_info(&quot;tmp_row %d, tmp_col %d\tr %d, c %d&quot;,</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">//                tmp_row, tmp_col, r, c);</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            local_only_coord_to_id(tmp_row, tmp_col, _shapes, <span class="keyword">true</span>,</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                                   &amp;post_ids[n_out]);</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            weights[n_out] =</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>[(r + half_k.height) * _shapes.kernel.width +</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                            (c + half_k.width)];</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">//            log_info(&quot;pre %u, post r %d, c %d, i %u, weight %k&quot;,</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">//                pre_id, tmp_row, tmp_col,</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">//                post_ids[n_out],</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">//                to_s1615(weights[n_out]));</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            n_out++;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        }</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    }</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordflow">return</span> n_out;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;}</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;lc_dim_t num_possible_post(<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes){</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordflow">return</span> (lc_dim_t)(_shapes.kernel.width * _shapes.kernel.height);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;}</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;lc_dim_t local_only_get_ids_and_weights(</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    lc_neuron_id_t pre_id, <a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes, lc_weight_t* <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>,</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    lc_neuron_id_t* post_ids, lc_weight_t* weights){</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    lc_dim_t n_out = 0;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> pre = {0, 0};</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <a class="code" href="structlc__coord__t.html">lc_coord_t</a> post = {0, 0};</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    int32_t tmp_row = 0;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    int32_t tmp_col = 0;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <a class="code" href="structlc__shape__t.html">lc_shape_t</a> half_k = {_shapes.kernel.width/2, _shapes.kernel.height/2};</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">//  log_info(&quot;half k shape width %u, height %u&quot;, half_k.width, half_k.height);</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    local_only_id_to_coord(pre_id, _shapes, <span class="keyword">false</span>, &amp;pre);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">//    log_info(&quot;pre %u row %d, col %d&quot;, pre_id, pre.row, pre.col);</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    local_only_map_pre_to_post(pre, _shapes, &amp;post);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">//    log_info(&quot;AS post row %d, col %d&quot;, post.row, post.col);</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordflow">for</span>(int32_t r = -half_k.height; r &lt;= half_k.height; r++){</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        tmp_row = post.row + r;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">//        log_info(&quot;r %d : tmp row %d&quot;, r, tmp_row);</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordflow">if</span>((tmp_row &lt; 0) || (tmp_row &gt;= _shapes.post.height)){</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">//            log_info(&quot;escape row&quot;);</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        }</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="keywordflow">for</span>(int32_t c = -half_k.width; c &lt;= half_k.width; c++){</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            tmp_col = post.col + c;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">//            log_info(&quot;c %d : tmp col %d&quot;, c, tmp_col);</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">if</span>((tmp_col &lt; 0) || (tmp_row &gt;= _shapes.post.width)){</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            }</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">//            log_info(&quot;tmp_row %d, tmp_col %d\tr %d, c %d&quot;,</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">//                tmp_row, tmp_col, r, c);</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            local_only_coord_to_id(tmp_row, tmp_col, _shapes, <span class="keyword">true</span>,</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                                   &amp;post_ids[n_out]);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            weights[n_out] =</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <a class="code" href="connection__generator__kernel_8h.html#structkernel">kernel</a>[(r + half_k.height) * _shapes.kernel.width +</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                            (c + half_k.width)];</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">//            log_info(&quot;pre %u, post r %d, c %d, i %u, weight %k&quot;,</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">//                pre_id, tmp_row, tmp_col,</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">//                post_ids[n_out],</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">//                to_s1615(weights[n_out]));</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            n_out++;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        }</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    }</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="keywordflow">return</span> n_out;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;}</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;lc_dim_t num_possible_post(<a class="code" href="structlc__shapes__t.html">lc_shapes_t</a> _shapes){</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">return</span> (lc_dim_t)(_shapes.kernel.width * _shapes.kernel.height);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;}</div>
 <div class="ttc" id="acommon-typedefs_8h_html_ac8dc08dd5f5827994d1b06351f925669"><div class="ttname"><a href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/common-typedefs_8h.html#ac8dc08dd5f5827994d1b06351f925669">address_t</a></div><div class="ttdeci">uint32_t * address_t</div></div>
 <div class="ttc" id="aconnection__generator__kernel_8h_html_structkernel"><div class="ttname"><a href="connection__generator__kernel_8h.html#structkernel">kernel</a></div><div class="ttdoc">The parameters to be passed around for this connector.</div><div class="ttdef"><b>Definition:</b> <a href="connection__generator__kernel_8h_source.html#l00031">connection_generator_kernel.h:31</a></div></div>
 <div class="ttc" id="adebug_8h.html_html"><div class="ttname"><a href="http://spinnakermanchester.github.io/SpiNNFrontEndCommon/c/debug_8h.html">debug.h</a></div></div>
@@ -403,7 +405,7 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 22 2021 17:24:27 for sPyNNaker neural_modelling by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Mon Jan 25 2021 17:34:47 for sPyNNaker neural_modelling by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
