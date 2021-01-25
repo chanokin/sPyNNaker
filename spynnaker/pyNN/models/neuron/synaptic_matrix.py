@@ -342,7 +342,7 @@ class SynapticMatrix(object):
                 data_size, self.__single_matrix_size))
         self.__index = self.__poptable.add_machine_entry(
             single_addr, self.__max_row_info.undelayed_max_words,
-            self.__routing_info.first_key_and_mask, is_single=True)
+            self.__routing_info.first_key_and_mask, POP_TABLE_ADDRESS_TYPES.SINGLE)
         single_synapses.append(single_rows)
         self.__syn_mat_offset = single_addr
         self.__address_type = POP_TABLE_ADDRESS_TYPES.SINGLE

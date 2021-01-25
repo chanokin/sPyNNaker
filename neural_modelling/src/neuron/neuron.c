@@ -165,19 +165,19 @@ void neuron_do_timestep_update(timer_t time, uint timer_count) { // EXPORTED
 
         // If the neuron has spiked
         if (spike) {
-            log_info("neuron %u spiked at time %u", neuron_index, time);
+            log_debug("neuron %u spiked at time %u", neuron_index, time);
 
             // Do any required synapse processing
             synapse_dynamics_process_post_synaptic_event(time, neuron_index);
 
             if (use_key) {
-//                log_info("use key, send packet");
+                log_info("use key, send packet");
                 tdma_processing_send_packet(
                     (key | neuron_index), 0, NO_PAYLOAD, timer_count);
             }
         } else {
-//            log_info("the neuron %d has been determined to not spike",
-//                      neuron_index);
+            log_debug("the neuron %d has been determined to not spike",
+                      neuron_index);
          }
     }
 

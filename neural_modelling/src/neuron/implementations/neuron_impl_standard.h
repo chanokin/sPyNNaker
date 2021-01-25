@@ -350,7 +350,6 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
 
         // If spike occurs, communicate to relevant parts of model
         if (spike_now) {
-            log_info("neuron_impl_standard - spike now!");
             has_spiked = true;
 
             // Call relevant model-based functions
@@ -366,7 +365,6 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
     }
 
     if (has_spiked) {
-        log_info("neuron spiked - record");
         // Record the spike
         neuron_recording_record_bit(SPIKE_RECORDING_BITFIELD, neuron_index);
     }

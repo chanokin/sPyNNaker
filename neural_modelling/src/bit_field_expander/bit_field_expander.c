@@ -232,16 +232,16 @@ bool initialise(void) {
         return false;
     }
 
-    data_specification_metadata_t *ds_regions =
-                            data_specification_get_data_address();
-    local_only_address = data_specification_get_region(
-                                    LOCAL_ONLY_REGION, ds_regions);
-
-    if (!local_only_initialise(local_only_address)){
-        log_error("Failed to init local_only processing.");
-        return false;
-    }
-    local_only = local_only_is_compatible();
+//    data_specification_metadata_t *ds_regions =
+//                            data_specification_get_data_address();
+//    local_only_address = data_specification_get_region(
+//                                    LOCAL_ONLY_REGION, ds_regions);
+//
+//    if (!local_only_initialise(local_only_address)){
+//        log_error("Failed to init local_only processing.");
+//        return false;
+//    }
+//    local_only = local_only_is_compatible();
 
 
     log_info("Structural plastic if needed");

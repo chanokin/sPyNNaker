@@ -156,13 +156,8 @@ static inline void neuron_recording_record_bit(
     // Record the bit
 
     uint32_t index = bitfield_recording_indexes[var_index][neuron_index];
-    log_info("bit index %u, val %u\tneuron index %u",
-        index, bitfield_values[var_index], neuron_index);
 
     bit_field_set(bitfield_values[var_index], index);
-
-    log_info("bit index %u, val %u\tneuron index %u",
-        index, bitfield_values[var_index], neuron_index);
 }
 
 //! \brief does the recording process of handing over to basic recording

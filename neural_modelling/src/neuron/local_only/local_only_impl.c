@@ -24,7 +24,7 @@ inline input_t to_s1615(lc_weight_t w){
 
 bool local_only_initialise(address_t sdram_address){
     log_info("+++++++++++++++++ CONV init ++++++++++++++++++++");
-    log_info("SDRAM address is 0x%08x", sdram_address);
+//    log_info("SDRAM address is 0x%08x", sdram_address);
 
     // total incoming local-only connections data size
     n_bytes = *((uint32_t*)sdram_address++);
@@ -67,10 +67,10 @@ bool local_only_initialise(address_t sdram_address){
         _address = sdram_address + mem_size;
         // how many elements are in a single connector data
         uint32_t n_elem = *((uint32_t*)_address++);
-        log_info("Num elem %d", n_elem);
+//        log_info("Num elem %d", n_elem);
 
         uint32_t start = *((uint32_t*)_address++);
-        log_info("Slice start %d", start);
+//        log_info("Slice start %d", start);
         shapes[idx].start = start;
 
         // shapes are 16-bit uints, hopefully enough for future too?
@@ -88,16 +88,16 @@ bool local_only_initialise(address_t sdram_address){
         shapes[idx].kernel.width = *((lc_dim_t*)(p++));
         shapes[idx].kernel.height = *((lc_dim_t*)(p));
 
-        log_info("shape pre %d, %d",
-                 shapes[idx].pre.width, shapes[idx].pre.height);
-        log_info("shape post %d, %d",
-                 shapes[idx].post.width, shapes[idx].post.height);
-        log_info("shape padding %d, %d",
-                 shapes[idx].padding.width, shapes[idx].padding.height);
-        log_info("shape strides %d, %d",
-                 shapes[idx].strides.width, shapes[idx].strides.height);
-        log_info("shape kernel %d, %d",
-                 shapes[idx].kernel.width, shapes[idx].kernel.height);
+//        log_info("shape pre %d, %d",
+//                 shapes[idx].pre.width, shapes[idx].pre.height);
+//        log_info("shape post %d, %d",
+//                 shapes[idx].post.width, shapes[idx].post.height);
+//        log_info("shape padding %d, %d",
+//                 shapes[idx].padding.width, shapes[idx].padding.height);
+//        log_info("shape strides %d, %d",
+//                 shapes[idx].strides.width, shapes[idx].strides.height);
+//        log_info("shape kernel %d, %d",
+//                 shapes[idx].kernel.width, shapes[idx].kernel.height);
 
 
         // weight kernel data is also 16-bit
@@ -106,8 +106,8 @@ bool local_only_initialise(address_t sdram_address){
             max_n_weights = n_weights;
         }
 
-        log_info("n_elem = %u\tn_weights = %u\tmem_size = %u",
-            n_elem, n_weights, mem_size);
+//        log_info("n_elem = %u\tn_weights = %u\tmem_size = %u",
+//            n_elem, n_weights, mem_size);
         jumps[idx] = mem_size;
         mem_size += n_elem;
 
@@ -135,9 +135,9 @@ bool local_only_initialise(address_t sdram_address){
                     conv_kernel[idx][w_idx] = (lc_weight_t)(p32[w_idx/2] & 0xFFFF);
                 }
 
-                log_info("w(%d, %d) = fixed-point %k",
-                r, c,
-                to_s1615(conv_kernel[idx][w_idx]));
+//                log_info("w(%d, %d) = fixed-point %k",
+//                r, c,
+//                to_s1615(conv_kernel[idx][w_idx]));
             }
         }
 
@@ -147,14 +147,16 @@ bool local_only_initialise(address_t sdram_address){
                                     max_n_weights * sizeof(lc_weight_t));
     if(mapped_weights == NULL){
         log_error("Could not initialise weights buffer");
-        rt_error(RTE_SWERR);
+        return false;
+//        rt_error(RTE_SWERR);
     }
 
     mapped_post_ids = (lc_neuron_id_t*)spin1_malloc(
                                     max_n_weights * sizeof(lc_neuron_id_t));
     if(mapped_post_ids == NULL){
         log_error("Could not initialise post IDs buffer");
-        rt_error(RTE_SWERR);
+        return false;
+//        rt_error(RTE_SWERR);
     }
 
 
