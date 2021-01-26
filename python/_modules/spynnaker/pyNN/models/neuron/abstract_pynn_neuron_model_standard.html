@@ -123,7 +123,6 @@
     <span class="k">def</span> <span class="nf">local_only_compatible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_spike_mapping</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_dma_weights</span>
 
-
     <span class="nd">@overrides</span><span class="p">(</span><span class="n">AbstractPyNNNeuronModel</span><span class="o">.</span><span class="n">create_vertex</span><span class="p">,</span>
                <span class="n">additional_arguments</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;n_steps_per_timestep&quot;</span><span class="p">})</span>
 <div class="viewcode-block" id="AbstractPyNNNeuronModelStandard.create_vertex"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.AbstractPyNNNeuronModelStandard.create_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">create_vertex</span><span class="p">(</span>

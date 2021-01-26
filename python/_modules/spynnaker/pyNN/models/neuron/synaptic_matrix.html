@@ -86,10 +86,7 @@
 <span class="kn">from</span> <span class="nn">spynnaker.pyNN.models.neuron.synapse_dynamics</span> <span class="kn">import</span> <span class="n">SynapseDynamicsStatic</span>
 <span class="kn">from</span> <span class="nn">spynnaker.pyNN.models.neural_projections.connectors</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">OneToOneConnector</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">spynnaker.pyNN.utilities.constants</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">POP_TABLE_MAX_ROW_LENGTH</span><span class="p">,</span>
-    <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="p">,</span> <span class="n">NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">spynnaker.pyNN.utilities.constants</span> <span class="kn">import</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span>
 <span class="kn">from</span> <span class="nn">.generator_data</span> <span class="kn">import</span> <span class="n">GeneratorData</span><span class="p">,</span> <span class="n">SYN_REGION_UNUSED</span>
 
 
@@ -232,7 +229,6 @@
 
         <span class="k">return</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SDRAM</span></div>
 
-
 <div class="viewcode-block" id="SynapticMatrix.is_direct"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.synaptic_matrix.SynapticMatrix.is_direct">[docs]</a>    <span class="k">def</span> <span class="nf">is_direct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">single_addr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Determine if the given connection can be done with a &quot;direct&quot;\</span>
 <span class="sd">            synaptic matrix - this must have an exactly 1 entry per row</span>
@@ -257,7 +253,6 @@
             <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span><span class="o">.</span><span class="n">postpop_is_view</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">is_direct</span><span class="p">,</span> <span class="n">next_addr</span></div>
 
-
 <div class="viewcode-block" id="SynapticMatrix.is_local_only"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.synaptic_matrix.SynapticMatrix.is_local_only">[docs]</a>    <span class="k">def</span> <span class="nf">is_local_only</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_only_addr</span><span class="p">):</span>
         <span class="n">si</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__synapse_info</span>
         <span class="n">pre</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">pre_population</span>
@@ -265,10 +260,9 @@
         <span class="n">conn</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">connector</span>
 
         <span class="n">local_only</span> <span class="o">=</span> <span class="p">(</span><span class="n">si</span><span class="o">.</span><span class="n">uses_local_only_weights</span><span class="p">()</span> <span class="ow">and</span>
-                       <span class="n">conn</span><span class="o">.</span><span class="n">shapes_are_compatible</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">))</span>
+                      <span class="n">conn</span><span class="o">.</span><span class="n">shapes_are_compatible</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">))</span>
         <span class="n">next_addr</span> <span class="o">=</span> <span class="n">local_only_addr</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_only_matrix_size</span>
         <span class="k">return</span> <span class="n">local_only</span><span class="p">,</span> <span class="n">next_addr</span></div>
-
 
 <div class="viewcode-block" id="SynapticMatrix.get_row_data"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neuron.html#spynnaker.pyNN.models.neuron.synaptic_matrix.SynapticMatrix.get_row_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_row_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_time_step</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Generate the row data for a synaptic matrix from the description</span>
@@ -407,7 +401,8 @@
                 <span class="n">data_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__single_matrix_size</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__poptable</span><span class="o">.</span><span class="n">add_machine_entry</span><span class="p">(</span>
             <span class="n">single_addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__max_row_info</span><span class="o">.</span><span class="n">undelayed_max_words</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__routing_info</span><span class="o">.</span><span class="n">first_key_and_mask</span><span class="p">,</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__routing_info</span><span class="o">.</span><span class="n">first_key_and_mask</span><span class="p">,</span>
+            <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
         <span class="n">single_synapses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">single_rows</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__syn_mat_offset</span> <span class="o">=</span> <span class="n">single_addr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__address_type</span> <span class="o">=</span> <span class="n">POP_TABLE_ADDRESS_TYPES</span><span class="o">.</span><span class="n">SINGLE</span>
@@ -749,9 +744,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__received_block</span> <span class="o">=</span> <span class="n">numpy_block</span>
         <span class="k">return</span> <span class="n">numpy_block</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__get_local_only_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transceiver</span><span class="p">,</span> <span class="n">placement</span><span class="p">,</span> <span class="n">local_only_address</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__get_local_only_block</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">transceiver</span><span class="p">,</span> <span class="n">placement</span><span class="p">,</span> <span class="n">local_only_address</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__received_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__received_block</span>
+
         <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 

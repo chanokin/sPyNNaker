@@ -82,7 +82,6 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">ctypes</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">from</span> <span class="nn">spinn_front_end_common.utilities.constants</span> <span class="kn">import</span> <span class="n">BYTES_PER_WORD</span>
 <span class="kn">from</span> <span class="nn">spynnaker.pyNN.models.neural_projections</span> <span class="kn">import</span> <span class="n">ProjectionApplicationEdge</span>
 <span class="kn">from</span> <span class="nn">spynnaker.pyNN.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
@@ -182,7 +181,6 @@
 <span class="n">_MAX_N_NEURONS</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">_n_bits</span><span class="p">(</span><span class="n">_ExtraInfoCType</span><span class="o">.</span><span class="n">n_neurons</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
 <span class="c1"># Maximum core mask (i.e. number of cores)</span>
 <span class="n">_MAX_CORE_MASK</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">_n_bits</span><span class="p">(</span><span class="n">_ExtraInfoCType</span><span class="o">.</span><span class="n">core_mask</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
-
 
 
 <span class="k">class</span> <span class="nc">_AddressAndRowLengthCType</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">LittleEndianStructure</span><span class="p">):</span>

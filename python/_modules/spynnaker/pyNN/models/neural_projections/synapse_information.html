@@ -285,7 +285,8 @@
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pre_run_connection_holders</span><span class="p">[:]</span></div>
 
 <div class="viewcode-block" id="SynapseInformation.uses_local_only_weights"><a class="viewcode-back" href="../../../../../spynnaker.pyNN.models.neural_projections.html#spynnaker.pyNN.models.neural_projections.SynapseInformation.uses_local_only_weights">[docs]</a>    <span class="k">def</span> <span class="nf">uses_local_only_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># post-synaptic neuron will know how to handle SDRAM stored connectivity</span>
+        <span class="c1"># post-synaptic neuron will know how to handle</span>
+        <span class="c1"># SDRAM-stored connectivity</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">post_population</span><span class="p">,</span> <span class="s2">&quot;needs_dma_weights&quot;</span><span class="p">):</span>
             <span class="n">post_local</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_population</span><span class="o">.</span><span class="n">needs_dma_weights</span>
         <span class="k">else</span><span class="p">:</span>

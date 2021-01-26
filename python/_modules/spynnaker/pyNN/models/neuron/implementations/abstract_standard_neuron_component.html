@@ -84,9 +84,8 @@
 <span class="kn">from</span> <span class="nn">spinn_front_end_common.utilities.constants</span> <span class="kn">import</span> <span class="n">BYTES_PER_WORD</span>
 <span class="kn">from</span> <span class="nn">spynnaker.pyNN.utilities.struct</span> <span class="kn">import</span> <span class="n">Struct</span>
 <span class="kn">from</span> <span class="nn">.ranged_dict_vertex_slice</span> <span class="kn">import</span> <span class="n">RangedDictVertexSlice</span>
-<span class="kn">from</span> <span class="nn">spynnaker.pyNN.models.abstract_pynn_model</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">AbstractPyNNModel</span>
-<span class="p">)</span>
+
+
 <span class="c1"># with_metaclass due to https://github.com/benjaminp/six/issues/219</span>
 <div class="viewcode-block" id="AbstractStandardNeuronComponent"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.implementations.html#spynnaker.pyNN.models.neuron.implementations.AbstractStandardNeuronComponent">[docs]</a><span class="k">class</span> <span class="nc">AbstractStandardNeuronComponent</span><span class="p">(</span><span class="n">with_metaclass</span><span class="p">(</span><span class="n">AbstractBase</span><span class="p">,</span> <span class="nb">object</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot; Represents a component of a standard neural model.</span>
@@ -109,7 +108,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">extend_state_variables</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_dma_weights</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">requires_spike_mapping</span> <span class="o">=</span> <span class="kc">False</span>
-
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">struct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -220,8 +218,6 @@
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new_values</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
             <span class="n">fts</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_field_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new_field_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
 
-
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">array_size</span><span class="p">,</span>
                                     <span class="n">override_field_types</span><span class="o">=</span><span class="n">fts</span><span class="p">)</span></div>
 
@@ -281,8 +277,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">local_only_compatible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_dma_weights</span><span class="p">)</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">requires_spike_mapping</span>
+                <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_dma_weights</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">requires_spike_mapping</span>
         <span class="p">)</span></div>
 </pre></div>
 
