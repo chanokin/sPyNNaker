@@ -22,4 +22,4 @@ from .neuron_model_conv_lif import (
 
 __all__ = ["AbstractNeuronModel", "NeuronModelIzh",
            "NeuronModelLeakyIntegrateAndFire",
-           "NeuronModelLeakyIntegrateAndFireConv",]
+           "NeuronModelLeakyIntegrateAndFireConv"]

@@ -107,4 +107,3 @@ class AbstractNeuronModel(
                    BYTES_PER_WORD)
         return super(AbstractNeuronModel, self).read_data(
             data, offset, vertex_slice, parameters, state_variables)
-

@@ -71,7 +71,8 @@ class Struct(object):
         size_in_bytes = array_size * datatype.itemsize
         return (size_in_bytes + (BYTES_PER_WORD - 1)) // BYTES_PER_WORD
 
-    def get_data(self, values, offset=0, array_size=1, override_field_types=None):
+    def get_data(
+            self, values, offset=0, array_size=1, override_field_types=None):
         """ Get a numpy array of uint32 of data for the given values
 
         :param values:
@@ -82,10 +83,12 @@ class Struct(object):
             ~spinn_utilities.ranged.RangedList)
         :param int offset: The offset into each of the values where to start
         :param int array_size: The number of structs to generate
+        :param list override_field_types: List with field types which will be
+            overwritten.
         :rtype: ~numpy.ndarray(dtype="uint32")
         """
         # Create an array to store values in
-        ftypes = (override_field_types if not override_field_types is None
+        ftypes = (override_field_types if not (override_field_types is None)
                   else self.field_types)
         np_dtypes = self.__get_numpy_dtypes(ftypes)
         data = numpy.zeros(array_size, dtype=np_dtypes)
@@ -102,15 +105,17 @@ class Struct(object):
                 data["f" + str(i)] = data_value
             else:
                 for start, end, value in vals.iter_ranges_by_slice(
-                        offset, offset + array_size):
+                                                offset, offset + array_size):
                     # Get the values and get them into the correct data type
                     if isinstance(value, RandomDistribution):
                         rand_vals = value.next(end - start)
-                        data_value = [convert_to(v, data_type) for v in rand_vals]
+                        data_value = [convert_to(v, data_type) for v in
+                                      rand_vals]
                     else:
                         data_value = convert_to(value, data_type)
+
                     data["f" + str(i)][
-                        start - offset:end - offset] = data_value
+                                    start - offset:end - offset] = data_value
 
         # Pad to whole number of uint32s
         overflow = (array_size * self.numpy_dtype.itemsize) % BYTES_PER_WORD

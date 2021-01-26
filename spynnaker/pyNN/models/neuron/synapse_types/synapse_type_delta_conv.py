@@ -48,7 +48,6 @@ class SynapseTypeDeltaConv(AbstractSynapseType):
         self.needs_dma_weights = False
         self.requires_spike_mapping = True
 
-
     @overrides(AbstractSynapseType.get_n_cpu_cycles)
     def get_n_cpu_cycles(self, n_neurons):
         return 1 * n_neurons
@@ -117,5 +116,3 @@ class SynapseTypeDeltaConv(AbstractSynapseType):
         return (
             num_state_variables * n_neurons * self.get_n_synapse_types()
         ) * BYTES_PER_WORD
-
-

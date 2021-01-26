@@ -14,15 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import os
 
 from spinn_utilities.overrides import overrides
 from pacman.model.constraints.key_allocator_constraints import (
     ContiguousKeyRangeContraint)
-from pacman.executor.injection_decorator import inject_items
-from pacman.model.resources import (
-    ConstantSDRAM, CPUCyclesPerTickResource, DTCMResource, ResourceContainer)
-from pacman.model.graphs.common import Slice
 from spinn_front_end_common.abstract_models import (
     AbstractChangableAfterRun, AbstractProvidesOutgoingPartitionConstraints,
     AbstractCanReset, AbstractRewritesDataSpecification)
@@ -31,8 +26,7 @@ from spinn_front_end_common.abstract_models.impl import (
 from spinn_front_end_common.utilities import (
     helpful_functions, globals_variables)
 from spinn_front_end_common.utilities.constants import (
-    BYTES_PER_WORD, SYSTEM_BYTES_REQUIREMENT)
-from spinn_front_end_common.interface.profiling import profile_utils
+    BYTES_PER_WORD)
 from spynnaker.pyNN.models.common import (
     AbstractSpikeRecordable, AbstractNeuronRecordable, NeuronRecorder)
 from spynnaker.pyNN.models.abstract_models import (

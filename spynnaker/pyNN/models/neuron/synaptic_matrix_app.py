@@ -841,4 +841,5 @@ class SynapticMatrixApp(object):
         data = conn.get_local_only_data(self)
         print(self, data)
         block_size += len(data)
+
         return block_size, data

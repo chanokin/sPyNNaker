@@ -19,9 +19,8 @@ from spinn_utilities.abstract_base import AbstractBase, abstractmethod
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from spynnaker.pyNN.utilities.struct import Struct
 from .ranged_dict_vertex_slice import RangedDictVertexSlice
-from spynnaker.pyNN.models.abstract_pynn_model import (
-    AbstractPyNNModel
-)
+
+
 # with_metaclass due to https://github.com/benjaminp/six/issues/219
 class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
     """ Represents a component of a standard neural model.
@@ -44,7 +43,6 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
         self.extend_state_variables = False
         self.needs_dma_weights = True
         self.requires_spike_mapping = False
-
 
     @property
     def struct(self):
@@ -155,8 +153,6 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
             values = [new_values[i] for i in sorted(new_values.keys())]
             fts = [new_field_types[i] for i in sorted(new_field_types.keys())]
 
-
-
         return self.struct.get_data(values, offset, array_size,
                                     override_field_types=fts)
 
@@ -216,6 +212,6 @@ class AbstractStandardNeuronComponent(with_metaclass(AbstractBase, object)):
     @property
     def local_only_compatible(self):
         return (
-            (not self.needs_dma_weights) and
-            self.requires_spike_mapping
+                (not self.needs_dma_weights) and
+                self.requires_spike_mapping
         )

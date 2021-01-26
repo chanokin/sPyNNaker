@@ -58,7 +58,6 @@ class AbstractPyNNNeuronModelStandard(AbstractPyNNNeuronModel):
     def local_only_compatible(self):
         return self.requires_spike_mapping and not self.needs_dma_weights
 
-
     @overrides(AbstractPyNNNeuronModel.create_vertex,
                additional_arguments={"n_steps_per_timestep"})
     def create_vertex(

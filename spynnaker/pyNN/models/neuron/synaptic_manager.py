@@ -32,9 +32,6 @@ from spynnaker.pyNN.models.neuron.synapse_io import SynapseIORowBased
 from spynnaker.pyNN.utilities.constants import (
     POPULATION_BASED_REGIONS,
     POISSON_SIGMA_SUMMATION_LIMIT,
-    POP_TABLE_MAX_ROW_LENGTH,
-    POP_TABLE_ADDRESS_TYPES,
-    NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES
 )
 from spynnaker.pyNN.utilities.utility_calls import (get_n_bits)
 from spynnaker.pyNN.utilities.running_stats import RunningStats

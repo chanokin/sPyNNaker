@@ -15,11 +15,8 @@
 
 import numpy
 from spinn_utilities.overrides import overrides
-from data_specification.enums.data_type import DataType
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from pyNN.random import RandomDistribution
-from pyNN.space import BaseStructure
-from .abstract_connector import AbstractConnector
 from spynnaker.pyNN.exceptions import SpynnakerException
 from .abstract_connector import (AbstractConnector)
 
@@ -31,6 +28,7 @@ CONV_PARAMS = [
     'stride_w', 'stride_h'
     'post_w', 'post_h'
 ]
+
 
 class ConvolutionKernel(numpy.ndarray):
     pass
@@ -445,9 +443,7 @@ class ConvolutionConnector(AbstractConnector):
 
             pack[i] = x
 
-
         return pack
-
 
     def get_local_only_data(self, conn_slice=None):
         # s411 = DataType()

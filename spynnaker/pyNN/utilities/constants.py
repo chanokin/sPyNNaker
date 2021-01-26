@@ -70,6 +70,7 @@ NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES = int(
     numpy.ceil(numpy.log2(len(POP_TABLE_ADDRESS_TYPES)))
 )
 
+
 class POPULATION_BASED_REGIONS(Enum):
     """Regions for populations."""
     SYSTEM = 0

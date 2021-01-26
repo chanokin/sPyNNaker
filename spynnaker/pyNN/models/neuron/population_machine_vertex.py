@@ -15,7 +15,6 @@
 from enum import Enum
 
 from pacman.executor.injection_decorator import inject_items
-from pacman.model.graphs.common import Slice
 
 from spinn_front_end_common.interface.simulation import simulation_utilities
 from spinn_utilities.overrides import overrides

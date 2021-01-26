@@ -16,7 +16,6 @@
 from spinn_utilities.overrides import overrides
 from data_specification.enums import DataType
 from .abstract_threshold_type import AbstractThresholdType
-from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 
 V_THRESH = "v_thresh"
 

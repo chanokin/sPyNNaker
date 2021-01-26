@@ -21,10 +21,7 @@ from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from spynnaker.pyNN.models.neuron.synapse_dynamics import SynapseDynamicsStatic
 from spynnaker.pyNN.models.neural_projections.connectors import (
     OneToOneConnector)
-from spynnaker.pyNN.utilities.constants import (
-    POP_TABLE_MAX_ROW_LENGTH,
-    POP_TABLE_ADDRESS_TYPES, NUM_BITS_FOR_POP_TABLE_ADDRESS_TYPES
-)
+from spynnaker.pyNN.utilities.constants import POP_TABLE_ADDRESS_TYPES
 from .generator_data import GeneratorData, SYN_REGION_UNUSED
 
 
@@ -167,7 +164,6 @@ class SynapticMatrix(object):
 
         return POP_TABLE_ADDRESS_TYPES.SDRAM
 
-
     def is_direct(self, single_addr):
         """ Determine if the given connection can be done with a "direct"\
             synaptic matrix - this must have an exactly 1 entry per row
@@ -192,7 +188,6 @@ class SynapticMatrix(object):
             not self.__synapse_info.postpop_is_view)
         return is_direct, next_addr
 
-
     def is_local_only(self, local_only_addr):
         si = self.__synapse_info
         pre = si.pre_population
@@ -200,10 +195,9 @@ class SynapticMatrix(object):
         conn = si.connector
 
         local_only = (si.uses_local_only_weights() and
-                       conn.shapes_are_compatible(pre, post))
+                      conn.shapes_are_compatible(pre, post))
         next_addr = local_only_addr + self.__local_only_matrix_size
         return local_only, next_addr
-
 
     def get_row_data(self, machine_time_step):
         """ Generate the row data for a synaptic matrix from the description
@@ -342,7 +336,8 @@ class SynapticMatrix(object):
                 data_size, self.__single_matrix_size))
         self.__index = self.__poptable.add_machine_entry(
             single_addr, self.__max_row_info.undelayed_max_words,
-            self.__routing_info.first_key_and_mask, POP_TABLE_ADDRESS_TYPES.SINGLE)
+            self.__routing_info.first_key_and_mask,
+            POP_TABLE_ADDRESS_TYPES.SINGLE)
         single_synapses.append(single_rows)
         self.__syn_mat_offset = single_addr
         self.__address_type = POP_TABLE_ADDRESS_TYPES.SINGLE
@@ -684,7 +679,9 @@ class SynapticMatrix(object):
         self.__received_block = numpy_block
         return numpy_block.tobytes()
 
-    def __get_local_only_block(self, transceiver, placement, local_only_address):
+    def __get_local_only_block(
+            self, transceiver, placement, local_only_address):
         if self.__received_block is not None:
             return self.__received_block
+
         return None

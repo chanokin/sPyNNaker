@@ -281,6 +281,7 @@ class SynapticMatrices(object):
         single_synapses = [numpy.array([], dtype="uint32")]
         single_addr = 0
 
+        # Create a list of synapse info with DTCM-stored connectivity
         local_only_synapses = []
         local_only_addr = 0
 
@@ -289,9 +290,6 @@ class SynapticMatrices(object):
 
         # Store a list of synapse info to be generated on the machine
         generate_on_machine = list()
-
-        # Create a list of synapse info with DTCM-stored connectivity
-        local_only_syns = list()
 
         # For each machine edge in the vertex, create a synaptic list
         for app_edge, m_edges in iteritems(in_edges_by_app_edge):
@@ -312,9 +310,11 @@ class SynapticMatrices(object):
                 if app_matrix.can_generate_on_machine(single_addr):
                     generate_on_machine.append(app_matrix)
                 else:
-                    block_addr, single_addr, local_only_addr = app_matrix.write_matrix(
-                        spec, block_addr, single_addr, single_synapses,
-                        local_only_addr, local_only_synapses, machine_time_step)
+                    block_addr, single_addr, local_only_addr = app_matrix.\
+                        write_matrix(
+                            spec, block_addr, single_addr, single_synapses,
+                            local_only_addr, local_only_synapses,
+                            machine_time_step)
 
         self.__host_generated_block_addr = block_addr
         self.__local_only_block_addr = local_only_addr

@@ -17,7 +17,6 @@ import logging
 import math
 import numpy
 import ctypes
-from enum import Enum
 from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from spynnaker.pyNN.models.neural_projections import ProjectionApplicationEdge
 from spynnaker.pyNN.exceptions import (
@@ -117,7 +116,6 @@ class _ExtraInfoCType(ctypes.LittleEndianStructure):
 _MAX_N_NEURONS = (1 << _n_bits(_ExtraInfoCType.n_neurons)) - 1
 # Maximum core mask (i.e. number of cores)
 _MAX_CORE_MASK = (1 << _n_bits(_ExtraInfoCType.core_mask)) - 1
-
 
 
 class _AddressAndRowLengthCType(ctypes.LittleEndianStructure):

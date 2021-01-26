@@ -42,7 +42,6 @@ class ThresholdTypeStaticConv(AbstractThresholdType):
         self.requires_spike_mapping = True
         self.extend_state_variables = True
 
-
     @overrides(AbstractThresholdType.get_n_cpu_cycles)
     def get_n_cpu_cycles(self, n_neurons):
         # Just a comparison, but 2 just in case!
@@ -96,4 +95,3 @@ class ThresholdTypeStaticConv(AbstractThresholdType):
         num_shared_parameters = 1
 
         return num_shared_parameters * BYTES_PER_WORD
-

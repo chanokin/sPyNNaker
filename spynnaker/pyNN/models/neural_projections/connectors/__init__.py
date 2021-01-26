@@ -26,7 +26,6 @@ from .distance_dependent_probability_connector import (
 from .fixed_number_post_connector import FixedNumberPostConnector
 from .fixed_number_pre_connector import FixedNumberPreConnector
 from .fixed_probability_connector import FixedProbabilityConnector
-# from .fixed_probability_region_connector import FixedProbabilityRegionConnector
 
 from .from_list_connector import FromListConnector
 from .index_based_probability_connector import IndexBasedProbabilityConnector
