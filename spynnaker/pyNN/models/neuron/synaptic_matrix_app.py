@@ -688,6 +688,9 @@ class SynapticMatrixApp(object):
         single_address = (locate_memory_region_for_placement(
             placement, self.__direct_matrix_region, transceiver) +
             BYTES_PER_WORD)
+        local_only_address = (locate_memory_region_for_placement(
+            placement, self.__local_only_matrix_region, transceiver) +
+            2*BYTES_PER_WORD)
         if self.__use_app_keys:
             return self.__read_connections(
                 transceiver, placement, synapses_address)
@@ -696,7 +699,8 @@ class SynapticMatrixApp(object):
         for m_edge in self.__m_edges:
             matrix = self.__get_matrix(m_edge)
             connections.extend(matrix.read_connections(
-                transceiver, placement, synapses_address, single_address))
+                transceiver, placement, synapses_address,
+                single_address, local_only_address))
         return connections
 
     def clear_connection_cache(self):
