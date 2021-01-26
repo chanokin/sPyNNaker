@@ -46,30 +46,30 @@ bool local_only_initialise(address_t sdram_address){
     // total incoming local-only connections data size
     n_bytes = *((uint32_t*)sdram_address++);
 //    log_info("num bytes %d", n_bytes);
-    if(n_bytes == 0){
+    if (n_bytes == 0) {
         return true;
     }
 
     num_connectors = *((uint32_t*)sdram_address++);
-    if(num_connectors == 0 && n_bytes > 0){
+    if (num_connectors == 0 && n_bytes > 0) {
         return false;
     }
     log_info("num connectors = %u", num_connectors);
 
     conv_kernel = (lc_weight_t**)spin1_malloc(num_connectors * sizeof(lc_weight_t*));
-    if(conv_kernel == NULL){
+    if (conv_kernel == NULL) {
         log_error("Can't allocate memory for convolution kernel pointers.");
         return false;
     }
 
     jumps = (uint32_t*)spin1_malloc(num_connectors * 4);
-    if(jumps == NULL){
+    if (jumps == NULL) {
         log_error("Can't allocate memory for address jumps.");
         return false;
     }
 
     shapes = (lc_shapes_t*)spin1_malloc(n_bytes);
-    if(shapes == NULL){
+    if (shapes == NULL) {
         log_error("Can't allocate memory for shape's information.");
         return false;
     }
@@ -80,7 +80,7 @@ bool local_only_initialise(address_t sdram_address){
     uint32_t idx = 0;
     uint32_t max_n_weights = 0;
     uint32_t mem_size = 0;
-    for(idx = 0; idx < num_connectors; idx++){
+    for (idx = 0; idx < num_connectors; idx++) {
         _address = sdram_address + mem_size;
         // how many elements are in a single connector data
         uint32_t n_elem = *((uint32_t*)_address++);
@@ -119,7 +119,7 @@ bool local_only_initialise(address_t sdram_address){
 
         // weight kernel data is also 16-bit
         uint32_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;
-        if(max_n_weights < n_weights){
+        if (max_n_weights < n_weights) {
             max_n_weights = n_weights;
         }
 
@@ -130,12 +130,12 @@ bool local_only_initialise(address_t sdram_address){
 
     }
 
-    for(idx = 0; idx < num_connectors; idx++){
+    for (idx = 0; idx < num_connectors; idx++) {
         lc_dim_t n_weights = shapes[idx].kernel.width * shapes[idx].kernel.height;
 
 
         conv_kernel[idx] = (lc_weight_t*)spin1_malloc(n_weights * 2);
-        if(conv_kernel[idx] == NULL){
+        if (conv_kernel[idx] == NULL) {
             log_error(
                 "Could not initialise convolution kernel weights (size = %u)",
                 n_weights);
@@ -143,10 +143,10 @@ bool local_only_initialise(address_t sdram_address){
         }
 
         uint32_t *p32 = sdram_address + jumps[idx] + LEN_SHAPE_DATA;
-        for(lc_dim_t r=0; r < shapes[idx].kernel.height; r++){
-            for(lc_dim_t c=0; c < shapes[idx].kernel.width; c++){
+        for (lc_dim_t r=0; r < shapes[idx].kernel.height; r++) {
+            for (lc_dim_t c=0; c < shapes[idx].kernel.width; c++) {
                 uint32_t w_idx = r * shapes[idx].kernel.width + c;
-                if((w_idx%2) == 0){
+                if ((w_idx%2) == 0) {
                     conv_kernel[idx][w_idx] = (lc_weight_t)(p32[w_idx/2] >> 16);
                 } else {
                     conv_kernel[idx][w_idx] = (lc_weight_t)(p32[w_idx/2] & 0xFFFF);
@@ -162,7 +162,7 @@ bool local_only_initialise(address_t sdram_address){
 	// 16-bit weights
     mapped_weights = (lc_weight_t*)spin1_malloc(
                                     max_n_weights * sizeof(lc_weight_t));
-    if(mapped_weights == NULL){
+    if (mapped_weights == NULL) {
         log_error("Could not initialise weights buffer");
         return false;
 //        rt_error(RTE_SWERR);
@@ -170,7 +170,7 @@ bool local_only_initialise(address_t sdram_address){
 
     mapped_post_ids = (lc_neuron_id_t*)spin1_malloc(
                                     max_n_weights * sizeof(lc_neuron_id_t));
-    if(mapped_post_ids == NULL){
+    if (mapped_post_ids == NULL) {
         log_error("Could not initialise post IDs buffer");
         return false;
 //        rt_error(RTE_SWERR);
@@ -200,7 +200,7 @@ void local_only_process_spike(uint32_t key, UNUSED uint32_t payload){
 
     // if the key was found in the pop table, then add current to
     // post-synaptic neuron
-    if(success){
+    if (success) {
         // compute the real pre-syn id (population id)
         lc_neuron_id_t pre_id = pre_id_relative + shapes[conn_jump].start;
 //        log_info("real pre id %u\n", pre_id);
@@ -212,7 +212,7 @@ void local_only_process_spike(uint32_t key, UNUSED uint32_t payload){
             mapped_post_ids, mapped_weights);
 
         // add the weight to each of the post neurons
-        for(lc_dim_t i=0; i<n_out; i++){
+        for (lc_dim_t i=0; i<n_out; i++) {
 //            log_info("post %u, weight fixed-point s1615 %k",
 //                mapped_post_ids[i],
 //                to_s1615(mapped_weights[i]));
@@ -229,7 +229,7 @@ void local_only_process_spike(uint32_t key, UNUSED uint32_t payload){
 void local_only_coord_to_id(
     int32_t row, int32_t col, lc_shapes_t _shapes, bool is_post,
     lc_neuron_id_t *id){
-    if (is_post){
+    if (is_post) {
 //        log_info("id = %d", row * _shapes.post.width + col);
         *id = row * _shapes.post.width + col;
     } else {
@@ -241,7 +241,7 @@ void local_only_id_to_coord(
     lc_neuron_id_t id, lc_shapes_t shapes, bool is_post,
     lc_coord_t *coord){
 
-    if (is_post){
+    if (is_post) {
         coord->row = id / shapes.post.width;
         coord->col = id % shapes.post.width;
     } else {
@@ -297,17 +297,17 @@ lc_dim_t local_only_get_ids_and_weights(
     local_only_map_pre_to_post(pre, _shapes, &post);
 //    log_info("AS post row %d, col %d", post.row, post.col);
 
-    for(int32_t r = -half_k.height; r <= half_k.height; r++){
+    for (int32_t r = -half_k.height; r <= half_k.height; r++) {
         tmp_row = post.row + r;
 //        log_info("r %d : tmp row %d", r, tmp_row);
-        if((tmp_row < 0) || (tmp_row >= _shapes.post.height)){
+        if ((tmp_row < 0) || (tmp_row >= _shapes.post.height)) {
 //            log_info("escape row");
             continue;
         }
-        for(int32_t c = -half_k.width; c <= half_k.width; c++){
+        for (int32_t c = -half_k.width; c <= half_k.width; c++) {
             tmp_col = post.col + c;
 //            log_info("c %d : tmp col %d", c, tmp_col);
-            if((tmp_col < 0) || (tmp_row >= _shapes.post.width)){
+            if ((tmp_col < 0) || (tmp_row >= _shapes.post.width)) {
                 continue;
             }
 //            log_info("tmp_row %d, tmp_col %d\tr %d, c %d",

@@ -130,7 +130,6 @@ static uint global_timer_count;
 bool local_only = false;
 
 
-
 //! \brief Callback to store provenance data (format: neuron_provenance).
 //! \param[out] provenance_region: Where to write the provenance data
 static void c_main_store_provenance_data(address_t provenance_region) {

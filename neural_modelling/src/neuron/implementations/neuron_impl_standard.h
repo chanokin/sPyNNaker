@@ -132,7 +132,7 @@ static bool neuron_impl_initialise(uint32_t n_neurons) {
         // TODO: WE ARE SHARING AND THE THRESHOLD HAS NO STATE VARIABLES
         // TODO: HOW TO EXTEND SHARED PARAMETERS TO EACH COMPONENT?
         uint32_t local_n_neurons = n_neurons;
-        if(local_only_is_compatible()){
+        if (local_only_is_compatible()) {
             local_n_neurons = 1;
         }
 
@@ -210,7 +210,7 @@ static void neuron_impl_load_neuron_parameters(
         log_debug("reading neuron local parameters");
         spin1_memcpy(neuron_array, &address[next],
                 n_neurons * sizeof(neuron_t));
-        for(uint32_t j = 0; j < n_neurons; j++){
+        for (uint32_t j = 0; j < n_neurons; j++) {
             neuron_model_print_state_variables(&neuron_array[j]);
         }
         next += n_words_needed(n_neurons * sizeof(neuron_t));
@@ -226,7 +226,7 @@ static void neuron_impl_load_neuron_parameters(
     if (sizeof(threshold_type_t)) {
         log_debug("reading threshold type parameters");
         uint32_t local_n_neurons = n_neurons;
-        if(local_only_is_compatible()){
+        if (local_only_is_compatible()) {
             local_n_neurons = 1;
         }
         spin1_memcpy(threshold_type_array, &address[next],
@@ -275,7 +275,7 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
     // Get threshold and additional input parameters for this neuron
     // TODO: threshold here is shared, how to extend to all components?
     index_t thresh_index = neuron_index;
-    if(local_only_is_compatible()){
+    if (local_only_is_compatible()) {
         thresh_index = 0;
     }
     threshold_type_t *the_threshold_type = &threshold_type_array[thresh_index];
