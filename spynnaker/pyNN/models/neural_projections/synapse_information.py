@@ -221,9 +221,15 @@ class SynapseInformation(object):
 
     def uses_local_only_weights(self):
         # post-synaptic neuron will know how to handle SDRAM stored connectivity
-        post_local = not self.post_population.needs_dma_weights
+        if hasattr(self.post_population, "needs_dma_weights"):
+            post_local = not self.post_population.needs_dma_weights
+        else:
+            post_local = False
 
         # connector/projection will store its connectivity in SDRAM
-        conn_local_store = not self.connector.needs_dma_weights
+        if hasattr(self.connector, "needs_dma_weights"):
+            conn_local_store = not self.connector.needs_dma_weights
+        else:
+            conn_local_store = False
 
         return post_local and conn_local_store
