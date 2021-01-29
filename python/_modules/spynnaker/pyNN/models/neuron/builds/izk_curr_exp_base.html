@@ -1,34 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>spynnaker.pyNN.models.neuron.builds.izk_curr_exp_base &#8212; sPyNNaker  documentation</title>
-    
-    <link rel="stylesheet" href="../../../../../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../../../../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="../../../../../../_static/sphinxdoc.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -39,23 +26,10 @@
           <a href="../../../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../../../../index.html">sPyNNaker  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">spynnaker.pyNN.models.neuron.builds.izk_curr_exp_base</a></li> 
       </ul>
-    </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../../../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
@@ -91,17 +65,39 @@
 <div class="viewcode-block" id="IzkCurrExpBase"><a class="viewcode-back" href="../../../../../../spynnaker.pyNN.models.neuron.builds.html#spynnaker.pyNN.models.neuron.builds.IzkCurrExpBase">[docs]</a><span class="k">class</span> <span class="nc">IzkCurrExpBase</span><span class="p">(</span><span class="n">AbstractPyNNNeuronModelStandard</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Izhikevich neuron model with current inputs.</span>
 
-<span class="sd">    :param float a: :math:`a`</span>
-<span class="sd">    :param float b: :math:`b`</span>
-<span class="sd">    :param float c: :math:`c`</span>
-<span class="sd">    :param float d: :math:`d`</span>
-<span class="sd">    :param float i_offset: :math:`I_{offset}`</span>
-<span class="sd">    :param float u: :math:`u_{init} = \\delta V_{init}`</span>
-<span class="sd">    :param float v: :math:`v_{init} = V_{init}`</span>
-<span class="sd">    :param float tau_syn_E: :math:`\\tau^{syn}_e`</span>
-<span class="sd">    :param float tau_syn_I: :math:`\\tau^{syn}_i`</span>
-<span class="sd">    :param float isyn_exc: :math:`I^{syn}_e`</span>
-<span class="sd">    :param float isyn_inh: :math:`I^{syn}_i`</span>
+<span class="sd">    :param a: :math:`a`</span>
+<span class="sd">    :type a: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">             or (mapping) function</span>
+<span class="sd">    :param b: :math:`b`</span>
+<span class="sd">    :type b: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">             or (mapping) function</span>
+<span class="sd">    :param c: :math:`c`</span>
+<span class="sd">    :type c: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">             or (mapping) function</span>
+<span class="sd">    :param d: :math:`d`</span>
+<span class="sd">    :type d: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">             or (mapping) function</span>
+<span class="sd">    :param i_offset: :math:`I_{offset}`</span>
+<span class="sd">    :type i_offset: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">                    or (mapping) function</span>
+<span class="sd">    :param u: :math:`u_{init} = \\delta V_{init}`</span>
+<span class="sd">    :type u: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">             or (mapping) function</span>
+<span class="sd">    :param v: :math:`v_{init} = V_{init}`</span>
+<span class="sd">    :type v: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">             or (mapping) function</span>
+<span class="sd">    :param tau_syn_E: :math:`\\tau^{syn}_e`</span>
+<span class="sd">    :type tau_syn_E: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">                     or (mapping) function</span>
+<span class="sd">    :param tau_syn_I: :math:`\\tau^{syn}_i`</span>
+<span class="sd">    :type tau_syn_I: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">                     or (mapping) function</span>
+<span class="sd">    :param isyn_exc: :math:`I^{syn}_e`</span>
+<span class="sd">    :type isyn_exc: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">                    or (mapping) function</span>
+<span class="sd">    :param isyn_inh: :math:`I^{syn}_i`</span>
+<span class="sd">    :type isyn_inh: float, iterable(float), ~pyNN.random.RandomDistribution \</span>
+<span class="sd">                    or (mapping) function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
@@ -122,7 +118,22 @@
             <span class="n">synapse_type</span><span class="o">=</span><span class="n">synapse_type</span><span class="p">,</span> <span class="n">threshold_type</span><span class="o">=</span><span class="n">threshold_type</span><span class="p">)</span></div>
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -137,12 +148,13 @@
           <a href="../../../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../../../../index.html">sPyNNaker  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../../../index.html" >Module code</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">spynnaker.pyNN.models.neuron.builds.izk_curr_exp_base</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014-2017.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
     </div>
   </body>
 </html>
