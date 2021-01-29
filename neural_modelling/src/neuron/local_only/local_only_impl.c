@@ -105,16 +105,16 @@ bool local_only_initialise(address_t sdram_address){
         shapes[idx].kernel.width = *((lc_dim_t*)(p++));
         shapes[idx].kernel.height = *((lc_dim_t*)(p));
 
-//        log_info("shape pre %d, %d",
-//                 shapes[idx].pre.width, shapes[idx].pre.height);
-//        log_info("shape post %d, %d",
-//                 shapes[idx].post.width, shapes[idx].post.height);
-//        log_info("shape padding %d, %d",
-//                 shapes[idx].padding.width, shapes[idx].padding.height);
-//        log_info("shape strides %d, %d",
-//                 shapes[idx].strides.width, shapes[idx].strides.height);
-//        log_info("shape kernel %d, %d",
-//                 shapes[idx].kernel.width, shapes[idx].kernel.height);
+        log_info("shape pre %d, %d",
+                 shapes[idx].pre.width, shapes[idx].pre.height);
+        log_info("shape post %d, %d",
+                 shapes[idx].post.width, shapes[idx].post.height);
+        log_info("shape padding %d, %d",
+                 shapes[idx].padding.width, shapes[idx].padding.height);
+        log_info("shape strides %d, %d",
+                 shapes[idx].strides.width, shapes[idx].strides.height);
+        log_info("shape kernel %d, %d",
+                 shapes[idx].kernel.width, shapes[idx].kernel.height);
 
 
         // weight kernel data is also 16-bit
@@ -152,9 +152,9 @@ bool local_only_initialise(address_t sdram_address){
                     conv_kernel[idx][w_idx] = (lc_weight_t)(p32[w_idx/2] & 0xFFFF);
                 }
 
-//                log_info("w(%d, %d) = fixed-point %k",
-//                r, c,
-//                to_s1615(conv_kernel[idx][w_idx]));
+                log_info("w(%d, %d) = fixed-point %k",
+                r, c,
+                to_s1615(conv_kernel[idx][w_idx]));
             }
         }
 

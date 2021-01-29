@@ -601,19 +601,15 @@ bool population_table_get_next_address(
             // n_bytes_to_transfer is 0
             if (item.address_type == POP_TABLE_DIRECT_ADDRESS) {
                 *row_address = (synaptic_row_t) (get_direct_address(item) +
-            if (item.is_single) {
-                *row_address = (synaptic_row_t) (get_direct_address(item) +
                     (last_neuron_id * sizeof(uint32_t)));
                 *n_bytes_to_transfer = 0;
-            }
-            else if (item.address_type == POP_TABLE_LOCAL_ADDRESS) {
-                *row_address = (synaptic_row_t) (get_direct_address(item) +
-                    (last_neuron_id * sizeof(uint32_t)));
-                *n_bytes_to_transfer = 0;
-            }
-            else if (item.address_type == POP_TABLE_SDRAM_ADDRESS) {
-            } else {
 
+            } else if (item.address_type == POP_TABLE_LOCAL_ADDRESS) {
+                *row_address = (synaptic_row_t) (get_local_address(item) +
+                    (last_neuron_id * sizeof(uint32_t)));
+                *n_bytes_to_transfer = 0;
+
+            } else if (item.address_type == POP_TABLE_SDRAM_ADDRESS) {
                 uint32_t row_length = get_row_length(item);
                 uint32_t block_address = get_address(item);
                 uint32_t stride = (row_length + N_SYNAPSE_ROW_HEADER_WORDS);
