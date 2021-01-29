@@ -187,7 +187,7 @@ SOMETIMES_UNUSED // Marked unused as only used sometimes
 //! \param[in] n_neurons: number of neurons
 static void neuron_impl_load_neuron_parameters(
         address_t address, uint32_t next, uint32_t n_neurons) {
-    log_info("reading parameters, next is %u, n_neurons is %u ",
+    log_debug("reading parameters, next is %u, n_neurons is %u ",
             next, n_neurons);
 
     // Read the number of steps per timestep
@@ -250,13 +250,13 @@ static void neuron_impl_load_neuron_parameters(
 
     neuron_model_set_global_neuron_params(global_parameters);
 
-//#if LOG_LEVEL >= LOG_DEBUG
+#if LOG_LEVEL >= LOG_DEBUG
     log_debug("-------------------------------------\n");
     for (index_t n = 0; n < n_neurons; n++) {
         neuron_model_print_parameters(&neuron_array[n]);
     }
     log_debug("-------------------------------------\n");
-//#endif // LOG_LEVEL >= LOG_DEBUG
+#endif // LOG_LEVEL >= LOG_DEBUG
 }
 
 SOMETIMES_UNUSED // Marked unused as only used sometimes
@@ -290,7 +290,7 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
 
     // Loop however many times requested; do this in reverse for efficiency,
     // and because the index doesn't actually matter
-    for (uint32_t sim_step = n_steps_per_timestep; sim_step > 0; sim_step--) {
+    for (uint32_t i_step = n_steps_per_timestep; i_step > 0; i_step--) {
         // Get the voltage
         state_t soma_voltage = neuron_model_get_membrane_voltage(this_neuron);
 
@@ -312,15 +312,13 @@ static bool neuron_impl_do_timestep_update(index_t neuron_index,
 
         for (int i = 0; i < NUM_EXCITATORY_RECEPTORS; i++) {
             total_exc += exc_input_values[i];
-//            log_info("neuron %u: excitatory input %u = %k\ttotal = %k",
-//                neuron_index, i, exc_input_values[i], total_exc);
         }
         for (int i = 0; i < NUM_INHIBITORY_RECEPTORS; i++) {
             total_inh += inh_input_values[i];
         }
 
         // Do recording if on the first step
-        if (sim_step == n_steps_per_timestep) {
+        if (i_step == n_steps_per_timestep) {
             neuron_recording_record_accum(
                     V_RECORDING_INDEX, neuron_index, soma_voltage);
             neuron_recording_record_accum(
