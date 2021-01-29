@@ -88,6 +88,15 @@ typedef union {
 // delayed and undelayed tables
 #define INVALID_ADDRESS ((1 << N_ADDRESS_BITS) - 1)
 
+//! \brief The memory layout in SDRAM of the first part of the population table
+//!     configuration. Address list data (array of ::address_and_row_length) is
+//!     packed on the end.
+typedef struct {
+    uint32_t table_length;
+    uint32_t addr_list_length;
+    master_population_table_entry data[];
+} pop_table_config_t;
+
 //! The master population table. This is sorted.
 static master_population_table_entry *master_population_table;
 
@@ -153,9 +162,8 @@ static inline uint32_t get_local_address(address_and_row_length entry) {
 }
 
 //! \brief Get the standard address offset out of an entry
-//!
-//! The address is in units of four words, so this multiplies by 16 (= up
-//! shifts by 4)
+//! \details The address is in units of four words, so this multiplies by 16
+//!     (= up shifts by 4)
 //! \param[in] entry: the table entry
 //! \return a row address (which is an offset)
 static inline uint32_t get_offset(address_and_row_length entry) {
@@ -236,8 +244,7 @@ static inline uint32_t get_extended_neuron_id(
 }
 
 //! \brief Prints the master pop table.
-//!
-//! For debugging
+//! \details For debugging
 static inline void print_master_population_table(void) {
 #if log_level >= LOG_DEBUG
     log_info("Master_population\n");
@@ -433,14 +440,14 @@ bool population_table_initialise(
         address_t direct_rows_address, address_t local_only_rows_address,
         uint32_t *row_max_n_words) {
     log_debug("Population_table_initialise: starting");
+    pop_table_config_t *config = (pop_table_config_t *) table_address;
 
-    master_population_table_length = table_address[0];
+    master_population_table_length = config->table_length;
     log_debug("Master pop table length is %d\n", master_population_table_length);
     log_debug("Master pop table entry size is %d\n",
             sizeof(master_population_table_entry));
     uint32_t n_master_pop_bytes =
             master_population_table_length * sizeof(master_population_table_entry);
-    uint32_t n_master_pop_words = n_master_pop_bytes >> 2;
     log_debug("Pop table size is %d\n", n_master_pop_bytes);
 
     // only try to malloc if there's stuff to malloc.
@@ -452,7 +459,7 @@ bool population_table_initialise(
         }
     }
 
-    uint32_t address_list_length = table_address[1];
+    uint32_t address_list_length = config->addr_list_length;
     uint32_t n_address_list_bytes =
             address_list_length * sizeof(address_list_entry);
 
@@ -471,9 +478,8 @@ bool population_table_initialise(
             address_list_length, n_address_list_bytes);
 
     // Copy the master population table
-    spin1_memcpy(master_population_table, &table_address[2],
-            n_master_pop_bytes);
-    spin1_memcpy(address_list, &table_address[2 + n_master_pop_words],
+    spin1_memcpy(master_population_table, config->data, n_master_pop_bytes);
+    spin1_memcpy(address_list, &config->data[master_population_table_length],
             n_address_list_bytes);
 
     // Store the base address
@@ -495,7 +501,8 @@ bool population_table_initialise(
 }
 
 bool population_table_get_first_address(
-        spike_t spike, address_t* row_address, size_t* n_bytes_to_transfer) {
+        spike_t spike, synaptic_row_t *row_address,
+        size_t *n_bytes_to_transfer) {
     // locate the position in the binary search / array
     log_debug("Searching for key %d", spike);
 
@@ -550,8 +557,8 @@ bool population_table_get_first_address(
                 "bit field was merged into the routing table");
     }
 
-//    log_debug("spike = %08x, entry_index = %u, start = %u, count = %u",
-//            spike, position, next_item, items_to_go);
+    log_debug("spike = %08x, entry_index = %u, start = %u, count = %u",
+            spike, position, next_item, items_to_go);
 
     // A local address is used here as the interface requires something
     // to be passed in but using the address of an argument is odd!
@@ -578,9 +585,10 @@ bool population_table_get_first_address(
 }
 
 bool population_table_get_next_address(
-        spike_t *spike, address_t *row_address, size_t *n_bytes_to_transfer) {
+        spike_t *spike, synaptic_row_t *row_address,
+        size_t *n_bytes_to_transfer) {
     // If there are no more items in the list, return false
-    if (items_to_go <= 0) {
+    if (items_to_go == 0) {
         return false;
     }
 
@@ -592,34 +600,34 @@ bool population_table_get_next_address(
             // If the row is a direct row, indicate this by specifying the
             // n_bytes_to_transfer is 0
             if (item.address_type == POP_TABLE_DIRECT_ADDRESS) {
-                *row_address = (address_t) (get_direct_address(item) +
+                *row_address = (synaptic_row_t) (get_direct_address(item) +
+            if (item.is_single) {
+                *row_address = (synaptic_row_t) (get_direct_address(item) +
                     (last_neuron_id * sizeof(uint32_t)));
                 *n_bytes_to_transfer = 0;
-                is_valid = true;
             }
             else if (item.address_type == POP_TABLE_LOCAL_ADDRESS) {
-                *row_address = (address_t) (get_direct_address(item) +
+                *row_address = (synaptic_row_t) (get_direct_address(item) +
                     (last_neuron_id * sizeof(uint32_t)));
                 *n_bytes_to_transfer = 0;
-                is_valid = true;
             }
             else if (item.address_type == POP_TABLE_SDRAM_ADDRESS) {
+            } else {
 
                 uint32_t row_length = get_row_length(item);
                 uint32_t block_address = get_address(item);
                 uint32_t stride = (row_length + N_SYNAPSE_ROW_HEADER_WORDS);
                 uint32_t neuron_offset = last_neuron_id * stride * sizeof(uint32_t);
 
-                *row_address = (address_t) (block_address + neuron_offset);
+                *row_address = (synaptic_row_t) (block_address + neuron_offset);
                 *n_bytes_to_transfer = stride * sizeof(uint32_t);
-                log_debug(
-                    "neuron_id = %u, block_address = 0x%.8x,"
-                    "row_length = %u, row_address = 0x%.8x, n_bytes = %u",
-                    last_neuron_id, block_address, row_length, *row_address,
-                    *n_bytes_to_transfer);
+                log_debug("neuron_id = %u, block_address = 0x%.8x, "
+                        "row_length = %u, row_address = 0x%.8x, n_bytes = %u",
+                        last_neuron_id, block_address, row_length, *row_address,
+                        *n_bytes_to_transfer);
                 *spike = last_spike;
-                is_valid = true;
             }
+            is_valid = true;
         }
 
         next_item++;

@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-
+from spinn_utilities.log import FormatAdapter
 from spinn_utilities.overrides import overrides
 from pacman.model.constraints.key_allocator_constraints import (
     ContiguousKeyRangeContraint)
@@ -25,8 +25,7 @@ from spinn_front_end_common.abstract_models.impl import (
     ProvidesKeyToAtomMappingImpl, TDMAAwareApplicationVertex)
 from spinn_front_end_common.utilities import (
     helpful_functions, globals_variables)
-from spinn_front_end_common.utilities.constants import (
-    BYTES_PER_WORD)
+from spinn_front_end_common.utilities.constants import BYTES_PER_WORD
 from spynnaker.pyNN.models.common import (
     AbstractSpikeRecordable, AbstractNeuronRecordable, NeuronRecorder)
 from spynnaker.pyNN.models.abstract_models import (
@@ -37,7 +36,7 @@ from spynnaker.pyNN.utilities.ranged import (
     SpynnakerRangeDictionary, SpynnakerRangedList)
 from .synaptic_manager import SynapticManager
 
-logger = logging.getLogger(__name__)
+logger = FormatAdapter(logging.getLogger(__name__))
 
 # TODO: Make sure these values are correct (particularly CPU cycles)
 _NEURON_BASE_DTCM_USAGE_IN_BYTES = 9 * BYTES_PER_WORD
@@ -260,12 +259,10 @@ class AbstractPopulationVertex(
             the slice of atoms.
         :return: The SDRAM required for the neuron region
         """
-        # n_atoms = self.get_per_neuron_type_n_atoms(vertex_slice)
-        n_atoms = vertex_slice.n_atoms
         return (
             self.BYTES_TILL_START_OF_GLOBAL_PARAMETERS +
             self.tdma_sdram_size_in_bytes +
-            self.__neuron_impl.get_sdram_usage_in_bytes(n_atoms))
+            self.__neuron_impl.get_sdram_usage_in_bytes(vertex_slice.n_atoms))
 
     @staticmethod
     def __copy_ranged_dict(source, merge=None, merge_keys=None):
