@@ -203,7 +203,10 @@ class ConvolutionConnector(AbstractConnector):
                 pre_has_structure and post_has_structure)
 
     def get_post_shape(self):
-        return self.pre_as_post(self.pre_shape[HEIGHT], self.pre_shape[WIDTH])
+        _r, _c = self.pre_shape[HEIGHT], self.pre_shape[WIDTH]
+        s = (numpy.asarray([_r, _c]) - (self.kernel_shape - 1) + 2 * self.padding)
+        return (s // self.strides) + 1
+
 
     def __to_post_coords(self, post_vertex_slice):
         """ Get a list of possible post-slice coordinates.
@@ -246,9 +249,9 @@ class ConvolutionConnector(AbstractConnector):
         :param int pre_c: column
         :rtype: tuple(int,int)
         """
-        s = (numpy.asarray([pre_r, pre_c]) -
-             self.kernel_shape - 1 + 2*self.padding)
-        return (s // self.strides) + 1
+        s = (numpy.asarray([pre_r, pre_c]) - self.kernel_shape//2 + self.padding)
+        s = (s // self.strides) + 1
+        return s
 
     def __get_kernel_vals(self, vals):
         """ Convert kernel values given into the correct format.

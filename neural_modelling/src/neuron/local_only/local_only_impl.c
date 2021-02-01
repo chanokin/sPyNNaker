@@ -45,7 +45,7 @@ bool local_only_initialise(address_t sdram_address){
 
     // total incoming local-only connections data size
     n_bytes = *((uint32_t*)sdram_address++);
-//    log_info("num bytes %d", n_bytes);
+    log_info("num bytes %d", n_bytes);
     if (n_bytes == 0) {
         return true;
     }
@@ -84,10 +84,10 @@ bool local_only_initialise(address_t sdram_address){
         _address = sdram_address + mem_size;
         // how many elements are in a single connector data
         uint32_t n_elem = *((uint32_t*)_address++);
-//        log_info("Num elem %d", n_elem);
+        log_info("Num elem %d", n_elem);
 
         uint32_t start = *((uint32_t*)_address++);
-//        log_info("Slice start %d", start);
+        log_info("Slice start %d", start);
         shapes[idx].start = start;
 
         // shapes are 16-bit uints, hopefully enough for future too?
@@ -139,7 +139,8 @@ bool local_only_initialise(address_t sdram_address){
             log_error(
                 "Could not initialise convolution kernel weights (size = %u)",
                 n_weights);
-            rt_error(RTE_SWERR);
+            return false;
+//            rt_error(RTE_SWERR);
         }
 
         uint32_t *p32 = sdram_address + jumps[idx] + LEN_SHAPE_DATA;
@@ -253,27 +254,14 @@ void local_only_id_to_coord(
 void local_only_map_pre_to_post(
     lc_coord_t pre, lc_shapes_t _shapes, lc_coord_t *post){
     int32_t _pre = pre.row;
-    int32_t _post = post->row;
-    _post = (_pre - _shapes.kernel.height - 1 + 2 * _shapes.padding.height);
-    _post /= _shapes.strides.height;
+    int32_t _post = 0;
+    _post = (_pre - (_shapes.kernel.height>>1) + _shapes.padding.height) / _shapes.strides.height;
     _post += 1;
-//    if (_post < 0){
-//        post->row = 0;
-//    }else{
-//        post->row = _post;
-//    }
     post->row = _post;
 
     _pre = pre.col;
-    _post = post->col;
-    _post = (_pre - _shapes.kernel.width - 1 + 2 * _shapes.padding.width);
-    _post /= _shapes.strides.width;
+    _post = (_pre - (_shapes.kernel.width>>1) + _shapes.padding.width) / _shapes.strides.width;
     _post += 1;
-//    if (_post < 0){
-//        post->col = 0;
-//    }else{
-//        post->col = _post;
-//    }
     post->col = _post;
 
 }
@@ -287,41 +275,41 @@ lc_dim_t local_only_get_ids_and_weights(
     lc_coord_t post = {0, 0};
     int32_t tmp_row = 0;
     int32_t tmp_col = 0;
-
-    lc_shape_t half_k = {_shapes.kernel.width/2, _shapes.kernel.height/2};
-//	log_info("half k shape width %u, height %u", half_k.width, half_k.height);
+    int32_t half_kh = _shapes.kernel.height >> 1;
+    int32_t half_kw = _shapes.kernel.width >> 1;
+	log_debug("half k shape width %u, height %u", half_kw, half_kh);
 
     local_only_id_to_coord(pre_id, _shapes, false, &pre);
-//    log_info("pre %u row %d, col %d", pre_id, pre.row, pre.col);
+    log_debug("pre %u row %d, col %d", pre_id, pre.row, pre.col);
 
     local_only_map_pre_to_post(pre, _shapes, &post);
-//    log_info("AS post row %d, col %d", post.row, post.col);
+    log_debug("AS post row %d, col %d", post.row, post.col);
 
-    for (int32_t r = -half_k.height; r <= half_k.height; r++) {
+    for (int32_t r = -half_kh; r <= half_kh; r++) {
         tmp_row = post.row + r;
-//        log_info("r %d : tmp row %d", r, tmp_row);
+        log_debug("r %d : tmp row %d", r, tmp_row);
         if ((tmp_row < 0) || (tmp_row >= _shapes.post.height)) {
-//            log_info("escape row");
+            log_debug("escape row %d %d", post.row, tmp_row);
             continue;
         }
-        for (int32_t c = -half_k.width; c <= half_k.width; c++) {
+        for (int32_t c = -half_kw; c <= half_kw; c++) {
             tmp_col = post.col + c;
-//            log_info("c %d : tmp col %d", c, tmp_col);
-            if ((tmp_col < 0) || (tmp_row >= _shapes.post.width)) {
+            log_debug("c %d : tmp col %d", c, tmp_col);
+            if ((tmp_col < 0) || (tmp_col >= _shapes.post.width)) {
+                log_debug("escape col %d %d", post.col, tmp_col);
                 continue;
             }
-//            log_info("tmp_row %d, tmp_col %d\tr %d, c %d",
-//                tmp_row, tmp_col, r, c);
+            log_debug("tmp_row %d, tmp_col %d", tmp_row, tmp_col);
             local_only_coord_to_id(tmp_row, tmp_col, _shapes, true,
                                    &post_ids[n_out]);
 
             weights[n_out] =
-                kernel[(r + half_k.height) * _shapes.kernel.width +
-                            (c + half_k.width)];
-//            log_info("pre %u, post r %d, c %d, i %u, weight %k",
-//                pre_id, tmp_row, tmp_col,
-//                post_ids[n_out],
-//                to_s1615(weights[n_out]));
+                kernel[(r + half_kh) * _shapes.kernel.width +
+                            (c + half_kw)];
+            log_debug("pre %u, post r %d, c %d, i %u, weight %k",
+                pre_id, tmp_row, tmp_col,
+                post_ids[n_out],
+                to_s1615(weights[n_out]));
             n_out++;
         }
     }
